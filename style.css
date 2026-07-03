@@ -198,3 +198,9 @@ select { appearance: none; }
 .rec-item .rec-end { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
 .rec-item .rec-end .btn-danger-link { font-size: 10.5px; }
 .empty { text-align: center; color: var(--muted); padding: 30px 0; font: 600 13px/1.4 'Manrope'; }
+
+/* Backup Drive */
+.drive-status { font: 600 12.5px/1.5 'Manrope'; margin-bottom: 12px; }
+.drive-status .muted { color: var(--muted); font-weight: 500; }
+.drive-status code { background: var(--card); padding: 1px 5px; border-radius: 5px; font-size: 11px; }
+#driveAutoToggle { width: 20px; height: 20px; accent-color: var(--accent); }

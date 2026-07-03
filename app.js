@@ -26,7 +26,7 @@ function showView(name) {
   if (name === 'list') renderList();
   if (name === 'stats') renderStats();
   if (name === 'budget') renderBudget();
-  if (name === 'settings') renderRecurring();
+  if (name === 'settings') { renderRecurring(); renderDrive(); }
 }
 
 /* ---------- Inserimento ---------- */
@@ -473,6 +473,60 @@ $('#wipeBtn').addEventListener('click', async () => {
   }
 });
 
+/* ---------- Backup Google Drive ---------- */
+async function renderDrive() {
+  const status = $('#driveStatus');
+  const connectBtn = $('#driveConnectBtn');
+  const backupBtn = $('#driveBackupBtn');
+  const autoRow = $('#driveAutoRow');
+  const autoToggle = $('#driveAutoToggle');
+
+  if (!Drive.isConfigured()) {
+    status.innerHTML = '⚙️ <b>Non configurato.</b> Serve un Client ID Google in <code>drive-config.js</code>.';
+    connectBtn.disabled = true; backupBtn.disabled = true; autoRow.style.display = 'none';
+    return;
+  }
+  autoRow.style.display = '';
+  const [granted, last, auto] = await Promise.all([
+    Drive.isGranted(), DB.getMeta('lastBackupAt'), DB.getMeta('autoBackup'),
+  ]);
+  autoToggle.checked = auto !== false;
+  const lastTxt = last ? new Date(last).toLocaleString('it-IT') : 'mai';
+  status.innerHTML = `${granted ? '✅ <b>Collegato a Drive</b>' : '⚪ Non collegato'}<br><span class="muted">Ultimo backup: ${lastTxt}</span>`;
+  connectBtn.textContent = granted ? 'Disconnetti' : 'Connetti Google Drive';
+  backupBtn.disabled = false;
+}
+
+$('#driveConnectBtn').addEventListener('click', async () => {
+  const granted = await Drive.isGranted();
+  if (granted) {
+    await Drive.disconnect();
+    toast('Drive disconnesso');
+  } else {
+    const ok = await Drive.connect();
+    toast(ok ? 'Google Drive collegato' : 'Collegamento annullato');
+  }
+  renderDrive();
+});
+
+$('#driveBackupBtn').addEventListener('click', async () => {
+  toast('Backup in corso…');
+  try {
+    const r = await Drive.backupNow(true);
+    if (r.ok) toast(`Backup salvato su Drive: ${r.filename}`);
+    else if (r.reason === 'not-configured') toast('Drive non configurato');
+    else toast('Backup non riuscito: accesso negato');
+  } catch (e) {
+    toast('Backup fallito: ' + e.message);
+  }
+  renderDrive();
+});
+
+$('#driveAutoToggle').addEventListener('change', async ev => {
+  await DB.setMeta('autoBackup', ev.target.checked);
+  toast(ev.target.checked ? 'Backup automatico attivo' : 'Backup automatico disattivato');
+});
+
 /* ---------- Avvio ---------- */
 (async function init() {
   $('#dateInput').value = todayStr();
@@ -484,4 +538,5 @@ $('#wipeBtn').addEventListener('click', async () => {
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   }
+  Drive.maybeAutoBackup(); // backup mensile "all'apertura" (silenzioso se già collegato)
 })();

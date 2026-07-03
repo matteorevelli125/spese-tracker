@@ -1,6 +1,6 @@
 // Wrapper minimale su IndexedDB.
 const DB_NAME = 'spese-tracker';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 let _db = null;
 
 function openDB() {
@@ -18,6 +18,9 @@ function openDB() {
       }
       if (!db.objectStoreNames.contains('recurring')) {
         db.createObjectStore('recurring', { keyPath: 'id', autoIncrement: true });
+      }
+      if (!db.objectStoreNames.contains('meta')) {
+        db.createObjectStore('meta', { keyPath: 'key' });
       }
     };
     req.onsuccess = e => { _db = e.target.result; resolve(_db); };
@@ -65,5 +68,11 @@ const DB = {
     req.onsuccess = () => resolve(req.result);
     req.onerror = () => reject(req.error);
   })),
+  getMeta: key => openDB().then(db => new Promise((resolve, reject) => {
+    const req = db.transaction('meta').objectStore('meta').get(key);
+    req.onsuccess = () => resolve(req.result ? req.result.value : undefined);
+    req.onerror = () => reject(req.error);
+  })),
+  setMeta: (key, value) => tx('meta', 'readwrite', s => s.put({ key, value })),
   clearAll: () => Promise.all(['expenses', 'budgets', 'recurring'].map(st => tx(st, 'readwrite', s => s.clear()))),
 };

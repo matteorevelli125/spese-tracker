@@ -24,18 +24,20 @@
   }
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; }
+html { height: 100%; }
 body {
+  min-height: 100%;
   font-family: 'Manrope', system-ui, sans-serif;
   background: var(--bg); color: var(--text);
-  padding-bottom: calc(78px + env(safe-area-inset-bottom));
   -webkit-tap-highlight-color: transparent;
 }
 .page-title { font: 800 20px/1.1 'Manrope', sans-serif; letter-spacing: -.01em; margin: 4px 0 18px; }
 h2 { font: 700 11px/1 'Manrope', sans-serif; letter-spacing: .02em; text-transform: uppercase; color: var(--muted); margin: 22px 0 10px; }
-.view { display: none; padding: 18px 20px 12px; max-width: 640px; margin: 0 auto; }
+/* Spazio in fondo su ogni schermata per liberare la tab bar fissa (64px) più la
+   safe-area del dispositivo: va messo sul contenuto scrollabile, non sul body. */
+.view { display: none; padding: 18px 20px calc(88px + env(safe-area-inset-bottom)); max-width: 640px; margin: 0 auto; }
 .view.active { display: block; }
-#view-add { background: var(--surface); min-height: calc(100vh - 78px - env(safe-area-inset-bottom)); }
+#view-add { background: var(--surface); min-height: 100vh; }
 .card { background: var(--surface); border-radius: var(--radius-lg); padding: 16px 18px; margin-bottom: 12px; }
 
 /* Tab bar */

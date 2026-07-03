@@ -204,3 +204,5 @@ select { appearance: none; }
 .drive-status .muted { color: var(--muted); font-weight: 500; }
 .drive-status code { background: var(--card); padding: 1px 5px; border-radius: 5px; font-size: 11px; }
 #driveAutoToggle { width: 20px; height: 20px; accent-color: var(--accent); }
+#driveClientIdRow { margin-bottom: 6px; }
+#driveClientIdInput { margin-bottom: 8px; font-size: 12px; }

@@ -100,6 +100,18 @@
     </div>
     <button class="btn-primary" id="recAddBtn">Aggiungi ricorrente</button>
   </div>
+  <h2>Backup Google Drive</h2>
+  <div class="card" id="driveCard">
+    <div class="drive-status" id="driveStatus"></div>
+    <div class="row">
+      <button class="btn-secondary" id="driveConnectBtn" style="flex:1">Connetti Google Drive</button>
+      <button class="btn-secondary" id="driveBackupBtn" style="flex:1">Esegui backup ora</button>
+    </div>
+    <label class="field-row" id="driveAutoRow" style="margin-top:10px">
+      <span>Backup automatico mensile</span>
+      <input type="checkbox" id="driveAutoToggle" checked>
+    </label>
+  </div>
   <h2>Dati</h2>
   <div class="card">
     <div class="row">
@@ -141,8 +153,11 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="https://accounts.google.com/gsi/client" async></script>
 <script src="categories.js"></script>
 <script src="db.js"></script>
+<script src="drive-config.js"></script>
+<script src="drive.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

@@ -46,6 +46,7 @@ function renderCatGrid() {
 function renderSubList() {
   const wrap = $('#subList');
   wrap.innerHTML = '';
+  $('#subLabel').style.display = selCat ? '' : 'none';
   if (!selCat) return;
   catById(selCat).subs.forEach(s => {
     const b = document.createElement('button');
@@ -290,12 +291,24 @@ function renderTrend(type, r, list) {
 /* ---------- Budget ---------- */
 async function renderBudget() {
   const now = new Date();
-  $('#budgetMonthLabel').textContent = now.toLocaleDateString('it-IT', { month: 'long', year: 'numeric' });
+  const monthLabel = now.toLocaleDateString('it-IT', { month: 'long', year: 'numeric' });
   const first = dstr(new Date(now.getFullYear(), now.getMonth(), 1));
   const last = dstr(new Date(now.getFullYear(), now.getMonth() + 1, 0));
   const [budgets, expenses] = await Promise.all([DB.allBudgets(), DB.expensesBetween(first, last)]);
   const spentBy = {};
   expenses.forEach(e => { spentBy[e.cat] = (spentBy[e.cat] || 0) + e.amount; });
+
+  const summary = $('#budgetSummary');
+  if (!budgets.length) {
+    summary.innerHTML = '';
+  } else {
+    const totalBudget = budgets.reduce((a, b) => a + b.amount, 0);
+    const totalSpent = budgets.reduce((a, b) => a + (spentBy[b.cat] || 0), 0);
+    const pct = totalBudget ? (totalSpent / totalBudget) * 100 : 0;
+    summary.innerHTML = `<div class="head"><span>Speso su budget — ${monthLabel}</span><span class="pct">${pct.toFixed(0)}%</span></div>
+      <div class="amt">${fmt(totalSpent)} <span class="of">/ ${fmt(totalBudget)}</span></div>
+      <div class="track"><div class="fill" style="width:${Math.min(pct, 100)}%"></div></div>`;
+  }
 
   const prog = $('#budgetProgress');
   prog.innerHTML = '';
@@ -307,7 +320,7 @@ async function renderBudget() {
     const row = document.createElement('div');
     row.className = 'budget-row' + (pct >= 100 ? ' over' : pct >= 80 ? ' warn' : '');
     const status = pct >= 100 ? `⚠️ sforato di ${fmt(spent - b.amount)}` : `restano ${fmt(b.amount - spent)}`;
-    row.innerHTML = `<div class="head"><span>${c.icon} ${c.name}</span><b>${fmt(spent)} / ${fmt(b.amount)}</b></div>
+    row.innerHTML = `<div class="head"><span>${c.icon} ${c.name}</span><span class="sp">${fmt(spent)} / ${fmt(b.amount)}</span></div>
       <div class="track"><div class="fill" style="width:${Math.min(pct, 100)}%"></div></div>
       <div class="sub">${pct.toFixed(0)}% — ${status}</div>`;
     prog.appendChild(row);
@@ -364,11 +377,14 @@ async function renderRecurring() {
     const c = catById(r.cat);
     const item = document.createElement('div');
     item.className = 'rec-item';
-    item.innerHTML = `<span>${c.icon}</span>
-      <div class="info">${r.name} — ${fmt(r.amount)}
-        <small>${r.freq === 'monthly' ? 'mensile' : 'annuale'} · ${r.sub} · prossima: ${new Date(r.nextDue + 'T12:00').toLocaleDateString('it-IT')}</small>
+    item.innerHTML = `<span class="ico">${c.icon}</span>
+      <div class="info">${r.name}
+        <small>${r.freq === 'monthly' ? 'Mensile' : 'Annuale'} · ${r.sub} · prossima ${new Date(r.nextDue + 'T12:00').toLocaleDateString('it-IT')}</small>
       </div>
-      <button class="btn-danger-link">Elimina</button>`;
+      <div class="rec-end">
+        <span class="amt">−${fmt(r.amount).replace('€', '').trim()} €</span>
+        <button class="btn-danger-link">Elimina</button>
+      </div>`;
     item.querySelector('button').onclick = async () => {
       await DB.deleteRecurring(r.id);
       renderRecurring();

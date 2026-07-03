@@ -1,5 +1,6 @@
-// Service worker: cache-first per funzionamento offline completo.
-const CACHE = 'spese-v2';
+// Service worker: network-first con fallback cache, per non servire mai
+// versioni stale dell'app quando il dispositivo è online.
+const CACHE = 'spese-v5';
 const ASSETS = ['.', 'index.html', 'style.css', 'app.js', 'db.js', 'categories.js', 'manifest.webmanifest', 'icon.svg'];
 
 self.addEventListener('install', e => {
@@ -12,7 +13,12 @@ self.addEventListener('activate', e => {
   );
 });
 self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') return;
   e.respondWith(
-    caches.match(e.request, { ignoreSearch: true }).then(hit => hit || fetch(e.request))
+    fetch(e.request).then(res => {
+      const copy = res.clone();
+      caches.open(CACHE).then(c => c.put(e.request, copy));
+      return res;
+    }).catch(() => caches.match(e.request, { ignoreSearch: true }))
   );
 });

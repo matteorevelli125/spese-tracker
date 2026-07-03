@@ -1,5 +1,5 @@
 // Service worker: cache-first per funzionamento offline completo.
-const CACHE = 'spese-v2';
+const CACHE = 'spese-v4';
 const ASSETS = ['.', 'index.html', 'style.css', 'app.js', 'db.js', 'categories.js', 'manifest.webmanifest', 'icon.svg'];
 
 self.addEventListener('install', e => {

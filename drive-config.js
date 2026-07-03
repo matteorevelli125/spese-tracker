@@ -5,7 +5,7 @@
 // Finché resta il placeholder, la funzione di backup mostra "non configurato"
 // e il resto dell'app funziona normalmente.
 window.DRIVE_CONFIG = {
-  clientId: 'INCOLLA_QUI_IL_CLIENT_ID.apps.googleusercontent.com',
+  clientId: '619853471974-0ne2bkir8kfh6kukh9u85vfsam37k6gq.apps.googleusercontent.com',
   folderName: 'Spese Tracker Backup',
   keepBackups: 3, // quanti file di backup mensili conservare (i più vecchi vengono cancellati)
 };

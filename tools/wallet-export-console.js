@@ -73,6 +73,21 @@
     'charges, fees': ['altro', 'Commissioni bancarie'],
     'taxes': ['altro', 'Tasse'], 'tasse': ['altro', 'Tasse'],
     'others': ['altro', 'Varie'], 'altro': ['altro', 'Varie'], 'unknown': ['altro', 'Varie'],
+    // Categorie italiane osservate nell'export reale di Wallet
+    'generi alimentari': ['cibo', 'Spesa'],
+    'lunga distanza': ['trasporti', 'Treno'],
+    'tempo libero': ['svago', 'Hobby'],
+    'vacanze, viaggi, hotel': ['viaggi', 'Alloggio'],
+    'finanziamento auto': ['auto', 'Finanziamento'],
+    'spese condominiali': ['casa', 'Condominio'],
+    'regali, piaceri': ['regali', 'Regali'],
+    'salute e bellezza': ['salute', 'Cura personale'],
+    'benessere, bellezza': ['salute', 'Cura personale'],
+    'drogheria, farmacia': ['salute', 'Farmacia'],
+    'cultura, eventi sportivi': ['svago', 'Cinema e eventi'],
+    'manutenzione veicoli': ['auto', 'Manutenzione'],
+    'casa, giardino': ['casa', 'Manutenzione'],
+    'multe': ['altro', 'Tasse'],
   };
 
   const mapCategory = name => {

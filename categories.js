@@ -2,7 +2,7 @@
 // Ogni macro categoria ha icona (emoji), colore e sottocategorie.
 const CATEGORIES = [
   { id: 'auto', name: 'Automobile', icon: '🚗', color: '#e74c3c',
-    subs: ['Carburante', 'Pedaggi', 'Parcheggio', 'Manutenzione', 'Assicurazione', 'Bollo'] },
+    subs: ['Carburante', 'Pedaggi', 'Parcheggio', 'Manutenzione', 'Assicurazione', 'Bollo', 'Finanziamento'] },
   { id: 'cibo', name: 'Cibo e bevande', icon: '🍽️', color: '#e67e22',
     subs: ['Spesa', 'Ristorante', 'Bar e caffè', 'Take away'] },
   { id: 'casa', name: 'Casa', icon: '🏠', color: '#3498db',

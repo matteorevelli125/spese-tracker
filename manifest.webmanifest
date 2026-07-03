@@ -1,0 +1,14 @@
+{
+  "name": "Spese Tracker",
+  "short_name": "Spese",
+  "description": "Traccia le tue spese quotidiane, offline e senza account",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#15181d",
+  "theme_color": "#2563eb",
+  "lang": "it",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

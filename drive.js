@@ -11,16 +11,39 @@ const Drive = (() => {
   let accessToken = null;
   let tokenExpiry = 0;      // timestamp ms
   let pendingResolve = null; // resolver della richiesta token in corso
+  let clientId = null;       // Client ID effettivo (da IndexedDB o dal file di config)
 
-  const isConfigured = () =>
-    !!cfg.clientId && !cfg.clientId.startsWith('INCOLLA');
+  const isValidClientId = id => typeof id === 'string' && /\.apps\.googleusercontent\.com$/.test(id.trim());
+
+  // Carica il Client ID: prima quello salvato nell'app (per-dispositivo, non nel
+  // repo), poi come fallback quello eventualmente presente in drive-config.js.
+  async function loadConfig() {
+    const stored = await DB.getMeta('driveClientId');
+    if (isValidClientId(stored)) clientId = stored.trim();
+    else if (cfg.clientId && !cfg.clientId.startsWith('INCOLLA')) clientId = cfg.clientId;
+    else clientId = null;
+    return clientId;
+  }
+
+  // Imposta (o cancella) il Client ID a runtime; lo persiste sul dispositivo.
+  async function setClientId(id) {
+    const v = (id || '').trim();
+    if (v && !isValidClientId(v)) throw new Error('Client ID non valido (deve terminare con .apps.googleusercontent.com)');
+    await DB.setMeta('driveClientId', v || null);
+    clientId = v || (cfg.clientId && !cfg.clientId.startsWith('INCOLLA') ? cfg.clientId : null);
+    tokenClient = null; // forza la re-inizializzazione con il nuovo ID
+    accessToken = null; tokenExpiry = 0;
+    return clientId;
+  }
+
+  const isConfigured = () => !!clientId;
 
   // Inizializza il token client GIS al primo uso.
   function initClient() {
     if (tokenClient || !isConfigured()) return;
     if (!(window.google && google.accounts && google.accounts.oauth2)) return;
     tokenClient = google.accounts.oauth2.initTokenClient({
-      client_id: cfg.clientId,
+      client_id: clientId,
       scope: SCOPE,
       callback: resp => {
         const done = pendingResolve; pendingResolve = null;
@@ -148,6 +171,7 @@ const Drive = (() => {
 
   // Backup automatico "all'apertura": una volta per mese di calendario.
   async function maybeAutoBackup() {
+    await loadConfig();
     if (!isConfigured()) return;
     const enabled = await DB.getMeta('autoBackup');
     if (enabled === false) return; // default: attivo
@@ -167,5 +191,5 @@ const Drive = (() => {
     } catch (e) { /* rete o quota: riprova al prossimo avvio */ }
   }
 
-  return { isConfigured, isGranted, connect, disconnect, backupNow, maybeAutoBackup };
+  return { isConfigured, isGranted, connect, disconnect, backupNow, maybeAutoBackup, loadConfig, setClientId, getClientId: () => clientId };
 })();

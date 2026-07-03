@@ -1,11 +1,13 @@
 // Configurazione backup su Google Drive.
-// Il Client ID di un'app web OAuth è pubblico (non è un segreto): può stare nel repo.
-// Incolla qui il tuo ID client OAuth 2.0 (tipo "Applicazione web") creato su
-// https://console.cloud.google.com → Credenziali.
-// Finché resta il placeholder, la funzione di backup mostra "non configurato"
-// e il resto dell'app funziona normalmente.
+//
+// Il Client ID ora si inserisce direttamente nell'app (Altro → Backup Google
+// Drive) e viene salvato sul dispositivo, così NON deve stare nel repo.
+// Questo file resta solo come fallback opzionale: se preferisci "cablare" il
+// Client ID nel codice (utile per un deploy self-hosted), incollalo qui sotto.
+// Il Client ID di un'app web OAuth è comunque pubblico (non è un segreto): la
+// protezione reale è l'allowlist delle origini autorizzate lato Google Cloud.
 window.DRIVE_CONFIG = {
-  clientId: '',
+  clientId: '', // lascia vuoto per inserirlo dall'app
   folderName: 'Spese Tracker Backup',
-  keepBackups: 3, // quanti file di backup mensili conservare (i più vecchi vengono cancellati)
+  keepBackups: 3, // quanti file di backup mensili conservare
 };

@@ -115,6 +115,12 @@
   <h2>Backup Google Drive</h2>
   <div class="card" id="driveCard">
     <div class="drive-status" id="driveStatus"></div>
+    <div id="driveClientIdRow">
+      <input type="text" id="driveClientIdInput" placeholder="Client ID …apps.googleusercontent.com" autocomplete="off" spellcheck="false">
+      <div class="row">
+        <button class="btn-secondary" id="driveClientIdSave" style="flex:1">Salva Client ID</button>
+      </div>
+    </div>
     <div class="row">
       <button class="btn-secondary" id="driveConnectBtn" style="flex:1">Connetti Google Drive</button>
       <button class="btn-secondary" id="driveBackupBtn" style="flex:1">Esegui backup ora</button>
@@ -123,6 +129,9 @@
       <span>Backup automatico mensile</span>
       <input type="checkbox" id="driveAutoToggle" checked>
     </label>
+    <div class="row" style="justify-content:center">
+      <button class="btn-danger-link" id="driveClearIdBtn">Rimuovi Client ID</button>
+    </div>
   </div>
   <h2>Dati</h2>
   <div class="card">

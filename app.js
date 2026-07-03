@@ -517,22 +517,49 @@ async function renderDrive() {
   const backupBtn = $('#driveBackupBtn');
   const autoRow = $('#driveAutoRow');
   const autoToggle = $('#driveAutoToggle');
+  const idRow = $('#driveClientIdRow');
+  const clearIdBtn = $('#driveClearIdBtn');
+
+  await Drive.loadConfig();
 
   if (!Drive.isConfigured()) {
-    status.innerHTML = '⚙️ <b>Non configurato.</b> Serve un Client ID Google in <code>drive-config.js</code>.';
-    connectBtn.disabled = true; backupBtn.disabled = true; autoRow.style.display = 'none';
+    status.innerHTML = '🔑 <b>Inserisci il Client ID</b> per attivare il backup su Drive.<br><span class="muted">Lo trovi in Google Cloud → Credenziali. Resta salvato solo su questo dispositivo.</span>';
+    idRow.style.display = '';
+    connectBtn.style.display = 'none'; backupBtn.style.display = 'none';
+    autoRow.style.display = 'none'; clearIdBtn.style.display = 'none';
     return;
   }
-  autoRow.style.display = '';
+  idRow.style.display = 'none';
+  connectBtn.style.display = ''; backupBtn.style.display = '';
+  autoRow.style.display = ''; clearIdBtn.style.display = '';
   const [granted, last, auto] = await Promise.all([
     Drive.isGranted(), DB.getMeta('lastBackupAt'), DB.getMeta('autoBackup'),
   ]);
   autoToggle.checked = auto !== false;
   const lastTxt = last ? new Date(last).toLocaleString('it-IT') : 'mai';
-  status.innerHTML = `${granted ? '✅ <b>Collegato a Drive</b>' : '⚪ Non collegato'}<br><span class="muted">Ultimo backup: ${lastTxt}</span>`;
+  status.innerHTML = `${granted ? '✅ <b>Collegato a Drive</b>' : '⚪ Non collegato'}<br><span class="muted">Ultimo backup: ${esc(lastTxt)}</span>`;
   connectBtn.textContent = granted ? 'Disconnetti' : 'Connetti Google Drive';
   backupBtn.disabled = false;
 }
+
+$('#driveClientIdSave').addEventListener('click', async () => {
+  try {
+    await Drive.setClientId($('#driveClientIdInput').value);
+    $('#driveClientIdInput').value = '';
+    toast('Client ID salvato');
+  } catch (e) {
+    toast(e.message);
+  }
+  renderDrive();
+});
+
+$('#driveClearIdBtn').addEventListener('click', async () => {
+  if (!confirm('Rimuovere il Client ID da questo dispositivo? Il backup Drive verrà disattivato.')) return;
+  await Drive.disconnect();
+  await Drive.setClientId('');
+  toast('Client ID rimosso');
+  renderDrive();
+});
 
 $('#driveConnectBtn').addEventListener('click', async () => {
   const granted = await Drive.isGranted();

@@ -3,6 +3,8 @@
 
 const $ = sel => document.querySelector(sel);
 const fmt = n => n.toLocaleString('it-IT', { style: 'currency', currency: 'EUR' });
+// Escaping HTML per ogni valore controllato dall'utente prima di inserirlo via innerHTML.
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const todayStr = () => new Date().toLocaleDateString('sv-SE'); // YYYY-MM-DD in ora locale
 const pad = n => String(n).padStart(2, '0');
 const dstr = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
@@ -106,7 +108,7 @@ async function renderList() {
     const item = document.createElement('div');
     item.className = 'exp-item';
     item.innerHTML = `<span class="ico">${c.icon}</span>
-      <div class="info"><div class="cat">${e.sub}</div><div class="note">${c.name}${e.note ? ' · ' + e.note : ''}</div></div>
+      <div class="info"><div class="cat">${esc(e.sub)}</div><div class="note">${esc(c.name)}${e.note ? ' · ' + esc(e.note) : ''}</div></div>
       <span class="amt">${fmt(e.amount)}</span>`;
     item.addEventListener('click', async () => {
       if (confirm(`Eliminare ${fmt(e.amount)} — ${e.sub}?`)) {
@@ -244,7 +246,7 @@ function renderCatBars(list) {
   groups.forEach(g => {
     const row = document.createElement('div');
     row.className = 'hbar-row';
-    row.innerHTML = `<span class="lbl">${g.icon} ${g.label}</span>
+    row.innerHTML = `<span class="lbl">${g.icon} ${esc(g.label)}</span>
       <div class="track"><div class="fill" style="width:${(g.amount / max) * 100}%;background:${g.color}"></div></div>
       <span class="val">${fmt(g.amount)}</span>`;
     if (!drillCat) row.onclick = () => { drillCat = g.key; renderStats(); };
@@ -378,8 +380,8 @@ async function renderRecurring() {
     const item = document.createElement('div');
     item.className = 'rec-item';
     item.innerHTML = `<span class="ico">${c.icon}</span>
-      <div class="info">${r.name}
-        <small>${r.freq === 'monthly' ? 'Mensile' : 'Annuale'} · ${r.sub} · prossima ${new Date(r.nextDue + 'T12:00').toLocaleDateString('it-IT')}</small>
+      <div class="info">${esc(r.name)}
+        <small>${r.freq === 'monthly' ? 'Mensile' : 'Annuale'} · ${esc(r.sub)} · prossima ${new Date(r.nextDue + 'T12:00').toLocaleDateString('it-IT')}</small>
       </div>
       <div class="rec-end">
         <span class="amt">−${fmt(r.amount).replace('€', '').trim()} €</span>
@@ -448,17 +450,52 @@ async function exportData(format) {
 $('#exportJsonBtn').addEventListener('click', () => exportData('json'));
 $('#exportCsvBtn').addEventListener('click', () => exportData('csv'));
 
+// Validazione/sanificazione dei record importati: si accettano solo campi
+// attesi con i tipi corretti. Le stringhe vengono limitate in lunghezza per
+// evitare payload abnormi; i record non validi vengono scartati.
+const isDateStr = s => typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s);
+const cleanStr = (s, max = 200) => (typeof s === 'string' ? s : '').slice(0, max);
+const cleanAmount = a => {
+  const n = typeof a === 'number' ? a : parseFloat(a);
+  return isFinite(n) && n > 0 ? Math.round(n * 100) / 100 : null;
+};
+function sanitizeExpense(e) {
+  if (!e || typeof e !== 'object') return null;
+  const amount = cleanAmount(e.amount);
+  if (!isDateStr(e.date) || amount === null) return null;
+  return { date: e.date, amount, cat: cleanStr(e.cat, 40), sub: cleanStr(e.sub, 60), note: cleanStr(e.note, 200), ts: Number.isFinite(e.ts) ? e.ts : Date.now() };
+}
+function sanitizeRecurring(r) {
+  if (!r || typeof r !== 'object') return null;
+  const amount = cleanAmount(r.amount);
+  if (!amount || !isDateStr(r.nextDue)) return null;
+  return { name: cleanStr(r.name, 80), amount, cat: cleanStr(r.cat, 40), sub: cleanStr(r.sub, 60),
+    freq: r.freq === 'yearly' ? 'yearly' : 'monthly', nextDue: r.nextDue };
+}
+
 $('#importBtn').addEventListener('click', () => $('#importFile').click());
 $('#importFile').addEventListener('change', async ev => {
   const f = ev.target.files[0];
   if (!f) return;
   try {
+    if (f.size > 20 * 1024 * 1024) throw new Error('file troppo grande');
     const data = JSON.parse(await f.text());
-    if (!Array.isArray(data.expenses)) throw new Error('formato non valido');
-    for (const e of data.expenses) { delete e.id; await DB.addExpense(e); }
-    for (const b of data.budgets || []) await DB.setBudget(b.cat, b.amount);
-    for (const r of data.recurring || []) { delete r.id; await DB.addRecurring(r); }
-    toast(`Importate ${data.expenses.length} spese`);
+    if (!data || !Array.isArray(data.expenses)) throw new Error('formato non valido');
+    let ok = 0, skipped = 0;
+    for (const raw of data.expenses) {
+      const e = sanitizeExpense(raw);
+      if (e) { await DB.addExpense(e); ok++; } else skipped++;
+    }
+    for (const b of Array.isArray(data.budgets) ? data.budgets : []) {
+      const amount = cleanAmount(b && b.amount);
+      const cat = cleanStr(b && b.cat, 40);
+      if (cat && amount) await DB.setBudget(cat, amount);
+    }
+    for (const raw of Array.isArray(data.recurring) ? data.recurring : []) {
+      const r = sanitizeRecurring(raw);
+      if (r) await DB.addRecurring(r);
+    }
+    toast(`Importate ${ok} spese${skipped ? ` (${skipped} scartate)` : ''}`);
   } catch (err) {
     toast('Import fallito: ' + err.message);
   }

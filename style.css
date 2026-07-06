@@ -143,6 +143,19 @@ select { appearance: none; }
 #searchInput::placeholder { color: var(--faint); font-weight: 500; }
 .warn-text { color: var(--warn); font-weight: 700; }
 
+/* Saldo cumulato */
+.chart-note { margin-top: 8px; font: 500 11px/1.3 'Manrope'; color: var(--muted); }
+.cum-head { font: 600 12.5px/1 'Manrope'; color: var(--muted); margin-bottom: 6px; }
+.cum-head b { font-weight: 800; }
+.cum-head .pos { color: var(--accent); }
+.cum-head .neg { color: var(--danger); }
+.cum-svg { width: 100%; height: auto; display: block; }
+.cum-line { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.cum-area { fill: var(--accent-soft); opacity: .6; }
+.cum-zero { stroke: var(--divider); stroke-width: 1; stroke-dasharray: 3 3; }
+.cum-dot { fill: var(--accent); }
+.cum-x { fill: var(--muted); font: 600 7px 'Manrope'; }
+
 /* Movimenti */
 .day-header { font: 700 11px/1 'Manrope'; color: var(--muted); letter-spacing: .02em; margin: 16px 4px 8px; display: flex; justify-content: space-between; text-transform: uppercase; }
 .day-header:first-child { margin-top: 0; }

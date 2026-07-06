@@ -298,10 +298,17 @@ async function renderStats() {
   const totInc = sum(income);
   const balance = totInc - totExp;
   if (totInc || totExp) {
+    // Tasso di risparmio: solo mese/anno (su periodi brevi le entrate sono lumpy → poco significativo)
+    let savingsHtml = '';
+    if ((type === 'month' || type === 'year') && totInc > 0) {
+      const rate = (balance / totInc) * 100;
+      savingsHtml = `<div><span class="lbl">Risparmio</span><b class="${rate >= 0 ? 'pos' : 'neg'}">${rate.toFixed(0)}%</b></div>`;
+    }
     $('#statBalance').innerHTML = `
       <div><span class="lbl">Entrate</span><b class="pos">+${fmt(totInc)}</b></div>
       <div><span class="lbl">Uscite</span><b class="neg">−${fmt(totExp)}</b></div>
-      <div><span class="lbl">Saldo</span><b class="${balance >= 0 ? 'pos' : 'neg'}">${balance >= 0 ? '+' : ''}${fmt(balance)}</b></div>`;
+      <div><span class="lbl">Saldo</span><b class="${balance >= 0 ? 'pos' : 'neg'}">${balance >= 0 ? '+' : ''}${fmt(balance)}</b></div>
+      ${savingsHtml}`;
   } else {
     $('#statBalance').innerHTML = '';
   }
@@ -309,6 +316,7 @@ async function renderStats() {
   renderFilterChips();
   renderCatBars(cur);
   renderTrend(type, r, cur);
+  renderCumulative();
 }
 
 function renderFilterChips() {
@@ -396,6 +404,45 @@ function renderTrend(type, r, list) {
     tb.innerHTML = `<div class="bar" style="height:${(totals[i] / max) * 100}%"></div><div class="tl">${b.label}</div>`;
     wrap.appendChild(tb);
   });
+}
+
+// Saldo cumulato: somma progressiva mensile di (entrate − uscite) su tutto lo storico.
+async function renderCumulative() {
+  const wrap = $('#cumulativeChart');
+  const all = await DB.allExpenses();
+  const byMonth = {}; // 'YYYY-MM' -> netto
+  all.forEach(e => {
+    const m = e.date.slice(0, 7);
+    byMonth[m] = (byMonth[m] || 0) + (isIncome(e) ? e.amount : -e.amount);
+  });
+  const months = Object.keys(byMonth).sort();
+  if (months.length < 2) { wrap.innerHTML = '<div class="empty">Servono almeno due mesi di dati.</div>'; return; }
+  let run = 0;
+  const pts = months.map(m => { run += byMonth[m]; return { m, v: run }; });
+
+  const W = 300, H = 120, padL = 6, padR = 6, padT = 10, padB = 20;
+  const vals = pts.map(p => p.v).concat(0);
+  const min = Math.min(...vals), max = Math.max(...vals);
+  const span = (max - min) || 1;
+  const x = i => padL + (i / (pts.length - 1)) * (W - padL - padR);
+  const y = v => padT + (1 - (v - min) / span) * (H - padT - padB);
+  const zeroY = y(0);
+  const line = pts.map((p, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)},${y(p.v).toFixed(1)}`).join(' ');
+  const area = `${line} L${x(pts.length - 1).toFixed(1)},${zeroY.toFixed(1)} L${x(0).toFixed(1)},${zeroY.toFixed(1)} Z`;
+  const last = pts[pts.length - 1].v;
+  const lblIdx = [0, Math.floor((pts.length - 1) / 2), pts.length - 1].filter((v, i, a) => a.indexOf(v) === i);
+  const mlabel = m => new Date(m + '-01T12:00').toLocaleDateString('it-IT', { month: 'short', year: '2-digit' });
+  const xlabels = lblIdx.map(i => `<text x="${x(i).toFixed(1)}" y="${H - 5}" text-anchor="${i === 0 ? 'start' : i === pts.length - 1 ? 'end' : 'middle'}" class="cum-x">${mlabel(pts[i].m)}</text>`).join('');
+
+  wrap.innerHTML = `
+    <div class="cum-head">Oggi: <b class="${last >= 0 ? 'pos' : 'neg'}">${last >= 0 ? '+' : ''}${fmt(last)}</b></div>
+    <svg viewBox="0 0 ${W} ${H}" class="cum-svg">
+      <line x1="${padL}" y1="${zeroY.toFixed(1)}" x2="${W - padR}" y2="${zeroY.toFixed(1)}" class="cum-zero"/>
+      <path d="${area}" class="cum-area"/>
+      <path d="${line}" class="cum-line"/>
+      <circle cx="${x(pts.length - 1).toFixed(1)}" cy="${y(last).toFixed(1)}" r="3" class="cum-dot"/>
+      ${xlabels}
+    </svg>`;
 }
 
 /* ---------- Budget ---------- */

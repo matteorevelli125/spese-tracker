@@ -55,6 +55,13 @@ nav button .ico { width: 20px; height: 20px; }
 nav button.active { color: var(--accent); }
 
 /* Inserimento */
+.type-toggle { display: flex; background: var(--card); border-radius: var(--radius-pill); padding: 3px; margin-bottom: 4px; }
+.type-toggle button {
+  flex: 1; border: none; background: transparent; padding: 9px; border-radius: var(--radius-pill);
+  font: 700 12.5px/1 'Manrope'; color: var(--muted); cursor: pointer;
+}
+.type-toggle button.selected { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+.type-toggle button[data-type=income].selected { color: var(--accent); }
 .amount-wrap { padding: 4px 0 6px; }
 .amount-label { text-align: center; color: var(--muted); font: 700 11px/1 'Manrope'; letter-spacing: .02em; margin-bottom: 6px; }
 #amountInput {
@@ -142,6 +149,8 @@ select { appearance: none; }
 .exp-item .info .cat { font: 700 13px/1.1 'Manrope'; }
 .exp-item .info .note { font: 500 11px/1.2 'Manrope'; color: var(--muted); margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .exp-item .amt { font: 700 14px/1 'Manrope'; font-variant-numeric: tabular-nums; }
+.exp-item.income .amt, .rec-item.income .amt { color: var(--accent); }
+.exp-item.income .ico { background: var(--accent-soft); }
 
 /* Statistiche */
 .period-bar { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
@@ -157,6 +166,13 @@ select { appearance: none; }
 .compare { text-align: center; font: 600 12px/1.5 'Manrope'; color: var(--muted); margin-top: 6px; }
 .compare .up { color: var(--danger); }
 .compare .down { color: var(--accent); }
+.balance-row { display: flex; justify-content: space-around; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--divider); }
+.balance-row:empty { display: none; }
+.balance-row > div { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.balance-row .lbl { font: 600 10.5px/1 'Manrope'; letter-spacing: .02em; text-transform: uppercase; color: var(--muted); }
+.balance-row b { font: 700 14px/1 'Manrope'; font-variant-numeric: tabular-nums; }
+.balance-row .pos { color: var(--accent); }
+.balance-row .neg { color: var(--danger); }
 .hbar-row { display: flex; align-items: center; gap: 8px; margin: 10px 0; cursor: pointer; }
 .hbar-row .lbl { width: 120px; font: 600 11.5px/1 'Manrope'; color: var(--text); display: flex; gap: 4px; align-items: center; white-space: nowrap; overflow: hidden; }
 .hbar-row .track { flex: 1; height: 8px; background: var(--card); border-radius: 5px; overflow: hidden; }

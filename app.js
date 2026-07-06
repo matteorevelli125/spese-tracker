@@ -32,12 +32,26 @@ function showView(name) {
 }
 
 /* ---------- Inserimento ---------- */
-let selCat = null, selSub = null;
+// I record hanno type 'expense' | 'income'; i record storici senza campo sono uscite.
+const isIncome = e => e.type === 'income';
+let selType = 'expense', selCat = null, selSub = null;
+
+document.querySelectorAll('#typeToggle button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    selType = btn.dataset.type;
+    selCat = null; selSub = null;
+    document.querySelectorAll('#typeToggle button').forEach(b => b.classList.toggle('selected', b === btn));
+    $('#addTitle').textContent = selType === 'income' ? 'Nuova entrata' : 'Nuova spesa';
+    $('#saveBtn').textContent = selType === 'income' ? 'Salva entrata' : 'Salva spesa';
+    renderCatGrid(); renderSubList(); updateSaveState();
+  });
+});
 
 function renderCatGrid() {
   const grid = $('#catGrid');
   grid.innerHTML = '';
-  CATEGORIES.forEach(c => {
+  const list = selType === 'income' ? INCOME_CATEGORIES : CATEGORIES;
+  list.forEach(c => {
     const b = document.createElement('button');
     b.className = 'cat-btn' + (selCat === c.id ? ' selected' : '');
     b.innerHTML = `<span class="ico">${c.icon}</span>${c.name}`;
@@ -48,8 +62,9 @@ function renderCatGrid() {
 function renderSubList() {
   const wrap = $('#subList');
   wrap.innerHTML = '';
-  $('#subLabel').style.display = selCat ? '' : 'none';
-  if (!selCat) return;
+  const show = selCat && selType === 'expense'; // le entrate non hanno sottocategorie
+  $('#subLabel').style.display = show ? '' : 'none';
+  if (!show) return;
   catById(selCat).subs.forEach(s => {
     const b = document.createElement('button');
     b.className = 'chip' + (selSub === s ? ' selected' : '');
@@ -63,24 +78,28 @@ function parseAmount(str) {
   return isFinite(v) && v > 0 ? Math.round(v * 100) / 100 : null;
 }
 function updateSaveState() {
-  $('#saveBtn').disabled = !(parseAmount($('#amountInput').value) && selCat && selSub);
+  const ok = parseAmount($('#amountInput').value) && selCat && (selType === 'income' || selSub);
+  $('#saveBtn').disabled = !ok;
 }
 $('#amountInput').addEventListener('input', updateSaveState);
 
 $('#saveBtn').addEventListener('click', async () => {
   const amount = parseAmount($('#amountInput').value);
+  const income = selType === 'income';
   await DB.addExpense({
     date: $('#dateInput').value || todayStr(),
     amount,
+    type: selType,
     cat: selCat,
-    sub: selSub,
+    sub: income ? incomeCatById(selCat).name : selSub,
     note: $('#noteInput').value.trim(),
     ts: Date.now(),
   });
-  toast(`Salvato: ${fmt(amount)} — ${selSub}`);
+  toast(`${income ? 'Entrata' : 'Salvato'}: ${fmt(amount)} — ${income ? incomeCatById(selCat).name : selSub}`);
   $('#amountInput').value = '';
   $('#noteInput').value = '';
   selSub = null;
+  if (income) { selCat = null; renderCatGrid(); }
   renderSubList();
   updateSaveState();
 });
@@ -93,23 +112,25 @@ async function renderList() {
   if (!all.length) { wrap.innerHTML = '<div class="empty">Nessuna spesa registrata.</div>'; return; }
   let curDay = null;
   const recent = all.slice(0, 300);
-  const dayTotals = {};
-  recent.forEach(e => { dayTotals[e.date] = (dayTotals[e.date] || 0) + e.amount; });
+  const dayTotals = {}; // netto del giorno: entrate − uscite
+  recent.forEach(e => { dayTotals[e.date] = (dayTotals[e.date] || 0) + (isIncome(e) ? e.amount : -e.amount); });
   recent.forEach(e => {
     if (e.date !== curDay) {
       curDay = e.date;
       const h = document.createElement('div');
       h.className = 'day-header';
       const d = new Date(e.date + 'T12:00');
-      h.innerHTML = `<span>${d.toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric', month: 'long' })}</span><span>${fmt(dayTotals[e.date])}</span>`;
+      const net = dayTotals[e.date];
+      h.innerHTML = `<span>${d.toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric', month: 'long' })}</span><span>${net > 0 ? '+' : ''}${fmt(net)}</span>`;
       wrap.appendChild(h);
     }
-    const c = catById(e.cat);
+    const income = isIncome(e);
+    const c = income ? incomeCatById(e.cat) : catById(e.cat);
     const item = document.createElement('div');
-    item.className = 'exp-item';
+    item.className = 'exp-item' + (income ? ' income' : '');
     item.innerHTML = `<span class="ico">${c.icon}</span>
       <div class="info"><div class="cat">${esc(e.sub)}</div><div class="note">${esc(c.name)}${e.note ? ' · ' + esc(e.note) : ''}</div></div>
-      <span class="amt">${fmt(e.amount)}</span>`;
+      <span class="amt">${income ? '+' : ''}${fmt(e.amount)}</span>`;
     item.addEventListener('click', async () => {
       if (confirm(`Eliminare ${fmt(e.amount)} — ${e.sub}?`)) {
         await DB.deleteExpense(e.id);
@@ -184,19 +205,35 @@ async function renderStats() {
   $('#periodLabel').textContent = r.label;
   $('#nextPeriod').disabled = periodOffset >= 0;
 
-  const cur = applyFilter(await DB.expensesBetween(r.from, r.to));
-  const prev = applyFilter(await DB.expensesBetween(r.prev.from, r.prev.to));
+  const all = await DB.expensesBetween(r.from, r.to);
+  const cur = applyFilter(all.filter(e => !isIncome(e)));      // uscite (filtrate per categoria)
+  const income = all.filter(isIncome);                          // entrate del periodo
+  const prevAll = await DB.expensesBetween(r.prev.from, r.prev.to);
+  const prev = applyFilter(prevAll.filter(e => !isIncome(e)));
   $('#statTotal').textContent = fmt(sum(cur));
 
   const parts = [];
   const p1 = comparePhrase(sum(cur), sum(prev), r.prev.label);
   if (p1) parts.push(p1);
   if (r.yoy) {
-    const yoy = applyFilter(await DB.expensesBetween(r.yoy.from, r.yoy.to));
-    const p2 = comparePhrase(sum(cur), sum(yoy), r.yoy.label);
+    const yoyAll = await DB.expensesBetween(r.yoy.from, r.yoy.to);
+    const p2 = comparePhrase(sum(cur), sum(yoyAll.filter(e => !isIncome(e))), r.yoy.label);
     if (p2) parts.push(p2);
   }
   $('#statCompare').innerHTML = parts.join('<br>') || 'Nessun dato di confronto';
+
+  // Confronto entrate/uscite del periodo (uscite totali, non filtrate)
+  const totExp = sum(all.filter(e => !isIncome(e)));
+  const totInc = sum(income);
+  const balance = totInc - totExp;
+  if (totInc || totExp) {
+    $('#statBalance').innerHTML = `
+      <div><span class="lbl">Entrate</span><b class="pos">+${fmt(totInc)}</b></div>
+      <div><span class="lbl">Uscite</span><b class="neg">−${fmt(totExp)}</b></div>
+      <div><span class="lbl">Saldo</span><b class="${balance >= 0 ? 'pos' : 'neg'}">${balance >= 0 ? '+' : ''}${fmt(balance)}</b></div>`;
+  } else {
+    $('#statBalance').innerHTML = '';
+  }
 
   renderFilterChips();
   renderCatBars(cur);
@@ -298,7 +335,7 @@ async function renderBudget() {
   const last = dstr(new Date(now.getFullYear(), now.getMonth() + 1, 0));
   const [budgets, expenses] = await Promise.all([DB.allBudgets(), DB.expensesBetween(first, last)]);
   const spentBy = {};
-  expenses.forEach(e => { spentBy[e.cat] = (spentBy[e.cat] || 0) + e.amount; });
+  expenses.filter(e => !isIncome(e)).forEach(e => { spentBy[e.cat] = (spentBy[e.cat] || 0) + e.amount; });
 
   const summary = $('#budgetSummary');
   if (!budgets.length) {
@@ -345,23 +382,34 @@ async function renderBudget() {
   });
 }
 
-/* ---------- Spese ricorrenti ---------- */
+/* ---------- Movimenti ricorrenti (uscite ed entrate) ---------- */
 function fillRecSelectors() {
-  const cs = $('#recCat'), ss = $('#recSub');
-  cs.innerHTML = CATEGORIES.map(c => `<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
-  const syncSubs = () => { ss.innerHTML = catById(cs.value).subs.map(s => `<option>${s}</option>`).join(''); };
-  cs.addEventListener('change', syncSubs);
-  syncSubs();
+  const ts = $('#recType'), cs = $('#recCat'), ss = $('#recSub');
+  const sync = () => {
+    const income = ts.value === 'income';
+    const list = income ? INCOME_CATEGORIES : CATEGORIES;
+    cs.innerHTML = list.map(c => `<option value="${c.id}">${c.icon} ${c.name}</option>`).join('');
+    ss.style.display = income ? 'none' : '';
+    if (!income) ss.innerHTML = catById(cs.value).subs.map(s => `<option>${s}</option>`).join('');
+  };
+  ts.addEventListener('change', sync);
+  cs.addEventListener('change', () => {
+    if (ts.value === 'expense') $('#recSub').innerHTML = catById(cs.value).subs.map(s => `<option>${s}</option>`).join('');
+  });
+  sync();
 }
 
 $('#recAddBtn').addEventListener('click', async () => {
   const name = $('#recName').value.trim();
   const amount = parseFloat($('#recAmount').value);
   const start = $('#recStart').value;
+  const income = $('#recType').value === 'income';
   if (!name || !(amount > 0) || !start) { toast('Compila nome, importo e prima scadenza'); return; }
   await DB.addRecurring({
     name, amount: Math.round(amount * 100) / 100,
-    cat: $('#recCat').value, sub: $('#recSub').value,
+    type: income ? 'income' : 'expense',
+    cat: $('#recCat').value,
+    sub: income ? incomeCatById($('#recCat').value).name : $('#recSub').value,
     freq: $('#recFreq').value,
     nextDue: start,
   });
@@ -376,15 +424,16 @@ async function renderRecurring() {
   const wrap = $('#recList');
   wrap.innerHTML = list.length ? '' : '<div class="empty">Nessuna spesa ricorrente.</div>';
   list.forEach(r => {
-    const c = catById(r.cat);
+    const income = isIncome(r);
+    const c = income ? incomeCatById(r.cat) : catById(r.cat);
     const item = document.createElement('div');
-    item.className = 'rec-item';
+    item.className = 'rec-item' + (income ? ' income' : '');
     item.innerHTML = `<span class="ico">${c.icon}</span>
       <div class="info">${esc(r.name)}
         <small>${r.freq === 'monthly' ? 'Mensile' : 'Annuale'} · ${esc(r.sub)} · prossima ${new Date(r.nextDue + 'T12:00').toLocaleDateString('it-IT')}</small>
       </div>
       <div class="rec-end">
-        <span class="amt">−${fmt(r.amount).replace('€', '').trim()} €</span>
+        <span class="amt">${income ? '+' : '−'}${fmt(r.amount).replace('€', '').trim()} €</span>
         <button class="btn-danger-link">Elimina</button>
       </div>`;
     item.querySelector('button').onclick = async () => {
@@ -404,7 +453,7 @@ async function applyRecurring() {
     let due = r.nextDue;
     let guard = 0;
     while (due <= today && guard++ < 240) {
-      await DB.addExpense({ date: due, amount: r.amount, cat: r.cat, sub: r.sub, note: `Ricorrente: ${r.name}`, ts: Date.now() });
+      await DB.addExpense({ date: due, amount: r.amount, type: r.type || 'expense', cat: r.cat, sub: r.sub, note: `Ricorrente: ${r.name}`, ts: Date.now() });
       inserted++;
       const d = new Date(due + 'T12:00');
       if (r.freq === 'monthly') {
@@ -419,7 +468,7 @@ async function applyRecurring() {
     }
     if (due !== r.nextDue) await DB.putRecurring({ ...r, nextDue: due });
   }
-  if (inserted) toast(`${inserted} spese ricorrenti inserite`);
+  if (inserted) toast(`${inserted} movimenti ricorrenti inseriti`);
 }
 
 /* ---------- Export / Import ---------- */
@@ -431,9 +480,10 @@ async function exportData(format) {
     filename = `spese-backup-${todayStr()}.json`;
   } else {
     const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-    const rows = [['data', 'importo', 'categoria', 'sottocategoria', 'nota']];
+    const rows = [['data', 'tipo', 'importo', 'categoria', 'sottocategoria', 'nota']];
     expenses.sort((a, b) => a.date.localeCompare(b.date))
-      .forEach(e => rows.push([e.date, String(e.amount).replace('.', ','), catById(e.cat).name, e.sub, e.note]));
+      .forEach(e => rows.push([e.date, isIncome(e) ? 'entrata' : 'uscita', String(e.amount).replace('.', ','),
+        (isIncome(e) ? incomeCatById(e.cat) : catById(e.cat)).name, e.sub, e.note]));
     blob = new Blob(['﻿' + rows.map(r => r.map(esc).join(';')).join('\r\n')], { type: 'text/csv' });
     filename = `spese-${todayStr()}.csv`;
   }
@@ -463,13 +513,15 @@ function sanitizeExpense(e) {
   if (!e || typeof e !== 'object') return null;
   const amount = cleanAmount(e.amount);
   if (!isDateStr(e.date) || amount === null) return null;
-  return { date: e.date, amount, cat: cleanStr(e.cat, 40), sub: cleanStr(e.sub, 60), note: cleanStr(e.note, 200), ts: Number.isFinite(e.ts) ? e.ts : Date.now() };
+  return { date: e.date, amount, type: e.type === 'income' ? 'income' : 'expense',
+    cat: cleanStr(e.cat, 40), sub: cleanStr(e.sub, 60), note: cleanStr(e.note, 200), ts: Number.isFinite(e.ts) ? e.ts : Date.now() };
 }
 function sanitizeRecurring(r) {
   if (!r || typeof r !== 'object') return null;
   const amount = cleanAmount(r.amount);
   if (!amount || !isDateStr(r.nextDue)) return null;
-  return { name: cleanStr(r.name, 80), amount, cat: cleanStr(r.cat, 40), sub: cleanStr(r.sub, 60),
+  return { name: cleanStr(r.name, 80), amount, type: r.type === 'income' ? 'income' : 'expense',
+    cat: cleanStr(r.cat, 40), sub: cleanStr(r.sub, 60),
     freq: r.freq === 'yearly' ? 'yearly' : 'monthly', nextDue: r.nextDue };
 }
 
@@ -591,12 +643,45 @@ $('#driveAutoToggle').addEventListener('change', async ev => {
   toast(ev.target.checked ? 'Backup automatico attivo' : 'Backup automatico disattivato');
 });
 
+/* ---------- Migrazione dati (una tantum, versionata) ---------- */
+// v2: rimappa i movimenti esistenti sul nuovo schema categorie:
+//  - svago/Abbonamenti            → abbonamenti/Altro
+//  - casa/Bollette da 9,99 €      → abbonamenti/Streaming
+//  - casa/Bollette da 26,95 €     → abbonamenti/Telefonia e internet
+//  - altro/Varie nota "Elettronica…" → svago/Elettronica
+//  - altro/Varie nota "Tintoria"  → abbigliamento/Tintoria
+async function migrateData() {
+  const CURRENT = 2;
+  const done = (await DB.getMeta('schemaVersion')) || 1;
+  if (done >= CURRENT) return;
+  const remap = e => {
+    if (e.cat === 'svago' && e.sub === 'Abbonamenti') return { cat: 'abbonamenti', sub: 'Altro' };
+    if (e.cat === 'casa' && e.sub === 'Bollette' && e.amount === 9.99) return { cat: 'abbonamenti', sub: 'Streaming' };
+    if (e.cat === 'casa' && e.sub === 'Bollette' && e.amount === 26.95) return { cat: 'abbonamenti', sub: 'Telefonia e internet' };
+    if (e.cat === 'altro' && /elettronica/i.test(e.note || '')) return { cat: 'svago', sub: 'Elettronica' };
+    if (e.cat === 'altro' && /tintoria/i.test(e.note || '')) return { cat: 'abbigliamento', sub: 'Tintoria' };
+    return null;
+  };
+  let n = 0;
+  for (const e of await DB.allExpenses()) {
+    const m = remap(e);
+    if (m) { await DB.putExpense({ ...e, ...m }); n++; }
+  }
+  for (const r of await DB.allRecurring()) {
+    const m = remap(r);
+    if (m) { await DB.putRecurring({ ...r, ...m }); n++; }
+  }
+  await DB.setMeta('schemaVersion', CURRENT);
+  if (n) toast(`Categorie aggiornate: ${n} movimenti rimappati`);
+}
+
 /* ---------- Avvio ---------- */
 (async function init() {
   $('#dateInput').value = todayStr();
   $('#recStart').value = todayStr();
   renderCatGrid();
   fillRecSelectors();
+  await migrateData();
   await applyRecurring();
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
   if ('serviceWorker' in navigator && location.protocol !== 'file:') {

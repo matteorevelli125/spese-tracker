@@ -41,12 +41,12 @@
     'energy, utilities': ['casa', 'Bollette'], 'energia, utenze': ['casa', 'Bollette'],
     'utilities': ['casa', 'Bollette'], 'bollette': ['casa', 'Bollette'],
     'internet': ['casa', 'Bollette'], 'phone, cell phone': ['casa', 'Bollette'],
-    'telefonia, cellulare': ['casa', 'Bollette'],
+    'telefonia, cellulare': ['abbonamenti', 'Telefonia e internet'],
     'home improvement': ['casa', 'Manutenzione'], 'furniture': ['casa', 'Arredamento'],
     'housing': ['casa', 'Bollette'], 'casa': ['casa', 'Bollette'],
     // Svago
     'life & entertainment': ['svago', 'Cinema e eventi'], 'vita e intrattenimento': ['svago', 'Cinema e eventi'],
-    'tv, streaming': ['svago', 'Abbonamenti'], 'subscriptions': ['svago', 'Abbonamenti'], 'abbonamenti': ['svago', 'Abbonamenti'],
+    'tv, streaming': ['abbonamenti', 'Streaming'], 'subscriptions': ['abbonamenti', 'Altro'], 'abbonamenti': ['abbonamenti', 'Altro'],
     'active sport, fitness': ['svago', 'Sport'], 'sport': ['svago', 'Sport'],
     'hobbies': ['svago', 'Hobby'], 'hobby': ['svago', 'Hobby'],
     'books, audio, subscriptions': ['svago', 'Libri e giochi'],
@@ -88,6 +88,8 @@
     'manutenzione veicoli': ['auto', 'Manutenzione'],
     'casa, giardino': ['casa', 'Manutenzione'],
     'multe': ['altro', 'Tasse'],
+    'tintoria': ['abbigliamento', 'Tintoria'],
+    'elettronica, accessori': ['svago', 'Elettronica'],
   };
 
   const mapCategory = name => {

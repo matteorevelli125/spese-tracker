@@ -29,7 +29,11 @@
 
 <!-- INSERIMENTO -->
 <section id="view-add" class="view active">
-  <h1 class="page-title">Nuova spesa</h1>
+  <h1 class="page-title" id="addTitle">Nuova spesa</h1>
+  <div class="type-toggle" id="typeToggle">
+    <button class="selected" data-type="expense">Uscita</button>
+    <button data-type="income">Entrata</button>
+  </div>
   <div class="amount-wrap">
     <div class="amount-label">IMPORTO</div>
     <input id="amountInput" type="text" inputmode="decimal" placeholder="0,00 €" autocomplete="off">
@@ -68,6 +72,7 @@
   <div class="card">
     <div class="total-big" id="statTotal">0,00 €</div>
     <div class="compare" id="statCompare"></div>
+    <div class="balance-row" id="statBalance"></div>
   </div>
   <div class="filter-chips" id="filterChips"></div>
   <div class="card">
@@ -95,8 +100,12 @@
   <h2>Spese ricorrenti</h2>
   <div class="card">
     <div id="recList"></div>
-    <div class="row"><input type="text" id="recName" placeholder="Nome (es. Netflix)"></div>
+    <div class="row"><input type="text" id="recName" placeholder="Nome (es. Netflix, Stipendio)"></div>
     <div class="row">
+      <select id="recType">
+        <option value="expense">Uscita</option>
+        <option value="income">Entrata</option>
+      </select>
       <input type="number" id="recAmount" placeholder="Importo €" inputmode="decimal" step="0.01" min="0">
       <select id="recFreq">
         <option value="monthly">Mensile</option>

@@ -1,7 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="96" fill="#2563eb"/>
-  <text x="256" y="330" font-size="240" text-anchor="middle" font-family="-apple-system, Roboto, sans-serif" font-weight="800" fill="#ffffff">€</text>
-  <rect x="120" y="380" width="80" height="40" rx="8" fill="#ffffff" opacity=".85"/>
-  <rect x="216" y="360" width="80" height="60" rx="8" fill="#ffffff" opacity=".65"/>
-  <rect x="312" y="330" width="80" height="90" rx="8" fill="#ffffff" opacity=".45"/>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1" gradientTransform="rotate(15 .5 .5)">
+      <stop offset="0" stop-color="#1f9d63"/>
+      <stop offset="1" stop-color="#0d6d43"/>
+    </linearGradient>
+  </defs>
+  <!-- sfondo verde con angoli morbidi -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <!-- corpo del portafoglio (bianco) -->
+  <rect x="108" y="140" width="296" height="233" rx="52" fill="#ffffff"/>
+  <!-- simbolo euro -->
+  <text x="168" y="257" font-family="'Manrope', -apple-system, Roboto, sans-serif" font-size="132" font-weight="800" fill="#0f7a4a" text-anchor="middle" dominant-baseline="central">€</text>
+  <!-- linguetta / tasca sul lato destro, angoli sinistri arrotondati -->
+  <path d="M342 194 L404 194 L404 318 L342 318 Q308 318 308 284 L308 228 Q308 194 342 194 Z" fill="#0f7a4a"/>
+  <!-- bottone della tasca -->
+  <circle cx="356" cy="256" r="16" fill="#ffffff"/>
 </svg>

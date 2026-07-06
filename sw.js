@@ -1,6 +1,6 @@
 // Service worker: network-first con fallback cache, per non servire mai
 // versioni stale dell'app quando il dispositivo è online.
-const CACHE = 'spese-v11';
+const CACHE = 'spese-v12';
 const ASSETS = ['.', 'index.html', 'style.css', 'app.js', 'db.js', 'categories.js', 'drive-config.js', 'drive.js', 'manifest.webmanifest', 'icon.svg'];
 
 self.addEventListener('install', e => {

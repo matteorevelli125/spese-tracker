@@ -47,11 +47,13 @@
     <label class="field-row"><span>Nota</span><input type="text" id="noteInput" placeholder="opzionale"></label>
   </div>
   <button class="btn-primary" id="saveBtn" disabled>Salva spesa</button>
+  <button class="btn-danger-link" id="deleteBtn" style="display:none;width:100%;margin-top:12px;padding:10px">Elimina movimento</button>
 </section>
 
 <!-- MOVIMENTI -->
 <section id="view-list" class="view">
   <h1 class="page-title">Movimenti</h1>
+  <input type="search" id="searchInput" placeholder="Cerca (categoria, nota, importo)…" autocomplete="off">
   <div id="expList"></div>
 </section>
 

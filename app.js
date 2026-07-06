@@ -19,7 +19,11 @@ function toast(msg) {
 
 /* ---------- Navigazione ---------- */
 document.querySelectorAll('nav button').forEach(btn => {
-  btn.addEventListener('click', () => showView(btn.dataset.view));
+  btn.addEventListener('click', () => {
+    // Toccare "Aggiungi" dalla tab bar riparte sempre da un nuovo movimento.
+    if (btn.dataset.view === 'add' && typeof resetAddForm === 'function') resetAddForm();
+    showView(btn.dataset.view);
+  });
 });
 function showView(name) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -34,18 +38,57 @@ function showView(name) {
 /* ---------- Inserimento ---------- */
 // I record hanno type 'expense' | 'income'; i record storici senza campo sono uscite.
 const isIncome = e => e.type === 'income';
+const buzz = () => { try { navigator.vibrate && navigator.vibrate(10); } catch (e) {} }; // micro-feedback (10ms)
 let selType = 'expense', selCat = null, selSub = null;
+let editingId = null; // id del movimento in modifica (null = nuovo inserimento)
+
+function setType(type) {
+  selType = type;
+  document.querySelectorAll('#typeToggle button').forEach(b => b.classList.toggle('selected', b.dataset.type === type));
+}
+function refreshAddTitles() {
+  const editing = editingId !== null;
+  $('#addTitle').textContent = editing
+    ? (selType === 'income' ? 'Modifica entrata' : 'Modifica spesa')
+    : (selType === 'income' ? 'Nuova entrata' : 'Nuova spesa');
+  $('#saveBtn').textContent = editing ? 'Aggiorna' : (selType === 'income' ? 'Salva entrata' : 'Salva spesa');
+  $('#deleteBtn').style.display = editing ? '' : 'none';
+}
 
 document.querySelectorAll('#typeToggle button').forEach(btn => {
   btn.addEventListener('click', () => {
-    selType = btn.dataset.type;
+    setType(btn.dataset.type);
     selCat = null; selSub = null;
-    document.querySelectorAll('#typeToggle button').forEach(b => b.classList.toggle('selected', b === btn));
-    $('#addTitle').textContent = selType === 'income' ? 'Nuova entrata' : 'Nuova spesa';
-    $('#saveBtn').textContent = selType === 'income' ? 'Salva entrata' : 'Salva spesa';
+    refreshAddTitles();
     renderCatGrid(); renderSubList(); updateSaveState();
   });
 });
+
+// Riporta il form "Aggiungi" allo stato di nuovo inserimento.
+function resetAddForm() {
+  editingId = null;
+  setType('expense');
+  selCat = null; selSub = null;
+  $('#amountInput').value = '';
+  $('#noteInput').value = '';
+  $('#dateInput').value = todayStr();
+  refreshAddTitles();
+  renderCatGrid(); renderSubList(); updateSaveState();
+}
+
+// Apre il movimento in modifica nella schermata Aggiungi.
+function startEdit(e) {
+  editingId = e.id;
+  setType(isIncome(e) ? 'income' : 'expense');
+  selCat = e.cat;
+  selSub = isIncome(e) ? null : e.sub;
+  $('#amountInput').value = String(e.amount).replace('.', ',');
+  $('#noteInput').value = e.note || '';
+  $('#dateInput').value = e.date;
+  showView('add');
+  refreshAddTitles();
+  renderCatGrid(); renderSubList(); updateSaveState();
+}
 
 function renderCatGrid() {
   const grid = $('#catGrid');
@@ -86,7 +129,7 @@ $('#amountInput').addEventListener('input', updateSaveState);
 $('#saveBtn').addEventListener('click', async () => {
   const amount = parseAmount($('#amountInput').value);
   const income = selType === 'income';
-  await DB.addExpense({
+  const record = {
     date: $('#dateInput').value || todayStr(),
     amount,
     type: selType,
@@ -94,7 +137,16 @@ $('#saveBtn').addEventListener('click', async () => {
     sub: income ? incomeCatById(selCat).name : selSub,
     note: $('#noteInput').value.trim(),
     ts: Date.now(),
-  });
+  };
+  buzz();
+  if (editingId !== null) {
+    await DB.putExpense({ ...record, id: editingId });
+    toast('Movimento aggiornato');
+    resetAddForm();
+    showView('list');
+    return;
+  }
+  await DB.addExpense(record);
   toast(`${income ? 'Entrata' : 'Salvato'}: ${fmt(amount)} — ${income ? incomeCatById(selCat).name : selSub}`);
   $('#amountInput').value = '';
   $('#noteInput').value = '';
@@ -104,12 +156,37 @@ $('#saveBtn').addEventListener('click', async () => {
   updateSaveState();
 });
 
+$('#deleteBtn').addEventListener('click', async () => {
+  if (editingId === null) return;
+  if (confirm('Eliminare questo movimento?')) {
+    await DB.deleteExpense(editingId);
+    toast('Movimento eliminato');
+    resetAddForm();
+    showView('list');
+  }
+});
+
 /* ---------- Movimenti ---------- */
+$('#searchInput').addEventListener('input', () => renderList());
+
+// Match semplice: sottocategoria, categoria, nota o importo contengono la query.
+function matchesQuery(e, q) {
+  if (!q) return true;
+  const c = isIncome(e) ? incomeCatById(e.cat) : catById(e.cat);
+  // includo l'importo sia "grezzo" (18,9) sia a 2 decimali (18,90) per cercare in entrambi i modi
+  const amt = `${String(e.amount).replace('.', ',')} ${e.amount.toFixed(2).replace('.', ',')}`;
+  const hay = `${e.sub} ${c.name} ${e.note || ''} ${amt}`.toLowerCase();
+  return hay.includes(q);
+}
+
 async function renderList() {
-  const all = (await DB.allExpenses()).sort((a, b) => b.date.localeCompare(a.date) || b.ts - a.ts);
+  const q = ($('#searchInput').value || '').trim().toLowerCase();
+  const all = (await DB.allExpenses())
+    .filter(e => matchesQuery(e, q))
+    .sort((a, b) => b.date.localeCompare(a.date) || b.ts - a.ts);
   const wrap = $('#expList');
   wrap.innerHTML = '';
-  if (!all.length) { wrap.innerHTML = '<div class="empty">Nessuna spesa registrata.</div>'; return; }
+  if (!all.length) { wrap.innerHTML = `<div class="empty">${q ? 'Nessun movimento trovato.' : 'Nessuna spesa registrata.'}</div>`; return; }
   let curDay = null;
   const recent = all.slice(0, 300);
   const dayTotals = {}; // netto del giorno: entrate − uscite
@@ -131,13 +208,7 @@ async function renderList() {
     item.innerHTML = `<span class="ico">${c.icon}</span>
       <div class="info"><div class="cat">${esc(e.sub)}</div><div class="note">${esc(c.name)}${e.note ? ' · ' + esc(e.note) : ''}</div></div>
       <span class="amt">${income ? '+' : ''}${fmt(e.amount)}</span>`;
-    item.addEventListener('click', async () => {
-      if (confirm(`Eliminare ${fmt(e.amount)} — ${e.sub}?`)) {
-        await DB.deleteExpense(e.id);
-        renderList();
-        toast('Eliminata');
-      }
-    });
+    item.addEventListener('click', () => startEdit(e)); // tap = modifica (elimina dentro il form)
     wrap.appendChild(item);
   });
 }
@@ -478,6 +549,7 @@ async function exportData(format) {
   if (format === 'json') {
     blob = new Blob([JSON.stringify({ version: 1, exported: new Date().toISOString(), expenses, budgets, recurring }, null, 2)], { type: 'application/json' });
     filename = `spese-backup-${todayStr()}.json`;
+    await DB.setMeta('lastExportAt', new Date().toISOString()); // per il promemoria backup
   } else {
     const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
     const rows = [['data', 'tipo', 'importo', 'categoria', 'sottocategoria', 'nota']];
@@ -589,7 +661,9 @@ async function renderDrive() {
   ]);
   autoToggle.checked = auto !== false;
   const lastTxt = last ? new Date(last).toLocaleString('it-IT') : 'mai';
-  status.innerHTML = `${granted ? '✅ <b>Collegato a Drive</b>' : '⚪ Non collegato'}<br><span class="muted">Ultimo backup: ${esc(lastTxt)}</span>`;
+  const overdue = await backupIsOverdue();
+  status.innerHTML = `${granted ? '✅ <b>Collegato a Drive</b>' : '⚪ Non collegato'}<br><span class="muted">Ultimo backup: ${esc(lastTxt)}</span>`
+    + (overdue ? '<br><span class="warn-text">⚠️ Nessun backup da oltre 30 giorni</span>' : '');
   connectBtn.textContent = granted ? 'Disconnetti' : 'Connetti Google Drive';
   backupBtn.disabled = false;
 }
@@ -675,6 +749,28 @@ async function migrateData() {
   if (n) toast(`Categorie aggiornate: ${n} movimenti rimappati`);
 }
 
+/* ---------- Promemoria backup ---------- */
+// Ultimo salvataggio = più recente tra export JSON e backup su Drive.
+async function lastBackupTime() {
+  const [exp, drv] = await Promise.all([DB.getMeta('lastExportAt'), DB.getMeta('lastBackupAt')]);
+  const t = [exp, drv].filter(Boolean).map(s => new Date(s).getTime());
+  return t.length ? Math.max(...t) : null;
+}
+async function backupIsOverdue() {
+  const n = (await DB.allExpenses()).length;
+  if (!n) return false; // niente dati, niente da proteggere
+  const last = await lastBackupTime();
+  return !last || (Date.now() - last) > 30 * 864e5; // mai, oppure > 30 giorni
+}
+// Promemoria non invadente: al massimo una volta al giorno.
+async function maybeBackupReminder() {
+  if (!(await backupIsOverdue())) return;
+  const today = todayStr();
+  if ((await DB.getMeta('lastBackupReminder')) === today) return;
+  await DB.setMeta('lastBackupReminder', today);
+  toast('⚠️ Nessun backup da oltre 30 giorni — vai in Altro per salvarlo');
+}
+
 /* ---------- Avvio ---------- */
 (async function init() {
   $('#dateInput').value = todayStr();
@@ -688,4 +784,5 @@ async function migrateData() {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   }
   Drive.maybeAutoBackup(); // backup mensile "all'apertura" (silenzioso se già collegato)
+  setTimeout(maybeBackupReminder, 4000); // dopo l'eventuale toast delle ricorrenti
 })();

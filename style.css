@@ -26,23 +26,28 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { height: 100%; }
 body {
-  min-height: 100%;
+  height: 100%; overflow: hidden;
+  display: flex; flex-direction: column;
   font-family: 'Manrope', system-ui, sans-serif;
   background: var(--bg); color: var(--text);
   -webkit-tap-highlight-color: transparent;
 }
+/* Unico contenitore scrollabile: così la tab bar resta ferma anche durante
+   l'overscroll/rimbalzo su iOS (prima, con body scrollabile, si staccava). */
+.app-scroll { flex: 1 1 auto; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain; }
 .page-title { font: 800 20px/1.1 'Manrope', sans-serif; letter-spacing: -.01em; margin: 4px 0 18px; }
 h2 { font: 700 11px/1 'Manrope', sans-serif; letter-spacing: .02em; text-transform: uppercase; color: var(--muted); margin: 22px 0 10px; }
 /* Spazio in fondo su ogni schermata per liberare la tab bar fissa (64px) più la
    safe-area del dispositivo: va messo sul contenuto scrollabile, non sul body. */
-.view { display: none; padding: 18px 20px calc(88px + env(safe-area-inset-bottom)); max-width: 640px; margin: 0 auto; }
+.view { display: none; padding: 18px 20px 28px; max-width: 640px; margin: 0 auto; }
 .view.active { display: block; }
-#view-add { background: var(--surface); min-height: 100vh; }
+#view-add { background: var(--surface); min-height: 100%; }
 .card { background: var(--surface); border-radius: var(--radius-lg); padding: 16px 18px; margin-bottom: 12px; }
 
 /* Tab bar */
 nav {
-  position: fixed; bottom: 0; left: 0; right: 0; height: 64px;
+  flex: 0 0 auto; height: 64px;
   background: var(--surface); display: flex; box-shadow: 0 -1px 0 var(--divider);
   z-index: 10; padding-bottom: env(safe-area-inset-bottom);
 }
@@ -253,3 +258,85 @@ select { appearance: none; }
 #driveAutoToggle { width: 20px; height: 20px; accent-color: var(--accent); }
 #driveClientIdRow { margin-bottom: 6px; }
 #driveClientIdInput { margin-bottom: 8px; font-size: 12px; }
+
+/* ---------- Cruscotto annuale (mockup 3a) ---------- */
+:root { --heat0: #eef7f0; }
+.dash-year { margin-top: 24px; display: flex; flex-direction: column; gap: 18px; }
+.dash-sub { font: 500 11.5px/1.3 'Manrope', sans-serif; color: var(--muted); margin-bottom: -6px; }
+#dashKpi { display: flex; flex-direction: column; }
+.mk-lbl { font: 700 10.5px/1 'Manrope', sans-serif; color: var(--muted);
+  letter-spacing: .04em; text-transform: uppercase; margin: 18px 2px 8px; }
+.mk-lbl:first-child { margin-top: 0; }
+
+/* hero cash flow */
+.mk-hero { background: #0f3d2b; border-radius: 18px; padding: 15px 16px; color: #fff;
+  display: flex; flex-direction: column; gap: 13px; }
+.mk-hero-row { display: flex; gap: 12px; }
+.mk-hero-row > div { flex: 1; }
+.mk-hero-row > .mk-h-div { flex: 0 0 1px; background: rgba(255,255,255,.15); }
+.mk-hero-row.bottom { align-items: flex-end; justify-content: space-between; }
+.mk-hero-row.bottom > div { flex: none; }
+.mk-hero-row.bottom .right { text-align: right; }
+.mk-h-lbl { font: 600 10px/1 'Manrope', sans-serif; }
+.mk-h-lbl.in { color: #8fd3b3; } .mk-h-lbl.out { color: #f2b8a0; }
+.mk-h-val { font: 800 18px/1.1 'Manrope', sans-serif; font-variant-numeric: tabular-nums; margin-top: 4px; }
+.mk-h-hr { height: 1px; background: rgba(255,255,255,.12); }
+.mk-h-big { font: 800 22px/1 'Manrope', sans-serif; font-variant-numeric: tabular-nums; margin-top: 4px; }
+
+/* card metriche */
+.mk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.mk-card { background: var(--surface); border-radius: 14px; padding: 12px 13px; }
+.mk-clbl { font: 600 10px/1.1 'Manrope', sans-serif; color: var(--muted); }
+.mk-cval { font: 800 17px/1.1 'Manrope', sans-serif; font-variant-numeric: tabular-nums;
+  margin-top: 5px; color: var(--text); }
+.mk-cval.pos { color: var(--accent); } .mk-cval.neg { color: var(--danger); }
+.mk-cat1 { display: flex; align-items: baseline; gap: 6px; margin-top: 5px; }
+.mk-cat1 .name { font: 800 16px/1.1 'Manrope', sans-serif; }
+.mk-cat1 .amt { font: 600 11px/1 'Manrope', sans-serif; color: var(--accent); font-variant-numeric: tabular-nums; }
+
+/* tabelle con scroll orizzontale */
+.dash-lbl-row { display: flex; align-items: center; justify-content: space-between; margin: 0 2px 8px; }
+.dash-lbl { font: 700 10.5px/1 'Manrope', sans-serif; color: var(--muted);
+  letter-spacing: .04em; text-transform: uppercase; }
+.dash-hint { font: 600 9.5px/1 'Manrope', sans-serif; color: var(--faint); }
+.dash-tblcard { background: var(--surface); border-radius: 16px; overflow: hidden; }
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.data-table { border-collapse: collapse; font-variant-numeric: tabular-nums;
+  white-space: nowrap; width: 100%; }
+.data-table th { background: #0f3d2b; color: #fff; font: 700 8px/1 'Manrope', sans-serif;
+  letter-spacing: .02em; padding: 9px 11px; text-align: right; position: sticky; top: 0; }
+.data-table th.sticky-col { text-align: left; left: 0; z-index: 3; background: #0f3d2b; }
+.data-table td { padding: 9px 11px; text-align: right; }
+.data-table tbody tr { border-bottom: 1px solid var(--divider); }
+.data-table tbody tr:last-child { border-bottom: none; }
+.data-table .sticky-col { position: sticky; left: 0; z-index: 1; text-align: left;
+  font-weight: 700; background: var(--surface); }
+#tblMonthly tbody td { font: 600 9px/1 'Manrope', sans-serif; }
+#tblCatMonth tbody td { font: 600 8.5px/1 'Manrope', sans-serif; }
+#tblMonthly tbody tr:nth-child(even),
+#tblMonthly tbody tr:nth-child(even) .sticky-col { background: #fafbfa; }
+.data-table td.pos { color: var(--accent); } .data-table td.neg { color: var(--danger); }
+.data-table td.faint { color: var(--faint); }
+.data-table td.tot { font-weight: 800; }
+.data-table .in-prog { font-weight: 600; color: var(--faint); }
+.data-table .cat-cell { font-weight: 700; padding-left: 9px; }
+.heatmap td.heat { color: #2a1c0a; }
+/* righe categoria espandibili + sottocategorie */
+.data-table .cat-row { cursor: pointer; }
+.data-table .cat-row .caret { display: inline-block; margin-right: 5px; color: var(--faint);
+  font-size: 8px; transition: transform .15s; }
+.data-table .cat-row.open .caret { transform: rotate(90deg); }
+.data-table tr.hidden { display: none; }
+.data-table .sub-row td { font-weight: 500; }
+.data-table .sub-row .sub-cell { padding-left: 22px; color: var(--muted); font-weight: 500; }
+.heatmap td.subc { color: #6a5636; }
+@media (prefers-color-scheme: dark) { .heatmap td.subc { color: #4a3a20; } }
+.data-table tfoot td, .data-table tfoot .sticky-col {
+  background: #eef3f0; color: #0f3d2b; font-weight: 800; }
+
+@media (prefers-color-scheme: dark) {
+  :root { --heat0: #17271e; }
+  #tblMonthly tbody tr:nth-child(even),
+  #tblMonthly tbody tr:nth-child(even) .sticky-col { background: var(--card); }
+  .data-table tfoot td, .data-table tfoot .sticky-col { background: #123026; color: #8fd3b3; }
+}

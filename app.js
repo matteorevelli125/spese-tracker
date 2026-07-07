@@ -29,6 +29,8 @@ function showView(name) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b.dataset.view === name));
   $(`#view-${name}`).classList.add('active');
+  const scroller = document.querySelector('.app-scroll');
+  if (scroller) scroller.scrollTop = 0;
   if (name === 'list') renderList();
   if (name === 'stats') renderStats();
   if (name === 'budget') renderBudget();
@@ -317,6 +319,7 @@ async function renderStats() {
   renderCatBars(cur);
   renderTrend(type, r, cur);
   renderCumulative();
+  renderYearDashboard();
 }
 
 function renderFilterChips() {
@@ -444,6 +447,210 @@ async function renderCumulative() {
       ${xlabels}
     </svg>`;
 }
+
+/* ---------- Cruscotto annuale (in coda alle statistiche) ----------
+ * Metriche YTD sull'anno corrente + tabelle Riepilogo mensile e Categoria×Mese.
+ * Costi fissi = ricorrenti: casa (affitto/mutuo, bollette, condominio),
+ * auto (finanziamento, assicurazione, bollo) e tutti gli abbonamenti.
+ */
+const FIXED_SUBS = {
+  casa: ['Affitto / Mutuo', 'Bollette', 'Condominio'],
+  auto: ['Finanziamento', 'Assicurazione', 'Bollo'],
+};
+const isFixed = e => !isIncome(e) && (e.cat === 'abbonamenti' || (FIXED_SUBS[e.cat] || []).includes(e.sub));
+const EATOUT_SUBS = ['Ristorante', 'Bar e caffè', 'Take away'];
+const fmt0 = n => Math.round(n).toLocaleString('it-IT', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+const pctFmt = n => (n * 100).toLocaleString('it-IT', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + '%';
+const n0 = n => Math.round(n).toLocaleString('it-IT');                    // "3.052" (senza €)
+const sgn0 = n => (n >= 0 ? '+' : '−') + Math.round(Math.abs(n)).toLocaleString('it-IT'); // "+23" / "−308"
+const MESI = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
+const MESI_ABBR = ['Gen', 'Feb', 'Mar', 'Apr', 'Mag', 'Giu', 'Lug', 'Ago', 'Set', 'Ott', 'Nov', 'Dic'];
+
+async function renderYearDashboard() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const curMonth = now.getMonth(); // 0-based; mesi < curMonth (stesso anno) = completi
+  $('#dashYear').textContent = year;
+
+  const all = (await DB.allExpenses()).filter(e => e.date.slice(0, 4) === String(year));
+  const exp = all.filter(e => !isIncome(e));
+  const inc = all.filter(isIncome);
+
+  // Aggregati per mese (0..11)
+  const M = Array.from({ length: 12 }, () => ({ inc: 0, exp: 0, fixed: 0, n: 0 }));
+  all.forEach(e => {
+    const m = +e.date.slice(5, 7) - 1;
+    M[m].n++;
+    if (isIncome(e)) M[m].inc += e.amount;
+    else { M[m].exp += e.amount; if (isFixed(e)) M[m].fixed += e.amount; }
+  });
+  const isComplete = m => year < now.getFullYear() || m < curMonth;
+  const completeMonths = M.map((_, m) => m).filter(m => isComplete(m) && (M[m].inc || M[m].exp));
+  const nComplete = completeMonths.length || 1;
+
+  const totInc = inc.reduce((a, e) => a + e.amount, 0);
+  const totExp = exp.reduce((a, e) => a + e.amount, 0);
+  const totFixed = exp.filter(isFixed).reduce((a, e) => a + e.amount, 0);
+  const saldo = totInc - totExp;
+  const savRate = totInc ? saldo / totInc : 0;
+
+  // Medie sui mesi completi
+  const sumComplete = sel => completeMonths.reduce((a, m) => a + sel(M[m]), 0);
+  const incAvg = sumComplete(x => x.inc) / nComplete;
+  const expAvg = sumComplete(x => x.exp) / nComplete;
+  const fixedAvg = sumComplete(x => x.fixed) / nComplete;
+  const saldoAvg = incAvg - expAvg;
+  const perMov = exp.length ? totExp / exp.length : 0;
+
+  // Totali per categoria (uscite)
+  const byCat = {};
+  exp.forEach(e => { byCat[e.cat] = (byCat[e.cat] || 0) + e.amount; });
+  const catRank = Object.entries(byCat).sort((a, b) => b[1] - a[1]);
+  const top = catRank[0] || ['—', 0];
+  const casaAuto = (byCat.casa || 0) + (byCat.auto || 0);
+  const buoni = inc.filter(e => e.cat === 'buoni-pasto').reduce((a, e) => a + e.amount, 0);
+  const totCibo = byCat.cibo || 0;
+  const eatOut = exp.filter(e => e.cat === 'cibo' && EATOUT_SUBS.includes(e.sub)).reduce((a, e) => a + e.amount, 0);
+  // Burn rate: uscite YTD / giorni trascorsi dal 1° gennaio all'ultima spesa
+  const lastDate = exp.reduce((mx, e) => e.date > mx ? e.date : mx, `${year}-01-01`);
+  const days = Math.round((new Date(lastDate) - new Date(`${year}-01-01`)) / 864e5) + 1;
+  const burn = days ? totExp / days : 0;
+
+  // Mesi da mostrare nelle tabelle: da gennaio al mese corrente (anni passati: tutti)
+  const showMonths = M.map((_, m) => m).filter(m => year < now.getFullYear() || m <= curMonth);
+
+  // ----- KPI: hero cash-flow + 3 gruppi di card -----
+  const card = (lbl, val, extra = '') => `<div class="mk-card"><div class="mk-clbl">${esc(lbl)}</div>${val}${extra}</div>`;
+  const bigv = (v, cls = '') => `<div class="mk-cval ${cls}">${esc(v)}</div>`;
+  $('#dashKpi').innerHTML = `
+    <div class="mk-lbl">Sintesi · cash flow YTD</div>
+    <div class="mk-hero">
+      <div class="mk-hero-row">
+        <div><div class="mk-h-lbl in">Entrate</div><div class="mk-h-val">${esc(fmt0(totInc))}</div></div>
+        <div class="mk-h-div"></div>
+        <div><div class="mk-h-lbl out">Uscite</div><div class="mk-h-val">${esc(fmt0(totExp))}</div></div>
+      </div>
+      <div class="mk-h-hr"></div>
+      <div class="mk-hero-row bottom">
+        <div><div class="mk-h-lbl in">Saldo netto</div><div class="mk-h-big">${esc(sgn0(saldo))} €</div></div>
+        <div class="right"><div class="mk-h-lbl in">Tasso di risparmio</div><div class="mk-h-big">${esc(pctFmt(savRate))}</div></div>
+      </div>
+    </div>
+
+    <div class="mk-lbl">Medie mensili · mesi completi</div>
+    <div class="mk-grid">
+      ${card('Entrata media', bigv(fmt0(incAvg)))}
+      ${card('Uscita media', bigv(fmt0(expAvg)))}
+      ${card('Ricorrente / mese', bigv(fmt0(fixedAvg)))}
+      ${card('Spesa media / mov.', bigv(fmt(perMov)))}
+    </div>
+
+    <div class="mk-lbl">Composizione della spesa</div>
+    <div class="mk-grid">
+      ${card('Categoria #1', `<div class="mk-cat1"><span class="name">${esc(catName(top[0]))}</span><span class="amt">${esc(fmt0(top[1]))}</span></div>`)}
+      ${card('% costi fissi', bigv(pctFmt(totExp ? totFixed / totExp : 0)))}
+      ${card('Casa + Auto / reddito', bigv(pctFmt(totInc ? casaAuto / totInc : 0)))}
+      ${card('Copertura buoni pasto', bigv(pctFmt(totCibo ? buoni / totCibo : 0)))}
+    </div>
+
+    <div class="mk-lbl">Abitudini &amp; proiezioni</div>
+    <div class="mk-grid">
+      ${card('Cibo fuori casa', bigv(fmt0(eatOut)))}
+      ${card('Burn rate / giorno', bigv(fmt(burn)))}
+      ${card('Proiez. uscite / anno', bigv(fmt0(expAvg * 12)))}
+      ${card('Proiez. risparmio / anno', bigv(sgn0(saldoAvg * 12) + ' €', saldoAvg >= 0 ? 'pos' : 'neg'))}
+    </div>`;
+
+  // ----- Tabella riepilogo mensile -----
+  let run = 0;
+  const rowsM = M.map((x, m) => {
+    run += x.inc - x.exp;
+    const inProg = m === curMonth && year === now.getFullYear();
+    return { m, ...x, saldo: x.inc - x.exp, sav: x.inc ? (x.inc - x.exp) / x.inc : null, cum: run, varc: x.exp - x.fixed, inProg };
+  });
+  const monthly = `
+    <thead><tr>
+      <th class="sticky-col">Mese</th><th>Entrate</th><th>Uscite</th><th>Saldo</th>
+      <th>Risp.%</th><th>Costi fissi</th><th>Costi var.</th><th>Cumulato</th><th>N.mov</th>
+    </tr></thead>
+    <tbody>${showMonths.map(m => { const r = rowsM[m]; return `
+      <tr>
+        <td class="sticky-col">${MESI[r.m]}${r.inProg ? ' <span class="in-prog">·in corso</span>' : ''}</td>
+        <td class="num${r.inc ? '' : ' faint'}">${n0(r.inc)}</td>
+        <td class="num">${n0(r.exp)}</td>
+        <td class="num ${r.saldo >= 0 ? 'pos' : 'neg'}">${sgn0(r.saldo)}</td>
+        <td class="num">${r.sav != null ? pctFmt(r.sav) : '—'}</td>
+        <td class="num">${n0(r.fixed)}</td><td class="num">${n0(r.varc)}</td>
+        <td class="num">${n0(r.cum)}</td>
+        <td class="num faint">${r.n || 0}</td>
+      </tr>`; }).join('')}</tbody>
+    <tfoot><tr>
+      <td class="sticky-col">TOTALE</td>
+      <td class="num">${n0(totInc)}</td><td class="num">${n0(totExp)}</td>
+      <td class="num">${sgn0(saldo)}</td><td class="num">${pctFmt(savRate)}</td>
+      <td class="num">${n0(totFixed)}</td><td class="num">${n0(totExp - totFixed)}</td>
+      <td class="num">${n0(saldo)}</td><td class="num">${all.length}</td>
+    </tr></tfoot>`;
+  $('#tblMonthly').innerHTML = monthly;
+
+  // ----- Tabella categoria × mese (heatmap) -----
+  // Aggregati per categoria e (categoria → sottocategoria) per mese.
+  const catByMonth = {};
+  const subByMonth = {}; // catId -> { sub -> [12] }
+  catRank.forEach(([id]) => { catByMonth[id] = Array(12).fill(0); subByMonth[id] = {}; });
+  exp.forEach(e => {
+    const m = +e.date.slice(5, 7) - 1;
+    catByMonth[e.cat][m] += e.amount;
+    const s = e.sub || 'Altro';
+    (subByMonth[e.cat][s] || (subByMonth[e.cat][s] = Array(12).fill(0)))[m] += e.amount;
+  });
+  const cells = catRank.flatMap(([id]) => showMonths.map(m => catByMonth[id][m]));
+  const maxCell = Math.max(1, ...cells);
+  const heat = v => {
+    if (!v) return ' style="background:var(--heat0)"';
+    const t = Math.min(1, v / maxCell);
+    // interpola arancio chiaro (251,228,201) → arancio pieno (226,103,58)
+    const c = (a, b) => Math.round(a + (b - a) * t);
+    return ` style="background:rgb(${c(251, 226)},${c(228, 103)},${c(201, 58)})"`;
+  };
+  const rowCells = (arr, tot, extraCls = '') => `${showMonths.map(m => `<td class="num heat ${extraCls}"${heat(arr[m])}>${n0(arr[m])}</td>`).join('')}<td class="num tot ${extraCls}">${n0(tot)}</td><td class="num faint ${extraCls}">${pctFmt(totExp ? tot / totExp : 0)}</td>`;
+  const catMonth = `
+    <thead><tr>
+      <th class="sticky-col">Categoria</th>
+      ${showMonths.map(m => `<th>${MESI_ABBR[m]}</th>`).join('')}
+      <th>Totale</th><th>%</th>
+    </tr></thead>
+    <tbody>${catRank.map(([id, tot]) => {
+      const c = catById(id);
+      const subs = Object.entries(subByMonth[id])
+        .map(([s, a]) => [s, a, a.reduce((x, y) => x + y, 0)])
+        .sort((x, y) => y[2] - x[2]);
+      const catRow = `<tr class="cat-row" data-cat="${id}">
+        <td class="sticky-col cat-cell" style="border-left:3px solid ${c.color}"><span class="caret">▸</span>${esc(c.name)}</td>
+        ${rowCells(catByMonth[id], tot)}
+      </tr>`;
+      const subRows = subs.map(([s, arr, stot]) => `<tr class="sub-row sub-${id} hidden">
+        <td class="sticky-col sub-cell">${esc(s)}</td>
+        ${rowCells(arr, stot, 'subc')}
+      </tr>`).join('');
+      return catRow + subRows;
+    }).join('')}</tbody>
+    <tfoot><tr>
+      <td class="sticky-col">TOTALE</td>
+      ${showMonths.map(m => `<td class="num">${n0(M[m].exp)}</td>`).join('')}
+      <td class="num">${n0(totExp)}</td><td class="num">100%</td>
+    </tr></tfoot>`;
+  const tbl = $('#tblCatMonth');
+  tbl.innerHTML = catMonth;
+  // Espansione sottocategorie al click sulla riga di categoria.
+  tbl.querySelectorAll('.cat-row').forEach(row => {
+    row.addEventListener('click', () => {
+      row.classList.toggle('open');
+      tbl.querySelectorAll('.sub-' + row.dataset.cat).forEach(sr => sr.classList.toggle('hidden'));
+    });
+  });
+}
+const catName = id => (catById(id) || {}).name || id;
 
 /* ---------- Budget ---------- */
 async function renderBudget() {

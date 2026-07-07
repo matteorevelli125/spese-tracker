@@ -26,6 +26,7 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+<main class="app-scroll">
 
 <!-- INSERIMENTO -->
 <section id="view-add" class="view active">
@@ -89,6 +90,22 @@
     <h2 style="margin-top:0">Saldo cumulato</h2>
     <div id="cumulativeChart"></div>
     <div class="chart-note">Accumulato da quando registri — non è il patrimonio.</div>
+  </div>
+
+  <!-- Cruscotto annuale (in coda): KPI raggruppati + tabelle con scroll orizzontale -->
+  <div class="dash-year">
+    <div class="dash-sub">Anno <span id="dashYear"></span> · calcolo automatico dai Dati</div>
+    <div id="dashKpi"></div>
+
+    <div class="dash-block">
+      <div class="dash-lbl-row"><span class="dash-lbl">Riepilogo mensile</span><span class="dash-hint">scorri →</span></div>
+      <div class="dash-tblcard"><div class="table-scroll"><table class="data-table" id="tblMonthly"></table></div></div>
+    </div>
+
+    <div class="dash-block">
+      <div class="dash-lbl-row"><span class="dash-lbl">Uscite per categoria / mese</span><span class="dash-hint">scorri →</span></div>
+      <div class="dash-tblcard"><div class="table-scroll"><table class="data-table heatmap" id="tblCatMonth"></table></div></div>
+    </div>
   </div>
 </section>
 
@@ -164,6 +181,8 @@
     </div>
   </div>
 </section>
+
+</main>
 
 <nav>
   <button data-view="add" class="active">

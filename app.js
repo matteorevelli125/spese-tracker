@@ -320,6 +320,7 @@ async function renderStats() {
   renderTrend(type, r, cur);
   renderCumulative();
   renderYearDashboard();
+  renderInsights();
 }
 
 function renderFilterChips() {
@@ -652,6 +653,104 @@ async function renderYearDashboard() {
 }
 const catName = id => (catById(id) || {}).name || id;
 
+/* ---------- Insight automatici (mese corrente) ----------
+ * Regole client-side sui dati locali: budget a rischio, categorie fuori ritmo
+ * (solo spese variabili: i costi fissi a inizio mese falserebbero il ritmo),
+ * proiezione di fine mese e rinforzo positivo. Massimo 3 card.
+ */
+async function renderInsights() {
+  const wrap = $('#insightWrap');
+  const now = new Date();
+  const year = now.getFullYear(), month = now.getMonth();
+  const day = now.getDate(), dim = new Date(year, month + 1, 0).getDate();
+  const progress = day / dim;
+  const monthLabel = now.toLocaleDateString('it-IT', { month: 'long' });
+
+  const [all, budgets] = await Promise.all([DB.allExpenses(), DB.allBudgets()]);
+  const yr = all.filter(e => e.date.slice(0, 4) === String(year));
+  const expM = Array(12).fill(0), incM = Array(12).fill(0);
+  yr.forEach(e => {
+    const m = +e.date.slice(5, 7) - 1;
+    if (isIncome(e)) incM[m] += e.amount; else expM[m] += e.amount;
+  });
+  const complete = expM.map((_, m) => m).filter(m => m < month && (expM[m] || incM[m]));
+  const nC = complete.length;
+  const expAvg = nC ? complete.reduce((a, m) => a + expM[m], 0) / nC : 0;
+  const curExp = expM[month];
+
+  // Spesa del mese corrente per categoria (tutta, per i budget) e solo variabile
+  // con relativa media mensile (per l'anomalia di ritmo).
+  const curBy = {}, curVarBy = {}, avgVarBy = {};
+  yr.filter(e => !isIncome(e)).forEach(e => {
+    const m = +e.date.slice(5, 7) - 1;
+    if (m === month) {
+      curBy[e.cat] = (curBy[e.cat] || 0) + e.amount;
+      if (!isFixed(e)) curVarBy[e.cat] = (curVarBy[e.cat] || 0) + e.amount;
+    } else if (complete.includes(m) && !isFixed(e)) {
+      avgVarBy[e.cat] = (avgVarBy[e.cat] || 0) + e.amount / nC;
+    }
+  });
+
+  const out = []; // { icon, tone: pos|warn|neg, text }
+
+  // 1) Budget sforato o troppo avanti rispetto al giorno del mese
+  const ranked = budgets
+    .map(b => ({ b, spent: curBy[b.cat] || 0, pct: (curBy[b.cat] || 0) / b.amount }))
+    .sort((a, b) => b.pct - a.pct);
+  for (const { b, spent, pct } of ranked) {
+    const c = catById(b.cat);
+    if (pct >= 1) {
+      out.push({ icon: '🚨', tone: 'neg', text: `Budget <b>${esc(c.name)}</b> sforato: ${fmt0(spent)} su ${fmt0(b.amount)}` });
+      break;
+    }
+    if (day >= 5 && pct > progress + 0.15) {
+      out.push({ icon: '⚠️', tone: 'warn', text: `Budget <b>${esc(c.name)}</b> già al ${(pct * 100).toFixed(0)}% al giorno ${day}` });
+      break;
+    }
+  }
+
+  // 2) Categoria con ritmo di spesa variabile ben sopra la media
+  if (nC && day >= 8) {
+    let worst = null;
+    for (const [cat, cur] of Object.entries(curVarBy)) {
+      const avg = avgVarBy[cat] || 0;
+      if (avg < 40 || cur < 50) continue; // troppo piccole: rumore
+      const pace = cur / progress;
+      if (pace >= avg * 1.4 && (!worst || pace / avg > worst.r)) worst = { cat, cur, avg, r: pace / avg };
+    }
+    if (worst) {
+      const c = catById(worst.cat);
+      out.push({ icon: '📈', tone: 'warn', text: `<b>${esc(c.name)}</b>: già ${fmt0(worst.cur)} a ${monthLabel} — ritmo +${Math.round((worst.r - 1) * 100)}% sulla tua media (${fmt0(worst.avg)}/mese, esclusi i fissi)` });
+    }
+  }
+
+  // 3) Proiezione di fine mese
+  if (day >= 5 && curExp > 0) {
+    const proj = curExp / progress;
+    let tone = 'pos', judge = '';
+    if (nC) {
+      if (proj > expAvg * 1.15) { tone = 'neg'; judge = ` — sopra la tua media di ${fmt0(expAvg)}`; }
+      else if (proj < expAvg * 0.85) { judge = ` — sotto la tua media di ${fmt0(expAvg)}`; }
+      else { judge = ` — in linea con la tua media (${fmt0(expAvg)})`; }
+    }
+    out.push({ icon: '🔮', tone, text: `Proiezione ${monthLabel}: ~${fmt0(proj)} di uscite${judge}` });
+  }
+
+  // 4) Rinforzo positivo: risparmio dell'ultimo mese completo
+  if (out.length < 3 && nC) {
+    const lm = complete[complete.length - 1];
+    const sv = incM[lm] - expM[lm];
+    if (incM[lm] > 0 && sv > 0) {
+      out.push({ icon: '✅', tone: 'pos', text: `A ${MESI[lm].toLowerCase()} hai risparmiato ${fmt0(sv)} (${Math.round(sv / incM[lm] * 100)}% delle entrate)` });
+    }
+  }
+
+  wrap.innerHTML = out.length
+    ? `<div class="insight-title">Insight · ${monthLabel}</div>` +
+      out.slice(0, 3).map(i => `<div class="insight-card ${i.tone}"><span class="ii">${i.icon}</span><span>${i.text}</span></div>`).join('')
+    : '';
+}
+
 /* ---------- Budget ---------- */
 async function renderBudget() {
   const now = new Date();
@@ -705,6 +804,77 @@ async function renderBudget() {
     });
     editor.appendChild(row);
   });
+
+  renderGoal();
+}
+
+/* ---------- Obiettivo di risparmio ----------
+ * Un solo obiettivo (KISS), salvato in meta. Il progresso è il saldo cumulato
+ * (entrate − uscite) di tutto lo storico — lo stesso del grafico in statistiche.
+ * L'ETA usa il risparmio medio degli ultimi 6 mesi completi.
+ */
+async function renderGoal() {
+  const wrap = $('#goalWrap');
+  const [goal, all] = await Promise.all([DB.getMeta('savingsGoal'), DB.allExpenses()]);
+  if (!goal || !goal.amount) {
+    wrap.innerHTML = '<button class="goal-add" id="goalAddBtn">＋ Imposta un obiettivo</button>';
+    $('#goalAddBtn').onclick = () => renderGoalEditor(goal);
+    return;
+  }
+  const saldo = all.reduce((a, e) => a + (isIncome(e) ? e.amount : -e.amount), 0);
+  const now = new Date();
+  const byMonth = {};
+  all.forEach(e => {
+    const m = e.date.slice(0, 7);
+    byMonth[m] = (byMonth[m] || 0) + (isIncome(e) ? e.amount : -e.amount);
+  });
+  const curKey = `${now.getFullYear()}-${pad(now.getMonth() + 1)}`;
+  const past = Object.keys(byMonth).filter(m => m < curKey).sort().slice(-6);
+  const avgSave = past.length ? past.reduce((a, m) => a + byMonth[m], 0) / past.length : 0;
+
+  const pct = Math.max(0, Math.min(100, (saldo / goal.amount) * 100));
+  const done = saldo >= goal.amount;
+  let eta;
+  if (done) eta = '🎉 Obiettivo raggiunto!';
+  else if (avgSave > 0) {
+    const left = Math.ceil((goal.amount - saldo) / avgSave);
+    const d = new Date(now.getFullYear(), now.getMonth() + left, 1);
+    eta = `Al ritmo attuale (~${fmt0(avgSave)}/mese) lo raggiungi a ${d.toLocaleDateString('it-IT', { month: 'long', year: 'numeric' })}`;
+  } else eta = 'Al ritmo attuale non lo raggiungi: serve un risparmio mensile positivo';
+
+  wrap.innerHTML = `
+    <div class="goal-card">
+      <div class="head"><span>🎯 ${esc(goal.label || 'Obiettivo')}</span><span class="sp">${fmt0(Math.max(saldo, 0))} / ${fmt0(goal.amount)}</span></div>
+      <div class="track"><div class="fill" style="width:${pct}%"></div></div>
+      <div class="sub">${pct.toFixed(0)}% — ${eta}</div>
+      <button class="btn-danger-link goal-edit" id="goalEditBtn">modifica</button>
+    </div>`;
+  $('#goalEditBtn').onclick = () => renderGoalEditor(goal);
+}
+
+function renderGoalEditor(goal) {
+  const wrap = $('#goalWrap');
+  wrap.innerHTML = `
+    <div class="goal-card">
+      <input type="text" id="goalLabel" placeholder="Nome (es. Fondo emergenze)" value="${esc(goal?.label || '')}">
+      <input type="number" id="goalAmount" inputmode="decimal" min="1" placeholder="Importo obiettivo (€)" value="${goal?.amount || ''}">
+      <div class="goal-btns">
+        <button class="btn-primary" id="goalSaveBtn">Salva</button>
+        ${goal ? '<button class="btn-danger-link" id="goalDelBtn">Rimuovi</button>' : ''}
+        <button class="btn-danger-link" id="goalCancelBtn">Annulla</button>
+      </div>
+      <div class="chart-note">Il progresso è il saldo cumulato (entrate − uscite) da quando registri.</div>
+    </div>`;
+  $('#goalSaveBtn').onclick = async () => {
+    const amount = parseFloat($('#goalAmount').value);
+    if (!(amount > 0)) { toast('Inserisci un importo valido'); return; }
+    await DB.setMeta('savingsGoal', { amount, label: $('#goalLabel').value.trim() });
+    toast('Obiettivo salvato');
+    renderGoal();
+  };
+  const del = $('#goalDelBtn');
+  if (del) del.onclick = async () => { await DB.setMeta('savingsGoal', null); renderGoal(); };
+  $('#goalCancelBtn').onclick = () => renderGoal();
 }
 
 /* ---------- Movimenti ricorrenti (uscite ed entrate) ---------- */
@@ -1039,4 +1209,7 @@ async function maybeBackupReminder() {
   }
   Drive.maybeAutoBackup(); // backup mensile "all'apertura" (silenzioso se già collegato)
   setTimeout(maybeBackupReminder, 4000); // dopo l'eventuale toast delle ricorrenti
+  // Apertura diretta da scorciatoia PWA (long-press sull'icona → Statistiche/Movimenti)
+  const qv = new URLSearchParams(location.search).get('view');
+  if (qv && document.querySelector(`#view-${qv}`)) showView(qv);
 })();

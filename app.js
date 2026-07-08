@@ -424,7 +424,7 @@ async function renderCumulative() {
   let run = 0;
   const pts = months.map(m => { run += byMonth[m]; return { m, v: run }; });
 
-  const W = 300, H = 120, padL = 6, padR = 6, padT = 10, padB = 20;
+  const W = 300, H = 130, padL = 34, padR = 8, padT = 10, padB = 20;
   const vals = pts.map(p => p.v).concat(0);
   const min = Math.min(...vals), max = Math.max(...vals);
   const span = (max - min) || 1;
@@ -438,10 +438,33 @@ async function renderCumulative() {
   const mlabel = m => new Date(m + '-01T12:00').toLocaleDateString('it-IT', { month: 'short', year: '2-digit' });
   const xlabels = lblIdx.map(i => `<text x="${x(i).toFixed(1)}" y="${H - 5}" text-anchor="${i === 0 ? 'start' : i === pts.length - 1 ? 'end' : 'middle'}" class="cum-x">${mlabel(pts[i].m)}</text>`).join('');
 
+  // Asse Y: tick "arrotondati" con gridline orizzontali ed etichette in €.
+  const kfmt = v => {
+    const a = Math.abs(v);
+    if (a >= 1000) return (v / 1000).toLocaleString('it-IT', { maximumFractionDigits: 1 }) + 'k';
+    return Math.round(v).toLocaleString('it-IT');
+  };
+  const niceTicks = (lo, hi, n = 4) => {
+    const raw = (hi - lo) / n || 1;
+    const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+    const norm = raw / mag;
+    const step = (norm < 1.5 ? 1 : norm < 3 ? 2 : norm < 7 ? 5 : 10) * mag;
+    const ticks = [];
+    for (let t = Math.ceil(lo / step) * step; t <= hi + step * 1e-6; t += step) ticks.push(t);
+    return ticks;
+  };
+  const yAxis = niceTicks(min, max).map(t => {
+    const yy = y(t).toFixed(1);
+    const isZero = Math.abs(t) < 1e-6;
+    return `<line x1="${padL}" y1="${yy}" x2="${W - padR}" y2="${yy}" class="cum-grid${isZero ? ' zero' : ''}"/>
+      <text x="${padL - 4}" y="${(y(t) + 2.5).toFixed(1)}" text-anchor="end" class="cum-y">${kfmt(t)}</text>`;
+  }).join('');
+
   wrap.innerHTML = `
     <div class="cum-head">Oggi: <b class="${last >= 0 ? 'pos' : 'neg'}">${last >= 0 ? '+' : ''}${fmt(last)}</b></div>
     <svg viewBox="0 0 ${W} ${H}" class="cum-svg">
-      <line x1="${padL}" y1="${zeroY.toFixed(1)}" x2="${W - padR}" y2="${zeroY.toFixed(1)}" class="cum-zero"/>
+      ${yAxis}
+      <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${(H - padB).toFixed(1)}" class="cum-axis"/>
       <path d="${area}" class="cum-area"/>
       <path d="${line}" class="cum-line"/>
       <circle cx="${x(pts.length - 1).toFixed(1)}" cy="${y(last).toFixed(1)}" r="3" class="cum-dot"/>

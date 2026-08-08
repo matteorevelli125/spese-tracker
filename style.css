@@ -15,6 +15,7 @@
   --radius-md: 14px;
   --radius-sm: 10px;
   --radius-pill: 999px;
+  --ease-pos: cubic-bezier(.22,1,.36,1);
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -77,21 +78,81 @@ nav button.active { color: var(--accent); }
 #amountInput::placeholder { color: var(--faint); }
 .section-label { font: 700 10.5px/1 'Manrope'; letter-spacing: .02em; color: var(--muted); margin: 16px 0 8px; }
 
-.cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
-.cat-btn {
-  border: 1.5px solid transparent; border-radius: var(--radius-md); background: var(--card);
-  padding: 10px 2px; text-align: center; cursor: pointer; font: 600 8.5px/1.1 'Manrope';
-  color: var(--muted); display: flex; flex-direction: column; gap: 4px; align-items: center;
+/* La griglia collassa nella barra della categoria scelta: l'altezza è scritta
+   da app.js (px espliciti) perché `auto` non è animabile. */
+.cat-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; overflow: hidden;
+  transition: grid-template-columns .34s var(--ease-pos), height .34s var(--ease-pos);
 }
-.cat-btn .ico { font-size: 17px; }
+.cat-btn {
+  position: relative; overflow: hidden; height: 66px; padding: 0;
+  border: 1.5px solid transparent; border-radius: var(--radius-md); background: var(--card);
+  text-align: center; cursor: pointer; font: 600 8.5px/1.1 'Manrope'; color: var(--muted);
+  transition: height .32s var(--ease-pos), background-color .3s ease, border-color .3s ease,
+              opacity .2s ease, transform .3s var(--ease-pos);
+}
 .cat-btn.selected { background: var(--accent-soft); border-color: var(--accent); color: var(--text); font-weight: 700; }
+/* Due layer sovrapposti: icona sopra il nome (griglia) ↔ icona accanto al nome (barra) */
+.cat-face, .cat-bar { position: absolute; inset: 0; display: flex; align-items: center; }
+.cat-face { flex-direction: column; justify-content: center; gap: 4px; opacity: 1; transition: opacity .18s ease; }
+/* visibility, non solo opacity: da chiusa la barra (e il suo MODIFICA) esce dal
+   focus e dall'albero di accessibilità. Il ritardo la nasconde a dissolvenza finita. */
+.cat-bar {
+  justify-content: space-between; padding: 0 14px; opacity: 0; visibility: hidden;
+  transition: opacity .22s ease .06s, visibility 0s linear .28s;
+}
+.cat-face .ico { font-size: 17px; }
+.cat-bar .ico { font-size: 18px; }
+.cat-bar .cat-bar-name {
+  display: flex; align-items: center; gap: 10px; min-width: 0; overflow: hidden;
+  white-space: nowrap; font: 800 13.5px/1 'Manrope'; color: var(--text);
+}
+.cat-edit {
+  display: flex; align-items: center; gap: 5px; padding: 6px 0 6px 10px;
+  font: 800 10.5px/1 'Manrope'; letter-spacing: .07em; color: var(--accent); cursor: pointer;
+}
 
-.sub-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+/* Fase 0–260ms: le non scelte svaniscono, la scelta trasla verso la prima cella */
+#catGrid.is-collapsing .cat-btn:not(.selected) { opacity: 0; transform: scale(.84); }
+#catGrid.is-collapsing .cat-btn.selected { transform: translate(var(--dx, 0px), var(--dy, 0px)); z-index: 2; }
+/* Fase 260–400ms: una sola colonna, la cella diventa barra piena */
+#catGrid.is-collapsed { grid-template-columns: 1fr; }
+#catGrid.is-collapsed .cat-btn:not(.selected) { display: none; }
+#catGrid.is-collapsed .cat-btn.selected { height: 52px; transform: none; } /* = CAT_ROW_H in app.js */
+#catGrid.is-collapsed .cat-face { opacity: 0; }
+#catGrid.is-collapsed .cat-bar { opacity: 1; visibility: visible; transition: opacity .22s ease .06s, visibility 0s linear 0s; }
+/* Stato ripristinato da renderCatGrid (modifica movimento, reset): niente animazione */
+#catGrid.no-anim, #catGrid.no-anim * { transition: none !important; }
+
+/* Fase 400–620ms: le sottocategorie salgono di 10px sfalsate di 35ms */
+.sub-wrap {
+  overflow: hidden; height: 0; opacity: 0;
+  transition: height .34s var(--ease-pos), opacity .24s ease;
+}
+.sub-wrap.open { opacity: 1; }
+.sub-wrap.no-anim, .sub-wrap.no-anim * { transition: none !important; }
+.sub-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 2px; }
+.sub-tile {
+  border: none; border-radius: 14px; padding: 13px 10px; text-align: center; cursor: pointer;
+  background: var(--card); color: var(--muted); font: 600 13px/1.1 'Manrope';
+  opacity: 0; transform: translateY(10px);
+  transition: opacity .28s ease, transform .32s var(--ease-pos), background-color .2s ease, color .2s ease;
+}
+.sub-wrap.open .sub-tile { opacity: 1; transform: none; transition-delay: calc(40ms + var(--i, 0) * 35ms); }
+.sub-tile.selected { background: var(--accent); color: #fff; font-weight: 700; }
+
 .chip {
   border: none; border-radius: var(--radius-pill); padding: 6px 11px;
   background: var(--card); color: var(--muted); font: 600 9px/1 'Manrope'; cursor: pointer;
 }
 .chip.selected { background: var(--accent); color: #fff; font-weight: 700; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cat-grid, .cat-btn, .cat-face, .cat-bar, .sub-wrap, .sub-tile { transition-duration: .01ms !important; }
+  .sub-wrap.open .sub-tile { transition-delay: 0ms !important; }
+  #catGrid.is-collapsing .cat-btn:not(.selected) { transform: none; }
+  #catGrid.is-collapsing .cat-btn.selected { transform: none; }
+}
 
 .field-list { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
 .field-row {
@@ -123,7 +184,6 @@ select { appearance: none; }
 
 /* Nuova spesa: testo dei controlli +1px rispetto alla base condivisa */
 #view-add .cat-btn { font-size: 9.5px; }
-#view-add .chip { font-size: 10px; }
 #view-add .field-row { font-size: 13.5px; }
 #view-add .field-row input[type] { font-size: 13.5px; }
 #view-add .btn-primary { font-size: 15px; }

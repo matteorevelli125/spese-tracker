@@ -92,31 +92,157 @@ function startEdit(e) {
   renderCatGrid(); renderSubList(); updateSaveState();
 }
 
+/* Al tap la griglia collassa nella barra della categoria scelta (620 ms in tre
+   battute) e poi entrano le sottocategorie; MODIFICA riapre la griglia.
+   `catPhase` è solo stato di presentazione: la selezione resta in selCat/selSub. */
+const CAT_ROW_H = 52; // altezza della barra a categoria scelta
+let catPhase = 'grid'; // 'grid' | 'collapse' | 'row' | 'sub' | 'closing'
+// Alzato da renderCatGrid e consumato dalla renderSubList che segue: la coppia
+// `renderCatGrid(); renderSubList();` applica lo stato finale senza animazione.
+let catStatic = false;
+let catTimers = [];
+const clearCatTimers = () => { catTimers.forEach(clearTimeout); catTimers = []; };
+const catAfter = (ms, fn) => catTimers.push(setTimeout(fn, ms));
+// Forza un ricalcolo sincrono: fissa il valore di partenza di una transizione.
+// (requestAnimationFrame non basta: in una tab in background non viene chiamato.)
+const reflow = el => el.offsetHeight;
+
+const XMARK = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+
 function renderCatGrid() {
   const grid = $('#catGrid');
+  clearCatTimers();
   grid.innerHTML = '';
   const list = selType === 'income' ? INCOME_CATEGORIES : CATEGORIES;
   list.forEach(c => {
     const b = document.createElement('button');
     b.className = 'cat-btn' + (selCat === c.id ? ' selected' : '');
-    b.innerHTML = `<span class="ico">${c.icon}</span>${c.name}`;
-    b.onclick = () => { selCat = c.id; selSub = null; renderCatGrid(); renderSubList(); updateSaveState(); };
+    // Nome e icona compaiono in entrambi i layer: uno solo va esposto all'accessibilità.
+    b.setAttribute('aria-label', c.name);
+    b.innerHTML =
+      `<span class="cat-face" aria-hidden="true"><span class="ico">${c.icon}</span>${esc(c.name)}</span>` +
+      `<span class="cat-bar"><span class="cat-bar-name" aria-hidden="true"><span class="ico">${c.icon}</span>${esc(c.name)}</span>` +
+      `<span class="cat-edit" role="button" tabindex="0" aria-label="Cambia categoria">MODIFICA ${XMARK}</span></span>`;
+    b.onclick = () => pickCat(c.id, b);
+    const edit = b.querySelector('.cat-edit');
+    edit.onclick = expandCatGrid;
+    edit.onkeydown = ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); expandCatGrid(ev); } };
     grid.appendChild(b);
   });
+  // Ricostruzione (reset, modifica movimento, cambio tipo, avvio): stato finale
+  // già applicato, senza transizioni — la sequenza parte solo dal tap.
+  catPhase = selCat ? 'sub' : 'grid';
+  catStatic = true;
+  grid.classList.add('no-anim');
+  grid.classList.remove('is-collapsing');
+  grid.classList.toggle('is-collapsed', catPhase === 'sub');
+  grid.style.height = catPhase === 'sub' ? CAT_ROW_H + 'px' : '';
+  reflow(grid); // commit dello stato finale prima di riattivare le transizioni
+  grid.classList.remove('no-anim');
 }
+
+function pickCat(id, btn) {
+  if (catPhase !== 'grid') return; // tap ignorati durante la transizione
+  selCat = id; selSub = null;
+  const grid = $('#catGrid');
+  grid.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('selected', b === btn));
+  catPhase = 'collapse';
+  // La tessera scelta scivola verso la prima cella: scarto misurato rispetto alla
+  // griglia (offsetLeft/Top guarderebbero all'antenato posizionato, non a #catGrid).
+  const gr = grid.getBoundingClientRect(), br = btn.getBoundingClientRect();
+  btn.style.setProperty('--dx', Math.round(gr.left - br.left) + 'px');
+  btn.style.setProperty('--dy', Math.round(gr.top - br.top) + 'px');
+  grid.style.height = grid.offsetHeight + 'px'; // valore di partenza: `auto` non è animabile
+  grid.classList.add('is-collapsing');
+  reflow(grid);
+  grid.style.height = CAT_ROW_H + 'px';
+  catAfter(260, () => { catPhase = 'row'; grid.classList.add('is-collapsed'); });
+  catAfter(400, () => { catPhase = 'sub'; setSubWrap(selType === 'expense'); });
+  renderSubList(); // tessere pronte, ancora chiuse: entrano a 400 ms
+  updateSaveState();
+}
+
+// Altezza della griglia aperta, misurata a transizioni spente e poi ripristinata:
+// misurarla mentre l'animazione è in corso darebbe il valore a una sola colonna.
+function catGridFullHeight(grid) {
+  grid.classList.add('no-anim');
+  const wasCollapsed = grid.classList.contains('is-collapsed'), prev = grid.style.height;
+  grid.classList.remove('is-collapsed');
+  grid.style.height = 'auto';
+  const h = grid.offsetHeight;
+  grid.style.height = prev;
+  if (wasCollapsed) grid.classList.add('is-collapsed');
+  reflow(grid); // stato collassato ripristinato; `no-anim` resta al chiamante
+  return h;
+}
+
+function expandCatGrid(e) {
+  if (e) e.stopPropagation();
+  if (catPhase !== 'row' && catPhase !== 'sub') return;
+  clearCatTimers();
+  const grid = $('#catGrid'), sel = grid.querySelector('.cat-btn.selected');
+  catPhase = 'closing';
+  setSubWrap(false);
+  const full = catGridFullHeight(grid); // lascia `no-anim` attivo
+  grid.classList.remove('no-anim');
+  reflow(grid); // commit con le transizioni riattivate, poi la griglia si riapre
+  grid.classList.remove('is-collapsed');
+  grid.style.height = full + 'px';
+  catAfter(240, () => {
+    selCat = null; selSub = null;
+    grid.classList.remove('is-collapsing');
+    if (sel) { sel.classList.remove('selected'); sel.style.removeProperty('--dx'); sel.style.removeProperty('--dy'); }
+    grid.style.height = '';
+    catPhase = 'grid';
+    renderSubList();
+    updateSaveState();
+  });
+}
+
+// Apre/chiude il blocco SOTTOCATEGORIA animandone l'altezza (0 ↔ contenuto).
+function setSubWrap(open, instant) {
+  const w = $('#subWrap');
+  if (instant) {
+    w.classList.add('no-anim');
+    w.classList.toggle('open', !!open);
+    w.style.height = open ? 'auto' : '0px';
+    reflow(w);
+    w.classList.remove('no-anim');
+    return;
+  }
+  const isOpen = w.classList.contains('open');
+  if (open) {
+    if (isOpen) { w.style.height = 'auto'; return; }
+    w.classList.add('open');
+    w.style.height = w.scrollHeight + 'px';
+    // A fine transizione `auto`, così i nomi lunghi possono andare a capo senza tagli.
+    catAfter(360, () => { w.style.height = 'auto'; });
+  } else {
+    if (!isOpen) { w.style.height = '0px'; return; }
+    w.style.height = w.scrollHeight + 'px'; // da `auto` a px: serve un valore di partenza
+    w.classList.remove('open');
+    reflow(w);
+    w.style.height = '0px';
+  }
+}
+
 function renderSubList() {
   const wrap = $('#subList');
   wrap.innerHTML = '';
   const show = selCat && selType === 'expense'; // le entrate non hanno sottocategorie
-  $('#subLabel').style.display = show ? '' : 'none';
-  if (!show) return;
-  catById(selCat).subs.forEach(s => {
-    const b = document.createElement('button');
-    b.className = 'chip' + (selSub === s ? ' selected' : '');
-    b.textContent = s;
-    b.onclick = () => { selSub = s; renderSubList(); updateSaveState(); };
-    wrap.appendChild(b);
-  });
+  if (show) {
+    catById(selCat).subs.forEach((s, i) => {
+      const b = document.createElement('button');
+      b.className = 'sub-tile' + (selSub === s ? ' selected' : '');
+      b.style.setProperty('--i', i); // entrata sfalsata di 35 ms
+      b.textContent = s;
+      b.onclick = () => { selSub = s; renderSubList(); updateSaveState(); };
+      wrap.appendChild(b);
+    });
+  }
+  const instant = catStatic; // consuma il flag alzato da renderCatGrid
+  catStatic = false;
+  setSubWrap(show && catPhase === 'sub', instant);
 }
 function parseAmount(str) {
   const v = parseFloat(String(str).replace(/[€\s]/g, '').replace(',', '.'));

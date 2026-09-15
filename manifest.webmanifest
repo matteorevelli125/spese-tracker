@@ -4,8 +4,8 @@
   "description": "Traccia le tue spese quotidiane, offline e senza account",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#15181d",
-  "theme_color": "#2563eb",
+  "background_color": "#ffffff",
+  "theme_color": "#1f9d63",
   "lang": "it",
   "icons": [
     { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },

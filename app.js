@@ -756,12 +756,19 @@ async function renderYearDashboard() {
   });
   const cells = catRank.flatMap(([id]) => showMonths.map(m => catByMonth[id][m]));
   const maxCell = Math.max(1, ...cells);
+  // Estremi della scala dal CSS (--heat-lo/--heat-hi): di notte la scala è scura.
+  const rootCss = getComputedStyle(document.documentElement);
+  const rgbVar = (name, fallback) => {
+    const v = rootCss.getPropertyValue(name).split(',').map(Number);
+    return v.length === 3 && v.every(Number.isFinite) ? v : fallback;
+  };
+  const lo = rgbVar('--heat-lo', [251, 228, 201]), hi = rgbVar('--heat-hi', [226, 103, 58]);
   const heat = v => {
     if (!v) return ' style="background:var(--heat0)"';
     const t = Math.min(1, v / maxCell);
-    // interpola arancio chiaro (251,228,201) → arancio pieno (226,103,58)
+    // interpola arancio tenue (--heat-lo) → arancio pieno (--heat-hi)
     const c = (a, b) => Math.round(a + (b - a) * t);
-    return ` style="background:rgb(${c(251, 226)},${c(228, 103)},${c(201, 58)})"`;
+    return ` style="background:rgb(${c(lo[0], hi[0])},${c(lo[1], hi[1])},${c(lo[2], hi[2])})"`;
   };
   const rowCells = (arr, tot, extraCls = '') => `${showMonths.map(m => `<td class="num heat ${extraCls}"${heat(arr[m])}>${n0(arr[m])}</td>`).join('')}<td class="num tot ${extraCls}">${n0(tot)}</td><td class="num faint ${extraCls}">${pctFmt(totExp ? tot / totExp : 0)}</td>`;
   const catMonth = `

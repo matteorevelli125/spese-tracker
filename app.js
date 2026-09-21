@@ -17,6 +17,46 @@ function toast(msg) {
   toast._t = setTimeout(() => t.classList.remove('show'), 1800);
 }
 
+/* ---------- Popup "affanno" al salvataggio ----------
+ * Spesa oltre 30 € → uno dei 3 messaggi a caso (mai lo stesso due volte di fila);
+ * entrata → GODIMENT. Testi fissi: solo categoria/sottocategoria passano da esc().
+ */
+const CEL_FONTS = [["'Anton'", 0.5], ["'Bungee'", 0.8], ["'Permanent Marker'", 0.62],
+  ["'Bowlby One SC'", 0.8], ["'Rubik Mono One'", 0.95], ["'Monoton'", 0.95]];
+// Font-size che fa stare la parola nella card (cw = larghezza media di un carattere in em).
+const celWord = (w, [font, cw], base) =>
+  `<span style="font-family:${font},sans-serif;font-size:${Math.floor(Math.min(base, 270 / (w.length * cw)))}px">${w}</span>`;
+const CEL_MESSAGES = {
+  affanno: () => `<span class="f-anton" style="font-size:44px">CHE</span><span class="f-anton pant" style="font-size:58px">AFFANNO</span>`,
+  costantemente: () => `<span class="f-anton" style="font-size:42px">COSTANTEMENTE</span>` +
+    `<span class="f-marker" style="font-size:40px">in</span><span class="f-bungee" style="font-size:46px">AFFANNO</span>`,
+  imballato: () => {
+    const n = CEL_FONTS.length, a = Math.floor(Math.random() * n);
+    const b = (a + 1 + Math.floor(Math.random() * (n - 1))) % n; // diverso da a
+    return celWord('CHE', CEL_FONTS[a], 56) + celWord('IMBALLATO', CEL_FONTS[b], 64);
+  },
+  godiment: () => `<span class="f-anton" style="font-size:40px">SEI NEL</span><span class="f-anton glow" style="font-size:66px">GODIMENT</span>`,
+};
+function celebrate(kind, rec) {
+  const el = $('#celebrate');
+  const income = kind === 'godiment';
+  const where = income ? incomeCatById(rec.cat).name : `${catById(rec.cat).name} · ${rec.sub}`;
+  el.innerHTML = `<div class="cel-card ${kind}" role="alertdialog" aria-label="${income ? 'Entrata' : 'Spesa'} salvata">
+    <div class="cel-head"><span>${income ? 'ENTRATA' : 'SPESA'} SALVATA</span><span class="cel-amount">${fmt(rec.amount)}</span></div>
+    <div class="cel-msg">${CEL_MESSAGES[kind]()}</div>
+    <div class="cel-foot"><span>${esc(where)}</span><button type="button" class="cel-ok">OK</button></div>
+  </div>`;
+  el.classList.add('show');
+  const close = () => { el.classList.remove('show'); clearTimeout(celebrate._t); };
+  el.onclick = ev => { if (ev.target === el || ev.target.closest('.cel-ok')) close(); };
+  clearTimeout(celebrate._t);
+  celebrate._t = setTimeout(close, 4000);
+}
+function pickAffanno() {
+  const opts = ['affanno', 'costantemente', 'imballato'].filter(k => k !== pickAffanno._last);
+  return (pickAffanno._last = opts[Math.floor(Math.random() * opts.length)]);
+}
+
 /* ---------- Navigazione ---------- */
 document.querySelectorAll('nav button').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -275,7 +315,9 @@ $('#saveBtn').addEventListener('click', async () => {
     return;
   }
   await DB.addExpense(record);
-  toast(`${income ? 'Entrata' : 'Salvato'}: ${fmt(amount)} — ${income ? incomeCatById(selCat).name : selSub}`);
+  if (income) celebrate('godiment', record);
+  else if (amount > 30) celebrate(pickAffanno(), record);
+  else toast(`Salvato: ${fmt(amount)} — ${selSub}`);
   $('#amountInput').value = '';
   $('#noteInput').value = '';
   selSub = null;
@@ -810,9 +852,12 @@ async function renderYearDashboard() {
 const catName = id => (catById(id) || {}).name || id;
 
 /* ---------- Insight automatici (mese corrente) ----------
- * Regole client-side sui dati locali: budget a rischio, categorie fuori ritmo
- * (solo spese variabili: i costi fissi a inizio mese falserebbero il ritmo),
- * proiezione di fine mese e rinforzo positivo. Massimo 3 card.
+ * Regole client-side sui dati locali, su una scala di intensità:
+ *   0 GODIMENT · 1 AFFANNO / previsione · 2 COSTANTEMENTE IN AFFANNO ·
+ *   3 MA COME HAI FATTO (budget sforato) · 4 IMBALLATO (gravissimo).
+ * Il ritmo considera solo le spese variabili (i fissi a inizio mese falserebbero
+ * la media). Ogni categoria compare una volta sola, al livello più alto; si
+ * mostrano le 2 card più gravi più un GODIMENT se c'è, massimo 3.
  */
 async function renderInsights() {
   const wrap = $('#insightWrap');
@@ -820,7 +865,7 @@ async function renderInsights() {
   const year = now.getFullYear(), month = now.getMonth();
   const day = now.getDate(), dim = new Date(year, month + 1, 0).getDate();
   const progress = day / dim;
-  const monthLabel = now.toLocaleDateString('it-IT', { month: 'long' });
+  const MESE = MESI[month].toUpperCase();
 
   const [all, budgets] = await Promise.all([DB.allExpenses(), DB.allBudgets()]);
   const yr = all.filter(e => e.date.slice(0, 4) === String(year));
@@ -831,12 +876,14 @@ async function renderInsights() {
   });
   const complete = expM.map((_, m) => m).filter(m => m < month && (expM[m] || incM[m]));
   const nC = complete.length;
+  const lm = nC ? complete[nC - 1] : -1; // ultimo mese completo
   const expAvg = nC ? complete.reduce((a, m) => a + expM[m], 0) / nC : 0;
+  const incAvg = nC ? complete.reduce((a, m) => a + incM[m], 0) / nC : 0;
   const curExp = expM[month];
 
-  // Spesa del mese corrente per categoria (tutta, per i budget) e solo variabile
-  // con relativa media mensile (per l'anomalia di ritmo).
-  const curBy = {}, curVarBy = {}, avgVarBy = {};
+  // Spesa del mese per categoria (tutta, per i budget), solo variabile (per il
+  // ritmo), media mensile variabile e variabile dell'ultimo mese completo.
+  const curBy = {}, curVarBy = {}, avgVarBy = {}, lastVarBy = {};
   yr.filter(e => !isIncome(e)).forEach(e => {
     const m = +e.date.slice(5, 7) - 1;
     if (m === month) {
@@ -844,66 +891,92 @@ async function renderInsights() {
       if (!isFixed(e)) curVarBy[e.cat] = (curVarBy[e.cat] || 0) + e.amount;
     } else if (complete.includes(m) && !isFixed(e)) {
       avgVarBy[e.cat] = (avgVarBy[e.cat] || 0) + e.amount / nC;
+      if (m === lm) lastVarBy[e.cat] = (lastVarBy[e.cat] || 0) + e.amount;
     }
   });
 
-  const out = []; // { icon, tone: pos|warn|neg, text }
+  const out = []; // { key, level, tag, head, detail }
+  // alt = titolo "MA COME HAI FATTO" per un IMBALLATO di budget che non entra (ne mostriamo uno solo).
+  const add = (key, level, tag, head, detail, alt) => {
+    const prev = out.find(i => i.key === key);
+    if (prev && prev.level >= level) return;
+    if (prev) out.splice(out.indexOf(prev), 1);
+    out.push({ key, level, tag, head, detail, alt });
+  };
+  const CAT = c => esc(c.name.toUpperCase());
+  const aM = m => (/^[aeiou]/i.test(MESI[m]) ? 'ad ' : 'a ') + MESI[m].toLowerCase(); // "ad agosto"
 
-  // 1) Budget sforato o troppo avanti rispetto al giorno del mese
-  const ranked = budgets
-    .map(b => ({ b, spent: curBy[b.cat] || 0, pct: (curBy[b.cat] || 0) / b.amount }))
-    .sort((a, b) => b.pct - a.pct);
-  for (const { b, spent, pct } of ranked) {
-    const c = catById(b.cat);
-    if (pct >= 1) {
-      out.push({ icon: '🚨', tone: 'neg', text: `Budget <b>${esc(c.name)}</b> sforato: ${fmt0(spent)} su ${fmt0(b.amount)}` });
-      break;
-    }
-    if (day >= 5 && pct > progress + 0.15) {
-      out.push({ icon: '⚠️', tone: 'warn', text: `Budget <b>${esc(c.name)}</b> già al ${(pct * 100).toFixed(0)}% al giorno ${day}` });
-      break;
+  // Budget: sforato di brutto, sforato, in proiezione di sforare, o ben sotto.
+  for (const b of budgets) {
+    const c = catById(b.cat), spent = curBy[b.cat] || 0, pct = spent / b.amount;
+    if (pct >= 1.5) {
+      add(b.cat, 4, 'BUDGET', 'SEI UN IMBALLATO DEL CAZZO', `<b>${esc(c.name)}</b>: ${fmt0(spent)} su un budget di ${fmt0(b.amount)}`,
+        `MA COME HAI FATTO A SPENDERE COSI TANTO PER ${CAT(c)}?`);
+    } else if (pct >= 1) {
+      add(b.cat, 3, 'BUDGET', `MA COME HAI FATTO A SPENDERE COSI TANTO PER ${CAT(c)}?`, `${fmt0(spent)} su un budget di ${fmt0(b.amount)}`);
+    } else if (day >= 5 && pct / progress >= 1) {
+      add(b.cat, 1, 'PREVISIONE', `STAI PER ANDARE IN AFFANNO CON ${CAT(c)}`,
+        `Budget al ${Math.round(pct * 100)}% al giorno ${day}: a fine mese arrivi a ~${fmt0(spent / progress)} su ${fmt0(b.amount)}`);
+    } else if (day >= 20 && pct < 0.5) {
+      add(b.cat, 0, 'BUDGET', `SEI NEL GODIMENT PER ${CAT(c)}`, `Budget usato al ${Math.round(pct * 100)}% al giorno ${day}`);
     }
   }
 
-  // 2) Categoria con ritmo di spesa variabile ben sopra la media
+  // Ritmo di spesa variabile per categoria: sopra media questo mese (affanno),
+  // e anche il mese scorso (costantemente).
   if (nC && day >= 8) {
-    let worst = null;
     for (const [cat, cur] of Object.entries(curVarBy)) {
       const avg = avgVarBy[cat] || 0;
       if (avg < 40 || cur < 50) continue; // troppo piccole: rumore
-      const pace = cur / progress;
-      if (pace >= avg * 1.4 && (!worst || pace / avg > worst.r)) worst = { cat, cur, avg, r: pace / avg };
-    }
-    if (worst) {
-      const c = catById(worst.cat);
-      out.push({ icon: '📈', tone: 'warn', text: `<b>${esc(c.name)}</b>: già ${fmt0(worst.cur)} a ${monthLabel} — ritmo +${Math.round((worst.r - 1) * 100)}% sulla tua media (${fmt0(worst.avg)}/mese, esclusi i fissi)` });
+      const r = cur / progress / avg;
+      if (r < 1.4) continue;
+      const c = catById(cat), perc = Math.round((r - 1) * 100);
+      if ((lastVarBy[cat] || 0) >= avg * 1.2) {
+        add(cat, 2, 'RITMO', `SEI COSTANTEMENTE IN AFFANNO CON ${CAT(c)}`,
+          `Già ${fmt0(cur)} ${aM(month)}, ritmo +${perc}% sulla tua media, e anche ${aM(lm)} eri sopra`);
+      } else {
+        add(cat, 1, 'RITMO', `SEI IN AFFANNO CON ${CAT(c)}`,
+          `Già ${fmt0(cur)} ${aM(month)}, ritmo +${perc}% sulla tua media (${fmt0(avg)}/mese, esclusi i fissi)`);
+      }
     }
   }
 
-  // 3) Proiezione di fine mese
-  if (day >= 5 && curExp > 0) {
+  // Proiezione di fine mese: oltre le entrate medie (imballato), sopra la media
+  // delle uscite (previsione) o sotto (godiment).
+  if (day >= 5 && curExp > 0 && nC) {
     const proj = curExp / progress;
-    let tone = 'pos', judge = '';
-    if (nC) {
-      if (proj > expAvg * 1.15) { tone = 'neg'; judge = ` — sopra la tua media di ${fmt0(expAvg)}`; }
-      else if (proj < expAvg * 0.85) { judge = ` — sotto la tua media di ${fmt0(expAvg)}`; }
-      else { judge = ` — in linea con la tua media (${fmt0(expAvg)})`; }
-    }
-    out.push({ icon: '🔮', tone, text: `Proiezione ${monthLabel}: ~${fmt0(proj)} di uscite${judge}` });
-  }
-
-  // 4) Rinforzo positivo: risparmio dell'ultimo mese completo
-  if (out.length < 3 && nC) {
-    const lm = complete[complete.length - 1];
-    const sv = incM[lm] - expM[lm];
-    if (incM[lm] > 0 && sv > 0) {
-      out.push({ icon: '✅', tone: 'pos', text: `A ${MESI[lm].toLowerCase()} hai risparmiato ${fmt0(sv)} (${Math.round(sv / incM[lm] * 100)}% delle entrate)` });
+    if (incAvg > 0 && proj > incAvg) {
+      add('mese', 4, 'PREVISIONE', 'SEI UN IMBALLATO DEL CAZZO',
+        `A questo ritmo spendi ~${fmt0(proj)} ${aM(month)}, più di quanto entra (${fmt0(incAvg)}/mese)`);
+    } else if (proj > expAvg * 1.15) {
+      add('mese', 1, 'PREVISIONE', `STAI PER ANDARE IN AFFANNO ${aM(month).toUpperCase()}`,
+        `Proiezione ~${fmt0(proj)} di uscite, sopra la tua media di ${fmt0(expAvg)}`);
+    } else if (proj < expAvg * 0.85) {
+      add('mese', 0, 'PREVISIONE', `SEI NEL GODIMENT PER ${MESE}`,
+        `Proiezione ~${fmt0(proj)} di uscite, sotto la tua media di ${fmt0(expAvg)}`);
     }
   }
 
-  wrap.innerHTML = out.length
-    ? `<div class="insight-title">Insight · ${monthLabel}</div>` +
-      out.slice(0, 3).map(i => `<div class="insight-card ${i.tone}"><span class="ii">${i.icon}</span><span>${i.text}</span></div>`).join('')
+  // Ultimo mese chiuso: in risparmio (godiment) o in rosso (affanno).
+  if (nC && incM[lm] > 0) {
+    const sv = incM[lm] - expM[lm], LM = MESI[lm].toUpperCase();
+    if (sv > 0) add('scorso', 0, 'RISPARMIO', `SEI NEL GODIMENT PER ${LM}`, `Hai risparmiato ${fmt0(sv)} (${Math.round(sv / incM[lm] * 100)}% delle entrate)`);
+    else if (sv < 0) add('scorso', 1, 'RISPARMIO', `SEI IN AFFANNO CON ${LM}`, `Hai speso ${fmt0(-sv)} più di quanto è entrato`);
+  }
+
+  // Selezione: un solo IMBALLATO, le 2 più gravi + un GODIMENT se c'è.
+  out.sort((a, b) => b.level - a.level);
+  const top = out.find(i => i.level === 4);
+  const bad = out.filter(i => i.level > 0 && (i.level < 4 || i === top || i.alt))
+    .map(i => i.level === 4 && i !== top ? { ...i, level: 3, head: i.alt } : i)
+    .sort((a, b) => b.level - a.level);
+  const good = out.find(i => i.level === 0);
+  const shown = good ? [...bad.slice(0, 2), good] : bad.slice(0, 3);
+
+  wrap.innerHTML = shown.length
+    ? `<div class="insight-title">Insight · ${MESE}</div>` +
+      shown.map(i => `<div class="insight-card lv${i.level}"><span class="ins-tag">${i.tag}</span>` +
+        `<div class="ins-head">${i.head}</div><div class="ins-detail">${i.detail}</div></div>`).join('')
     : '';
 }
 

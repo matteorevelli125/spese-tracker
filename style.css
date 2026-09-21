@@ -415,17 +415,71 @@ select { appearance: none; }
   .data-table tfoot td, .data-table tfoot .sticky-col { background: #123026; color: #8fd3b3; }
 }
 
-/* ---------- Insight automatici ---------- */
-#insightWrap:not(:empty) { margin: 2px 0 12px; }
-.insight-title { font: 700 10.5px/1 'Manrope'; color: var(--muted); letter-spacing: .04em;
-  text-transform: uppercase; margin: 0 2px 8px; }
-.insight-card { display: flex; gap: 10px; align-items: flex-start; background: var(--surface);
-  border-radius: var(--radius-md); padding: 11px 13px; margin-bottom: 7px;
-  font: 600 12px/1.45 'Manrope'; border-left: 3px solid var(--divider); }
-.insight-card.pos { border-left-color: var(--accent); }
-.insight-card.warn { border-left-color: #e0b23a; }
-.insight-card.neg { border-left-color: var(--danger); }
-.insight-card .ii { font-size: 14px; line-height: 1.3; }
+/* ---------- Insight automatici ----------
+ * Scala di intensità: lv0 godiment (verde), lv1 affanno/previsione (ambra),
+ * lv2-3 costantemente / budget sforato (rosso), lv4 imballato (scura). */
+#insightWrap:not(:empty) { margin: 2px 0 14px; }
+.insight-title { font: 400 12px/1 'Bungee', 'Manrope', sans-serif; letter-spacing: .04em;
+  text-transform: uppercase; margin: 0 2px 10px; display: flex; align-items: center; gap: 8px; }
+.insight-title::after { content: ''; flex: 1; height: 2px; background: var(--ink); }
+.insight-card { --c-bg: #def4e7; --c-fg: #17774a; display: flex; flex-direction: column; gap: 7px;
+  background: var(--c-bg); border: 2px solid var(--ink); box-shadow: 0 4px 0 var(--ink);
+  border-radius: var(--radius-lg); padding: 12px 14px 13px; margin-bottom: 12px; }
+.insight-card.lv1 { --c-bg: #fff0d1; --c-fg: #8a5200; }
+.insight-card.lv2, .insight-card.lv3 { --c-bg: #ffe6df; --c-fg: #b3301b; }
+.insight-card.lv4 { --c-bg: #15221b; --c-fg: #ff6a52; }
+.ins-tag { align-self: flex-start; padding: 4px 9px; border-radius: var(--radius-pill); background: var(--ink);
+  color: var(--c-bg); font: 800 10px/1 'Manrope'; letter-spacing: .08em; }
+.insight-card.lv4 .ins-tag { background: var(--c-fg); color: #15221b; }
+.ins-head { font: 800 17px/1.2 'Manrope'; text-transform: uppercase; color: var(--c-fg); overflow-wrap: anywhere; }
+.ins-detail { font: 600 12.5px/1.45 'Manrope'; color: var(--text); }
+.insight-card.lv4 .ins-detail { color: #f3f6f4; }
+:root { --ink: #15221b; }
+@media (prefers-color-scheme: dark) {
+  :root { --ink: #000; }
+  .insight-title::after { background: var(--muted); }
+  .insight-card { --c-bg: #123a26; --c-fg: #5fe0a0; }
+  .insight-card.lv1 { --c-bg: #3a2a0e; --c-fg: #ffc267; }
+  .insight-card.lv2, .insight-card.lv3 { --c-bg: #3a1812; --c-fg: #ff8a78; }
+  /* Notte: l'IMBALLATO si ribalta (card rossa, testo nero) per staccarsi dal "ma come". */
+  .insight-card.lv4 { --c-bg: #ff6a52; --c-fg: #000; }
+  .ins-tag { color: var(--c-fg); }
+  .insight-card.lv4 .ins-tag { background: #000; color: #ff6a52; }
+  .insight-card.lv4 .ins-detail { color: #000; }
+}
+
+/* ---------- Popup "affanno" al salvataggio ---------- */
+.celebrate { position: fixed; inset: 0; z-index: 30; display: none; align-items: center; justify-content: center;
+  padding: 24px; background: rgba(10,15,12,.6); animation: cel-fade .25s ease both; }
+.celebrate.show { display: flex; }
+.cel-card { width: 330px; max-width: 100%; padding: 22px 22px 20px; border-radius: 28px; background: #c9341d;
+  color: #fff4e6; border: 3px solid #15221b; box-shadow: 0 8px 0 #15221b; display: flex; flex-direction: column;
+  gap: 14px; animation: cel-pop .55s cubic-bezier(.22,1,.36,1) both; }
+.cel-card.godiment { background: #1f7a4e; }
+.cel-head { display: flex; justify-content: space-between; align-items: center; font: 800 12px/1 'Manrope'; letter-spacing: .08em; }
+.cel-amount { padding: 5px 10px; border-radius: var(--radius-pill); background: #15221b; color: #fff4e6; }
+.cel-msg { height: 240px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; text-align: center; overflow: hidden; }
+.cel-msg span { line-height: 1.05; }
+.f-anton { font-family: 'Anton', sans-serif; }
+.f-marker { font-family: 'Permanent Marker', sans-serif; }
+.f-bungee { font-family: 'Bungee', sans-serif; }
+.cel-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; font: 700 13px/1.3 'Manrope'; }
+.cel-ok { min-width: 88px; height: 44px; border: 3px solid #15221b; border-radius: var(--radius-pill);
+  background: #fff4e6; color: #15221b; font: 400 15px/1 'Bungee', sans-serif; cursor: pointer; }
+/* AFFANNO cresce a scatti, con un piccolo rientro a ogni respiro, poi ricomincia. */
+.pant { display: inline-block; transform-origin: 50% 60%; animation: cel-pant 2.6s ease-in-out infinite; }
+/* GODIMENT cambia colore fra 4 toni che stanno bene sul verde. */
+.glow { color: #c6f36b; animation: cel-glow 1.6s step-end infinite; }
+@keyframes cel-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cel-pop { 0% { transform: scale(.4) rotate(-14deg); opacity: 0; } 60% { transform: scale(1.08) rotate(3deg); opacity: 1; }
+  100% { transform: scale(1) rotate(-2deg); opacity: 1; } }
+@keyframes cel-pant { 0% { transform: scale(.72); } 10% { transform: scale(.84); } 15% { transform: scale(.8); }
+  25% { transform: scale(.95); } 30% { transform: scale(.91); } 40% { transform: scale(1.06); } 45% { transform: scale(1.02); }
+  55% { transform: scale(1.17); } 60% { transform: scale(1.13); } 70% { transform: scale(1.28); } 75% { transform: scale(1.24); }
+  88% { transform: scale(1.36); } 100% { transform: scale(.72); } }
+@keyframes cel-glow { 0% { color: #fff4e6; } 25% { color: #c6f36b; } 50% { color: #8ff0c4; } 75% { color: #ffe36e; } }
+@media (prefers-reduced-motion: reduce) { .celebrate, .cel-card, .pant, .glow { animation: none; } }
 
 /* ---------- Obiettivo di risparmio ---------- */
 .goal-add { width: 100%; padding: 13px; border-radius: var(--radius-md); border: 1.5px dashed var(--faint);

@@ -136,6 +136,7 @@ function startEdit(e) {
    battute) e poi entrano le sottocategorie; MODIFICA riapre la griglia.
    `catPhase` è solo stato di presentazione: la selezione resta in selCat/selSub. */
 const CAT_ROW_H = 52; // altezza della barra a categoria scelta
+const GRID_PAD = 4;   // padding-bottom di .cat-grid: spazio per l'ombra piena delle tessere
 let catPhase = 'grid'; // 'grid' | 'collapse' | 'row' | 'sub' | 'closing'
 // Alzato da renderCatGrid e consumato dalla renderSubList che segue: la coppia
 // `renderCatGrid(); renderSubList();` applica lo stato finale senza animazione.
@@ -176,7 +177,7 @@ function renderCatGrid() {
   grid.classList.add('no-anim');
   grid.classList.remove('is-collapsing');
   grid.classList.toggle('is-collapsed', catPhase === 'sub');
-  grid.style.height = catPhase === 'sub' ? CAT_ROW_H + 'px' : '';
+  grid.style.height = catPhase === 'sub' ? CAT_ROW_H + GRID_PAD + 'px' : '';
   reflow(grid); // commit dello stato finale prima di riattivare le transizioni
   grid.classList.remove('no-anim');
 }
@@ -195,7 +196,7 @@ function pickCat(id, btn) {
   grid.style.height = grid.offsetHeight + 'px'; // valore di partenza: `auto` non è animabile
   grid.classList.add('is-collapsing');
   reflow(grid);
-  grid.style.height = CAT_ROW_H + 'px';
+  grid.style.height = CAT_ROW_H + GRID_PAD + 'px';
   catAfter(260, () => { catPhase = 'row'; grid.classList.add('is-collapsed'); });
   catAfter(400, () => { catPhase = 'sub'; setSubWrap(selType === 'expense'); });
   renderSubList(); // tessere pronte, ancora chiuse: entrano a 400 ms
@@ -357,7 +358,7 @@ async function renderList() {
   const wrap = $('#expList');
   wrap.innerHTML = '';
   if (!all.length) { wrap.innerHTML = `<div class="empty">${q ? 'Nessun movimento trovato.' : 'Nessuna spesa registrata.'}</div>`; return; }
-  let curDay = null;
+  let curDay = null, dayCard = null;
   const recent = all.slice(0, 300);
   const dayTotals = {}; // netto del giorno: entrate − uscite
   recent.forEach(e => { dayTotals[e.date] = (dayTotals[e.date] || 0) + (isIncome(e) ? e.amount : -e.amount); });
@@ -369,7 +370,9 @@ async function renderList() {
       const d = new Date(e.date + 'T12:00');
       const net = dayTotals[e.date];
       h.innerHTML = `<span>${d.toLocaleDateString('it-IT', { weekday: 'short', day: 'numeric', month: 'long' })}</span><span>${net > 0 ? '+' : ''}${fmt(net)}</span>`;
-      wrap.appendChild(h);
+      dayCard = document.createElement('div');
+      dayCard.className = 'day-card';
+      wrap.append(h, dayCard);
     }
     const income = isIncome(e);
     const c = income ? incomeCatById(e.cat) : catById(e.cat);
@@ -379,7 +382,7 @@ async function renderList() {
       <div class="info"><div class="cat">${esc(e.sub)}</div><div class="note">${esc(c.name)}${e.note ? ' · ' + esc(e.note) : ''}</div></div>
       <span class="amt">${income ? '+' : ''}${fmt(e.amount)}</span>`;
     item.addEventListener('click', () => startEdit(e)); // tap = modifica (elimina dentro il form)
-    wrap.appendChild(item);
+    dayCard.appendChild(item);
   });
 }
 
@@ -497,7 +500,7 @@ function renderFilterChips() {
   CATEGORIES.forEach(c => {
     const b = document.createElement('button');
     b.className = 'chip' + (statFilter.has(c.id) ? ' selected' : '');
-    b.textContent = `${c.icon} ${c.name}`;
+    b.textContent = c.name;
     b.onclick = () => {
       statFilter.has(c.id) ? statFilter.delete(c.id) : statFilter.add(c.id);
       drillCat = null;
@@ -569,11 +572,14 @@ function renderTrend(type, r, list) {
   const totals = buckets.map(b => sum(list.filter(e => e.date >= b.from && e.date <= b.to)));
   // per la vista "giorno" il contesto esce dal periodo: ricarico non filtrato per data del periodo
   const max = Math.max(...totals, 1);
+  // Con molte barre (mese) le etichette si accavallano: tengo 1, 5, 10, 15…
+  const sparse = buckets.length > 14;
   buckets.forEach((b, i) => {
+    const lbl = !sparse || i === 0 || (i + 1) % 5 === 0 ? b.label : '';
     const tb = document.createElement('div');
     tb.className = 'tb';
     tb.title = `${b.label}: ${fmt(totals[i])}`;
-    tb.innerHTML = `<div class="bar" style="height:${(totals[i] / max) * 100}%"></div><div class="tl">${b.label}</div>`;
+    tb.innerHTML = `<div class="bar${totals[i] ? '' : ' zero'}" style="height:${(totals[i] / max) * 100}%"></div><div class="tl">${lbl}&nbsp;</div>`;
     wrap.appendChild(tb);
   });
 }
@@ -1011,10 +1017,10 @@ async function renderBudget() {
     const pct = (spent / b.amount) * 100;
     const row = document.createElement('div');
     row.className = 'budget-row' + (pct >= 100 ? ' over' : pct >= 80 ? ' warn' : '');
-    const status = pct >= 100 ? `⚠️ sforato di ${fmt(spent - b.amount)}` : `restano ${fmt(b.amount - spent)}`;
+    const status = pct >= 100 ? `Sforato di ${fmt(spent - b.amount)}` : `Restano ${fmt(b.amount - spent)}`;
     row.innerHTML = `<div class="head"><span>${c.icon} ${c.name}</span><span class="sp">${fmt(spent)} / ${fmt(b.amount)}</span></div>
       <div class="track"><div class="fill" style="width:${Math.min(pct, 100)}%"></div></div>
-      <div class="sub">${pct.toFixed(0)}% — ${status}</div>`;
+      <div class="sub"><span class="status">${status}</span><span>${pct.toFixed(0)}%</span></div>`;
     prog.appendChild(row);
   });
 

@@ -38,6 +38,10 @@ function tx(store, mode, fn) {
   }));
 }
 
+// Store con i dati dell'utente: "Cancella tutti i dati" li svuota tutti (RD-8).
+// `meta` resta fuori di proposito (preferenze, obiettivo, stato dei backup).
+const DATA_STORES = ['expenses', 'budgets', 'recurring'];
+
 const DB = {
   addExpense: exp => tx('expenses', 'readwrite', s => s.add(exp)),
   putExpense: exp => tx('expenses', 'readwrite', s => s.put(exp)),
@@ -74,5 +78,5 @@ const DB = {
     req.onerror = () => reject(req.error);
   })),
   setMeta: (key, value) => tx('meta', 'readwrite', s => s.put({ key, value })),
-  clearAll: () => Promise.all(['expenses', 'budgets', 'recurring'].map(st => tx(st, 'readwrite', s => s.clear()))),
+  clearAll: () => Promise.all(DATA_STORES.map(st => tx(st, 'readwrite', s => s.clear()))),
 };

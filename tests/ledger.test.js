@@ -150,10 +150,35 @@ test('planSplit: quota 0 di un altro lo toglie dallo split (RV-4)', () => {
   assert.deepEqual(rec(5000, { people: ['gi'], mode: 'exact', exact: {} }), { ...base, amount: 50 });
 });
 
-test('planSplit: pagato da un altro (RC-7)', () => {
-  const r = rec(3500, { payer: 'ma', people: ['gi'] });
-  assert.deepEqual([r.amount, r.paid, r.payer, r.splits], [35, 0, 'ma', undefined]);
+test('planSplit: pagato da un altro, si inserisce il totale (RF-W3 rivisto)', () => {
+  // cena da 96 € pagata da Marco, in 2 (io e Marco) → mia quota 48
+  const r = rec(9600, { payer: 'ma' });
+  assert.deepEqual([r.amount, r.paid, r.payer, r.payerTotal, r.splitMode, r.splits, r.shareWith], [48, 0, 'ma', 96, 'equal', undefined, undefined]);
   assert.deepEqual(Ledger.validate(r), []);
+  // evento con 4 partecipanti (Marco ha pagato) → 24; il pagatore non conta due volte
+  const r4 = rec(9600, { payer: 'ma', people: ['ma', 'lu', 'gi'] });
+  assert.deepEqual([r4.amount, r4.shareWith], [24, ['lu', 'gi']]);
+  // resto a me: 10 € in 3 → 3,34
+  assert.equal(rec(1000, { payer: 'ma', people: ['gi'] }).amount, 3.34);
+  // saldo: scende solo della mia quota, nessun credito verso gli altri (RC-8)
+  const b = Ledger.balances([r4], []);
+  assert.deepEqual([b.get('ma'), b.get('lu'), b.get('gi')], [-2400, undefined, undefined]);
+});
+
+test('planSplit: pagato da un altro, mia quota scritta a mano', () => {
+  const r = rec(9600, { payer: 'ma', mode: 'exact', exactMe: 3000, people: ['lu'] });
+  assert.deepEqual([r.amount, r.payerTotal, r.splitMode], [30, 96, 'exact']);
+  assert.deepEqual(Ledger.validate(r), []);
+  assert.deepEqual(Ledger.planSplit(9600, { payer: 'ma', mode: 'exact', exactMe: 0 }), { error: 'my-share' });
+  assert.deepEqual(Ledger.planSplit(9600, { payer: 'ma', mode: 'exact', exactMe: 9700 }), { error: 'my-share-over' });
+  // tutto a me (es. Marco ha pagato solo la mia parte): quota = totale
+  assert.equal(rec(3500, { payer: 'ma', mode: 'exact', exactMe: 3500 }).amount, 35);
+});
+
+test('validate: record "pagato da" precedenti (senza totale) restano validi; totale incoerente no', () => {
+  assert.deepEqual(Ledger.validate(exp({ amount: 35, paid: 0, payer: 'ma' })), []);
+  assert.ok(Ledger.validate(exp({ amount: 35, paid: 0, payer: 'ma', payerTotal: 30 })).includes('payer-total'));
+  assert.ok(Ledger.validate(exp({ amount: 35, paid: 0, payer: 'ma', shareWith: ['ma'] })).includes('share-with'));
 });
 
 test('planSplit: totale non valido', () => {
@@ -208,4 +233,14 @@ test('eventsInProgress: date, giorno singolo, archiviati e senza date', () => {
   assert.deepEqual(Ledger.eventsInProgress(evs, '2026-12-06').map(e => e.id), ['b']);
   assert.deepEqual(Ledger.eventsInProgress(evs, '2026-08-22').map(e => e.id), ['a']);
   assert.deepEqual(Ledger.eventsInProgress(evs, '2026-08-23').map(e => e.id), []);
+});
+
+test('mergePeople e isReferenced considerano shareWith', () => {
+  const data = { expenses: [exp({ id: 9, amount: 24, paid: 0, payer: 'ma', payerTotal: 96, shareWith: ['giuli', 'gi'] })] };
+  assert.equal(Ledger.isReferenced('giuli', data), true);
+  const r = Ledger.mergePeople(data, 'giuli', 'gi');
+  assert.deepEqual(r.expenses[0].shareWith, ['gi']);
+  const r2 = Ledger.mergePeople(data, 'giuli', 'ma'); // unito nel pagatore: non è anche partecipante
+  assert.deepEqual(r2.expenses[0].shareWith, ['gi']);
+  assert.deepEqual(Ledger.validate(r2.expenses[0]), []);
 });

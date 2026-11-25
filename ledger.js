@@ -39,6 +39,9 @@ const Ledger = (() => {
       if (c(n.paid) !== 0) err.push('payer-paid');
       if (e.splits && e.splits.length) err.push('payer-splits');      // RV-3
       if (amount <= 0) err.push('amount');
+      // Totale pagato dall'altra persona (facoltativo, RF-W3 rivisto): ≥ mia quota
+      if (e.payerTotal != null && !(c(e.payerTotal) >= amount)) err.push('payer-total');
+      if (e.shareWith != null && (!Array.isArray(e.shareWith) || e.shareWith.some(id => !id || id === e.payer))) err.push('share-with');
       return err;
     }
     const ids = new Set();
@@ -101,6 +104,15 @@ const Ledger = (() => {
       let changed = false;
       const next = { ...e };
       if (e.payer === fromId) { next.payer = toId; changed = true; }
+      if (Array.isArray(e.shareWith) && e.shareWith.includes(fromId)) {
+        const ids = [...new Set(e.shareWith.map(id => (id === fromId ? toId : id)))].filter(id => id !== next.payer);
+        if (ids.length) next.shareWith = ids; else delete next.shareWith;
+        changed = true;
+      }
+      if (Array.isArray(next.shareWith) && next.shareWith.includes(next.payer)) { // il pagatore non è anche "altro partecipante"
+        next.shareWith = next.shareWith.filter(id => id !== next.payer);
+        if (!next.shareWith.length) delete next.shareWith;
+      }
       if (Array.isArray(e.splits) && e.splits.some(s => s.personId === fromId)) {
         const acc = new Map();
         for (const s of e.splits) {
@@ -129,7 +141,25 @@ const Ledger = (() => {
   //   Senza pagatore né persone: fields = { amount } e basta (record identico a prima).
   function planSplit(totalCents, s = {}) {
     if (!Number.isInteger(totalCents) || totalCents <= 0) return { error: 'total' };
-    if (s.payer) return { fields: { amount: M.fromCents(totalCents), paid: 0, payer: s.payer } };
+    if (s.payer) {
+      // Ha pagato un altro (RF-W3 rivisto): totalCents è il TOTALE che ha pagato. La mia
+      // quota: parti uguali tra me, il pagatore e gli altri partecipanti (resto a me),
+      // oppure scritta da me ("importi esatti", s.exactMe). Non si creano crediti verso
+      // gli altri partecipanti (RC-8): conta solo il mio debito verso il pagatore.
+      const others = [...new Set(s.people || [])].filter(id => id && id !== s.payer);
+      let me;
+      if (s.mode === 'exact') {
+        me = s.exactMe;
+        if (!Number.isInteger(me) || me <= 0) return { error: 'my-share' };
+        if (me > totalCents) return { error: 'my-share-over' };
+      } else {
+        me = M.splitEqual(totalCents, others.length + 1, true).me;
+      }
+      const fields = { amount: M.fromCents(me), paid: 0, payer: s.payer, payerTotal: M.fromCents(totalCents),
+        splitMode: s.mode === 'exact' ? 'exact' : 'equal' };
+      if (others.length) fields.shareWith = others;
+      return { fields };
+    }
     const people = [...new Set(s.people || [])];
     if (!people.length) return s.notMe ? { error: 'no-others' } : { fields: { amount: M.fromCents(totalCents) } };
     let me, others;
@@ -179,7 +209,7 @@ const Ledger = (() => {
 
   // La persona compare in qualche movimento, rimborso o evento? (RF-P9: niente cancellazione)
   function isReferenced(personId, { expenses = [], settlements = [], events = [] }) {
-    return expenses.some(e => e.payer === personId || (e.splits || []).some(s => s.personId === personId)) ||
+    return expenses.some(e => e.payer === personId || (e.splits || []).some(s => s.personId === personId) || (e.shareWith || []).includes(personId)) ||
       settlements.some(s => s.personId === personId) ||
       events.some(ev => (ev.participants || []).includes(personId));
   }

@@ -66,7 +66,7 @@ const PeopleUI = (() => {
       const e = t.expense, s = t.settlement;
       const title = s ? (t.kind === 'refund' ? 'Rimborso ricevuto' : 'Hai restituito') : (e.note || e.sub);
       const sub = s ? [shortDate(s.date), s.note].filter(Boolean).join(' · ')
-        : t.kind === 'paid-for-me' ? `${shortDate(e.date)} · ha pagato ${p.name} · tua quota`
+        : t.kind === 'paid-for-me' ? `${shortDate(e.date)} · ha pagato ${p.name}${e.payerTotal != null ? ` ${fmt(e.payerTotal)}` : ''} · tua quota`
           : `${shortDate(e.date)} · pagato da te ${fmt(Ledger.normalize(e).paid)} · sua quota`;
       const ev = evById.get((e || s).eventId);
       return `<button class="tl-row" data-i="${i}"><span class="ico">${s ? '↩︎' : catById(e.cat).icon}</span>

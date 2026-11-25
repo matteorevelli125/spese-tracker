@@ -315,8 +315,8 @@ body { height: auto; overflow: auto; display: block; background: var(--bg); }
       <div class="phone" data-nav="add"><div class="scr">
         <div class="add-head"><h1 class="page-title">Nuova spesa</h1>
           <div class="type-toggle"><button class="selected">Uscita</button><button>Entrata</button></div></div>
-        <div class="amount-wrap"><div class="amount-label">La tua quota</div>
-          <div style="font:800 44px/1 'Manrope';text-align:center;letter-spacing:-.02em">35,00 €</div></div>
+        <div class="amount-wrap"><div class="amount-label">Totale pagato da Marco</div>
+          <div style="font:800 44px/1 'Manrope';text-align:center;letter-spacing:-.02em">140,00 €</div></div>
         <div class="section-label">CATEGORIA</div>
         <div class="mo-catbar"><span class="n">🍽️ Cibo e bevande</span><span class="e">MODIFICA</span></div>
         <div class="mo-subs">
@@ -328,11 +328,12 @@ body { height: auto; overflow: auto; display: block; background: var(--bg); }
           <div class="field-row"><span>Nota</span><span class="val on">Cena Porto Cervo</span></div>
           <div class="field-row sel"><span class="lbl2">Evento</span><span class="val on">✈️ Sardegna agosto <span class="x">✕</span></span></div>
           <div class="field-row sel"><span>Pagato da</span><span class="val on"><span class="av s a2">MA</span> Marco <span class="chev">›</span></span></div>
+          <div class="field-row sel"><span>Diviso tra</span><span class="val on"><span class="av s me">IO</span><span class="av s a2">MA</span><span class="av s a3">LU</span><span class="av s a1">GI</span> 4 persone <span class="chev">›</span></span></div>
         </div>
-        <div class="mo-quota"><span>dal tuo conto <b>0,00 €</b></span><span>saldo Marco −35,00 €</span></div>
+        <div class="mo-quota"><span>dal tuo conto <b>0,00 €</b> · 4 parti uguali</span><span>tua quota <b>35,00 €</b></span></div>
         <button class="btn-primary">Salva spesa</button>
       </div></div>
-      <p class="cap"><b>1c · Ha pagato un'altra persona.</b> Con "Pagato da Marco" l'importo diventa <i>la tua quota</i> e la riga "Diviso con" sparisce. Nelle statistiche risultano 35 €, dal tuo conto 0 €, e il saldo di Marco scende di 35 €.<br><span class="ids">RC-7 · RF-W3 · RV-3 · RF-E10</span></p>
+      <p class="cap"><b>1c · Ha pagato un'altra persona.</b> Con "Pagato da Marco" inserisci il <i>totale che ha pagato lui</i> (140 €) e la riga diventa "Diviso tra": con l'evento ci sono tutti i partecipanti, Marco compreso. L'app calcola la tua quota: nelle statistiche risultano 35 €, dal tuo conto 0 €, e il saldo di Marco scende di 35 €. Verso Luca e Giulia non nasce nessun credito (RC-8). <i>Rivisto il 25/11: prima si inseriva solo la propria quota.</i><br><span class="ids">RC-7 · RF-W3 · RV-3 · RF-E10</span></p>
     </div>
 
   </div>
@@ -340,7 +341,7 @@ body { height: auto; overflow: auto; display: block; background: var(--bg); }
 
 <!-- ============ 2. SHEET SPLIT ============ -->
 <section class="gal-sec">
-  <h2>2 · Pannelli "Diviso con" e "Pagato da"</h2>
+  <h2>2 · Pannelli "Diviso con", "Pagato da" e "Diviso tra"</h2>
   <div class="gal">
 
     <!-- 2a -->
@@ -407,11 +408,11 @@ body { height: auto; overflow: auto; display: block; background: var(--bg); }
     <div class="shot">
       <div class="phone" data-nav="add"><div class="scr" style="opacity:.9">
         <div class="add-head"><h1 class="page-title">Nuova spesa</h1></div>
-        <div class="amount-wrap"><div class="amount-label">Importo</div><div style="font:800 44px/1 'Manrope';text-align:center">35,00 €</div></div>
+        <div class="amount-wrap"><div class="amount-label">Importo</div><div style="font:800 44px/1 'Manrope';text-align:center">140,00 €</div></div>
       </div>
         <div class="mo-dim"></div>
         <div class="mo-sheet"><div class="handle"></div>
-          <h3>Chi ha pagato?</h3><div class="sub">Se ha pagato un altro, l'importo è solo la tua quota.</div>
+          <h3>Chi ha pagato?</h3><div class="sub">Se ha pagato un'altra persona, inserisci il totale che ha pagato: la tua quota la calcolo io (o la scrivi tu).</div>
           <div class="mo-list" style="margin-top:14px">
             <div class="mo-li"><span class="av me">IO</span><div class="info"><div class="t">Io</div></div><span class="chev">○</span></div>
             <div class="mo-li" style="background:var(--accent-soft)"><span class="av a2">MA</span><div class="info"><div class="t">Marco</div><div class="s">ti deve 155,00 €</div></div><span class="chev" style="color:var(--text)">●</span></div>
@@ -419,10 +420,39 @@ body { height: auto; overflow: auto; display: block; background: var(--bg); }
             <div class="mo-li"><span class="av a3">LU</span><div class="info"><div class="t">Luca</div><div class="s">ti deve 85,00 €</div></div><span class="chev">○</span></div>
           </div>
           <div class="mo-search">🔍 Altra persona…</div>
-          <button class="btn-primary" style="margin-top:6px">Conferma</button>
         </div>
       </div>
-      <p class="cap"><b>2c · Pagato da.</b> Mostrare il saldo attuale di ciascuno aiuta a decidere se compensare. Scegliendo una persona diversa da "Io", lo split si disattiva.<br><span class="ids">RF-W3 · RV-3 · RV-5</span></p>
+      <p class="cap"><b>2c · Pagato da.</b> Mostrare il saldo attuale di ciascuno aiuta a decidere se compensare. Un tocco sceglie e chiude, senza Conferma. I partecipanti già scelti restano, e il pagatore esce dall'elenco perché è già contato.<br><span class="ids">RF-W3 · RV-3 · RV-5</span></p>
+    </div>
+
+    <!-- 2d -->
+    <div class="shot">
+      <div class="phone" data-nav="add"><div class="scr" style="opacity:.9">
+        <div class="add-head"><h1 class="page-title">Nuova spesa</h1></div>
+        <div class="amount-wrap"><div class="amount-label">Totale pagato da Marco</div><div style="font:800 44px/1 'Manrope';text-align:center">140,00 €</div></div>
+      </div>
+        <div class="mo-dim"></div>
+        <div class="mo-sheet"><div class="handle"></div>
+          <h3>Diviso tra</h3><div class="sub">Totale pagato da Marco: 140,00 €. Conta solo la tua quota.</div>
+          <div class="mo-search">🔍 Cerca o aggiungi persona…</div>
+          <div class="mo-chips">
+            <span class="chip selected"><span class="av s a3">LU</span>Luca</span>
+            <span class="chip selected"><span class="av s a1">GI</span>Giulia</span>
+            <span class="chip"><span class="av s a4">SA</span>Sara</span>
+          </div>
+          <div class="mo-opts">
+            <div class="mo-opt"><div>Scrivo la mia quota<small>altrimenti parti uguali</small></div><span class="mo-switch"></span></div>
+          </div>
+          <div class="mo-split">
+            <div class="mo-split-row"><span class="av s a2">MA</span><span class="nm">Marco<small>ha pagato</small></span><span class="q">35,00 €</span></div>
+            <div class="mo-split-row"><span class="av s a3">LU</span><span class="nm">Luca</span><span class="q">35,00 €</span></div>
+            <div class="mo-split-row"><span class="av s a1">GI</span><span class="nm">Giulia</span><span class="q">35,00 €</span></div>
+            <div class="mo-split-row me"><span class="av s me">IO</span><span class="nm">Tu</span><span class="q">35,00 €</span></div>
+          </div>
+          <button class="btn-primary">Conferma</button>
+        </div>
+      </div>
+      <p class="cap"><b>2d · Diviso tra (ha pagato un altro).</b> Di default parti uguali tra te e il pagatore, oppure tra i partecipanti dell'evento. Le quote degli altri sono solo informative. Con "Scrivo la mia quota" inserisci solo la tua, per esempio quando Marco ti dice "tu mi devi 30": deve essere maggiore di 0 e non superare il totale. "Non partecipo" qui non c'è. In fondo al pannello, "Solo io e Marco" toglie gli altri partecipanti.<br><span class="ids">RF-W3 · RV-3 · RC-8 · RC-11</span></p>
     </div>
 
   </div>
@@ -440,7 +470,7 @@ body { height: auto; overflow: auto; display: block; background: var(--bg); }
         <div class="day-card">
           <div class="exp-item"><span class="ico">🍽️</span><div class="info"><div class="cat">Ristorante</div><div class="note">Cibo e bevande · Cena Porto Cervo</div>
             <div class="meta"><span class="tag evt">✈️ Sardegna agosto</span><span class="tag">pagato da Marco</span></div></div>
-            <div class="amtcol"><span class="amt">35,00 €</span><small>dal conto 0,00</small></div></div>
+            <div class="amtcol"><span class="amt">35,00 €</span><small>su 140,00 €</small></div></div>
           <div class="exp-item"><span class="ico">✈️</span><div class="info"><div class="cat">Cibo</div><div class="note">Vacanze · Supermercato Conad</div>
             <div class="meta"><span class="tag evt">✈️ Sardegna agosto</span><span class="tag">👥 4</span></div></div>
             <div class="amtcol"><span class="amt">24,00 €</span><small>pagati 96,00</small></div></div>
@@ -507,7 +537,7 @@ body { height: auto; overflow: auto; display: block; background: var(--bg); }
         <h2>Storico</h2>
         <div class="mo-list mo-tl">
           <div class="mo-li"><span class="ico">🚤</span><div class="info"><div class="t">Noleggio gommone</div><div class="s">14 ago · pagato da te 524,00 · sua quota</div></div><div class="r pos">+131,00<span class="d">saldo 155,00</span></div></div>
-          <div class="mo-li"><span class="ico">🍽️</span><div class="info"><div class="t">Cena Porto Cervo</div><div class="s">12 ago · ha pagato lui · tua quota</div></div><div class="r neg">−35,00<span class="d">saldo 24,00</span></div></div>
+          <div class="mo-li"><span class="ico">🍽️</span><div class="info"><div class="t">Cena Porto Cervo</div><div class="s">12 ago · ha pagato lui 140,00 € · tua quota</div></div><div class="r neg">−35,00<span class="d">saldo 24,00</span></div></div>
           <div class="mo-li"><span class="ico">✈️</span><div class="info"><div class="t">Supermercato Conad</div><div class="s">11 ago · pagato da te 96,00 · sua quota</div></div><div class="r pos">+24,00<span class="d">saldo 59,00</span></div></div>
           <div class="mo-li"><span class="ico">↩︎</span><div class="info"><div class="t">Rimborso ricevuto</div><div class="s">20 mag · bonifico</div></div><div class="r neg">−90,00<span class="d">saldo 35,00</span></div></div>
           <div class="mo-li"><span class="ico">⛴️</span><div class="info"><div class="t">Traghetto</div><div class="s">2 mag · pagato da te 500,00 · sua quota</div></div><div class="r pos">+125,00<span class="d">saldo 125,00</span></div></div>
@@ -682,7 +712,7 @@ body { height: auto; overflow: auto; display: block; background: var(--bg); }
         <h2>Spese</h2>
         <div class="day-card">
           <div class="exp-item"><span class="ico">🚤</span><div class="info"><div class="cat">Attività</div><div class="note">14 ago · Noleggio gommone</div></div><div class="amtcol"><span class="amt">131,00 €</span><small>pagati 524,00</small></div></div>
-          <div class="exp-item"><span class="ico">🍽️</span><div class="info"><div class="cat">Ristorante</div><div class="note">12 ago · pagato da Marco</div></div><div class="amtcol"><span class="amt">35,00 €</span><small>dal conto 0,00</small></div></div>
+          <div class="exp-item"><span class="ico">🍽️</span><div class="info"><div class="cat">Ristorante</div><div class="note">12 ago · pagato da Marco</div></div><div class="amtcol"><span class="amt">35,00 €</span><small>su 140,00 €</small></div></div>
         </div>
       </div></div>
       <p class="cap"><b>5c · Scheda evento.</b> Tua quota totale con i KPI di cassa, il pulsante che apre lo stesso wizard con l'evento selezionato, la ripartizione per categoria (con drill-down), i saldi generati (con "Salda" che porta alla scheda persona) e l'elenco delle spese. Il menu ⋯ contiene Modifica · Archivia · Elimina.<br><span class="ids">RF-E5 · RF-E6 · RF-E8 · RF-E9</span></p>

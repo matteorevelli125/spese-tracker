@@ -152,3 +152,16 @@ test('eventi: date incoerenti e campi facoltativi', () => {
   assert.equal(ev.defaultSub, undefined); // sottocategoria senza categoria: ignorata
   assert.equal(ev.emoji, '📌');
 });
+
+test('v2: pagato da altri con totale e partecipanti (RF-W3 rivisto)', () => {
+  const r = Sanitize.backup({ expenses: [
+    { date: '2026-08-12', amount: 24, paid: 0, payer: 'ma', payerTotal: 96, splitMode: 'equal', shareWith: ['lu', 'gi', 'ma'], type: 'expense', cat: 'cibo', sub: 'Ristorante', note: '', ts: 1 },
+    { date: '2026-08-13', amount: 50, paid: 0, payer: 'ma', payerTotal: 40, type: 'expense', cat: 'cibo', sub: 'Ristorante', note: '', ts: 2 },
+  ] });
+  const [a, b] = r.expenses;
+  assert.deepEqual([a.payerTotal, a.splitMode, a.shareWith], [96, 'equal', ['lu', 'gi']]);
+  assert.deepEqual(Ledger.validate(a), []);
+  assert.equal(b.payerTotal, undefined); // totale < quota: scartato, la quota resta
+  assert.equal(r.stats.repaired, 1);
+  assert.deepEqual(r.people.map(p => p.id).sort(), ['gi', 'lu', 'ma']); // segnaposto anche per shareWith
+});

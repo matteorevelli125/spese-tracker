@@ -47,6 +47,14 @@ const Sanitize = (() => {
         rec.payer = e.payer;
         rec.paid = 0;
         if ((e.splits && e.splits.length) || cleanAmount(e.paid) !== null) repaired = true; // RV-3
+        // Totale pagato dall'altra persona e partecipanti (RF-W3 rivisto), se coerenti
+        const pt = cleanAmount(e.payerTotal);
+        if (pt !== null && M.toCents(pt) >= M.toCents(amount)) {
+          rec.payerTotal = pt;
+          rec.splitMode = e.splitMode === 'exact' ? 'exact' : 'equal';
+          const ids = Array.isArray(e.shareWith) ? [...new Set(e.shareWith.filter(id => isId(id) && id !== e.payer))] : [];
+          if (ids.length) rec.shareWith = ids;
+        } else if (e.payerTotal != null) repaired = true;
       } else {
         repaired = true; // pagatore illeggibile: resta una spesa normale con la stessa quota
       }
@@ -168,6 +176,7 @@ const Sanitize = (() => {
     };
     for (const e of expenses) {
       if (e.payer) needPerson(e.payer);
+      (e.shareWith || []).forEach(needPerson);
       (e.splits || []).forEach(s => needPerson(s.personId));
       if (e.eventId) needEvent(e.eventId);
     }

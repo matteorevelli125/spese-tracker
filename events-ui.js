@@ -57,7 +57,7 @@ const EventsUI = (() => {
       selSub = ev.defaultSub || null;
       renderCatGrid(); renderSubList();
     }
-    if (Split.isEmpty() && ev.participants.length) Split.setPeople(ev.participants);
+    if (ev.participants.length) Split.applyEventPeople(ev.participants);
     updateSaveState();
   }
 
@@ -259,7 +259,7 @@ const EventsUI = (() => {
       const extra = e.payer ? `pagato da ${name(e.payer)}` : n.splits.length ? `👥 ${n.splits.length}` : '';
       return `<div class="exp-item" data-exp="${e.id}"><span class="ico">${catById(e.cat).icon}</span>
         <div class="info"><div class="cat">${UI.esc(e.sub)}</div><div class="note">${UI.esc([fmtDay(e.date), e.note, extra].filter(Boolean).join(' · '))}</div></div>
-        ${n.paid !== e.amount || e.payer ? `<span class="amtcol"><span class="amt${e.amount === 0 ? ' zero' : ''}">${fmt(e.amount)}</span><small>${e.payer ? 'dal conto 0,00 €' : `pagati ${fmt(n.paid)}`}</small></span>`
+        ${n.paid !== e.amount || e.payer ? `<span class="amtcol"><span class="amt${e.amount === 0 ? ' zero' : ''}">${fmt(e.amount)}</span><small>${e.payer ? (e.payerTotal != null ? `su ${fmt(e.payerTotal)}` : 'dal conto 0,00 €') : `pagati ${fmt(n.paid)}`}</small></span>`
           : `<span class="amt">${fmt(e.amount)}</span>`}</div>`;
     }).join('');
 

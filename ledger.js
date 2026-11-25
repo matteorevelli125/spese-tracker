@@ -184,7 +184,32 @@ const Ledger = (() => {
       events.some(ev => (ev.participants || []).includes(personId));
   }
 
-  return { normalize, validate, balances, totals, signFlips, mergePeople, planSplit, timeline, isReferenced };
+  // Riepilogo di un evento (RF-E5), in centesimi:
+  //   quota = Σ mie quote · paidByMe = Σ usciti dal mio conto · paidByOthers = Σ mie quote pagate da altri
+  //   byCat = { cat: { total, subs: { sub: total } } } sulle mie quote
+  function eventSummary(eventId, expenses) {
+    const out = { quota: 0, paidByMe: 0, paidByOthers: 0, count: 0, byCat: {} };
+    for (const raw of expenses) {
+      if (isIncome(raw) || raw.eventId !== eventId) continue;
+      const e = normalize(raw);
+      const q = c(e.amount);
+      out.count++;
+      out.quota += q;
+      if (e.payer) out.paidByOthers += q; else out.paidByMe += c(e.paid);
+      const k = out.byCat[e.cat] || (out.byCat[e.cat] = { total: 0, subs: {} });
+      k.total += q;
+      k.subs[e.sub] = (k.subs[e.sub] || 0) + q;
+    }
+    return out;
+  }
+
+  // Eventi attivi in corso alla data `day` (AAAA-MM-GG): start ≤ day ≤ end (senza end: un giorno).
+  // Gli eventi senza date non sono mai "in corso".
+  const inProgress = (ev, day) => !ev.archived && !!ev.start && ev.start <= day && day <= (ev.end || ev.start);
+  const eventsInProgress = (events, day) => events.filter(ev => inProgress(ev, day));
+
+  return { normalize, validate, balances, totals, signFlips, mergePeople, planSplit, timeline, isReferenced,
+    eventSummary, inProgress, eventsInProgress };
 })();
 
 if (typeof module !== 'undefined' && module.exports) module.exports = Ledger;

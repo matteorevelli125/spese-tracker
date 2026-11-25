@@ -748,3 +748,50 @@ select { appearance: none; }
 .row-select { width: 60%; height: auto; padding: 0; border: none; background: transparent; text-align: right; text-align-last: right;
   color: var(--text); font: 700 14px/1 'Manrope'; }
 .sheet-cancel.danger, .pick-row.danger b { color: var(--danger); }
+
+/* ---------- Eventi (F5) ---------- */
+.share-row .x { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; margin-left: 2px;
+  border-radius: 50%; background: var(--card); color: var(--muted); font-size: 11px; cursor: pointer; }
+.lbl2 { display: flex; flex-direction: column; gap: 3px; }
+.lbl2 small { font: 600 11px/1 'Manrope'; color: var(--muted); }
+.lbl2 small:empty { display: none; }
+.ev-ico { width: 46px; height: 46px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 14px; background: var(--accent-soft); border: var(--stroke) solid var(--ink); font-size: 22px; }
+.ev-ico.sm { width: 34px; height: 34px; border-radius: 11px; font-size: 17px; }
+.live { display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: var(--radius-pill);
+  background: var(--accent); color: var(--on-accent); font: 800 9.5px/1 'Manrope'; letter-spacing: .06em; vertical-align: middle; }
+.event-list { display: flex; flex-direction: column; gap: 10px; }
+.event-card { display: flex; align-items: center; gap: 12px; width: 100%; padding: 14px; text-align: left; cursor: pointer;
+  background: var(--surface); border: var(--stroke) solid var(--line); border-radius: 16px; color: var(--text); font: inherit; }
+.event-card.archived { opacity: .7; }
+.event-card .info { flex: 1; min-width: 0; }
+.event-card .t { display: block; font: 800 15px/1.2 'Manrope'; }
+.event-card small { display: block; margin-top: 3px; font: 600 11.5px/1.3 'Manrope'; color: var(--muted); }
+.event-card .avs { display: flex; margin-top: 7px; }
+.event-card .avs .av { margin-right: -5px; }
+.event-card .r { text-align: right; font: 800 15px/1 'Manrope'; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.event-card .r small { margin-top: 4px; font-size: 10.5px; }
+#eventsPane > .btn-primary { margin-top: 14px; }
+.tpl-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.tpl-grid .cat-btn.tpl { height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+.tpl-grid .cat-btn.tpl .ico { font-size: 20px; }
+#eventForm .section-label { margin: 20px 0 10px; }
+#eventForm .section-label.first { margin-top: 4px; }
+#eventForm #evName { height: 50px; font-size: 15px; font-weight: 700; }
+#eventForm .pick-search { margin-top: 0; }
+.field-list.tight { margin-top: 0; }
+.field-row .row-select:disabled { color: var(--faint); }
+.kpi3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 4px; }
+.kpi3 > div { display: flex; flex-direction: column; gap: 5px; padding: 10px 9px; border-radius: 12px; background: var(--card); }
+.kpi3 .lbl { margin: 0; font: 800 9px/1.15 'Manrope'; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.kpi3 b { font: 800 15px/1 'Manrope'; font-variant-numeric: tabular-nums; }
+#eventBody > .btn-primary { margin-top: 14px; }
+.ev-card { margin-top: 16px; }
+.ev-card h2 { display: flex; align-items: center; gap: 8px; margin-top: 0; }
+.ev-card .back-drill { margin-left: auto; }
+.ev-bal { display: flex; align-items: center; gap: 10px; padding: 8px 0; }
+.ev-bal + .ev-bal { border-top: 1px solid var(--divider); }
+.ev-bal .nm { flex: 1; min-width: 0; font: 800 14px/1.2 'Manrope'; }
+.ev-bal .v { font: 800 14px/1 'Manrope'; font-variant-numeric: tabular-nums; }
+.chip.sm { height: 30px; padding: 0 12px; }
+.chip-sp { width: 58px; }

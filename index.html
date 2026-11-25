@@ -51,6 +51,7 @@
   <div class="field-list">
     <label class="field-row"><span>Data</span><input type="date" id="dateInput"></label>
     <label class="field-row"><span>Nota</span><input type="text" id="noteInput" placeholder="opzionale"></label>
+    <div class="field-row share-row" id="eventRow" role="button" tabindex="0" aria-haspopup="dialog" hidden><span class="lbl2">Evento<small id="eventHint"></small></span><span class="val" id="eventVal"></span></div>
     <div class="field-row share-row" id="payerRow" role="button" tabindex="0" aria-haspopup="dialog" hidden><span>Pagato da</span><span class="val" id="payerVal"></span></div>
     <div class="field-row share-row" id="splitRow" role="button" tabindex="0" aria-haspopup="dialog" hidden><span>Diviso con</span><span class="val" id="splitVal"></span></div>
   </div>
@@ -138,9 +139,7 @@
     <button role="tab" data-pane="events" aria-selected="false">Eventi</button>
   </div>
   <div class="share-pane" data-pane="people" id="peoplePane"></div>
-  <div class="share-pane" data-pane="events" hidden>
-    <div class="empty">Nessun evento.<br>Raggruppa le spese di vacanze, picnic e uscite.</div>
-  </div>
+  <div class="share-pane" data-pane="events" id="eventsPane" hidden></div>
 </section>
 
 <!-- SCHEDA PERSONA (RF-P3): contenuto disegnato da people-ui.js -->
@@ -148,6 +147,17 @@
   <div class="back-row"><button class="back-link" data-back="share">‹ Persone</button>
     <button class="more-btn" id="personMore" aria-label="Gestisci persona">⋯</button></div>
   <div id="personBody"></div>
+</section>
+
+<!-- EVENTO: scheda (RF-E5, RF-E6) e form (RF-E1…E3), disegnati da events-ui.js -->
+<section id="view-event" class="view" data-parent="share">
+  <div class="back-row"><button class="back-link" data-back="share">‹ Eventi</button>
+    <button class="more-btn" id="eventMore" aria-label="Gestisci evento">⋯</button></div>
+  <div id="eventBody"></div>
+</section>
+<section id="view-event-form" class="view" data-parent="share">
+  <button class="back-link" data-back="share">‹ Eventi</button>
+  <div id="eventForm"></div>
 </section>
 
 <!-- ALTRO: menu di voci, ognuna apre la sua pagina (RF-N3) -->
@@ -275,5 +285,6 @@
 <script src="app.js"></script>
 <script src="split-ui.js"></script>
 <script src="people-ui.js"></script>
+<script src="events-ui.js"></script>
 </body>
 </html>

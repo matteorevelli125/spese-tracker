@@ -2,11 +2,11 @@
 
 PWA per tracciare le spese personali. Nessun backend, nessun costo: i dati vivono in **IndexedDB sul dispositivo**.
 
-## Funzionalità (MVP)
+## Funzionalità
 
 - Inserimento rapido: importo → categoria → sottocategoria → salva (3 tap)
 - Categorie personalizzate (macro + sottocategorie) in `categories.js`
-- Movimenti raggruppati per giorno, eliminazione con tap
+- Movimenti raggruppati per giorno, con ricerca (anche per persona ed evento), 300 alla volta con «Mostra altri», modifica ed eliminazione
 - Statistiche per giorno / settimana / mese / anno, con:
   - confronto vs periodo precedente e (per il mese) vs stesso mese dell'anno scorso
   - ripartizione per categoria con drill-down nelle sottocategorie
@@ -21,6 +21,7 @@ PWA per tracciare le spese personali. Nessun backend, nessun costo: i dati vivon
 - Import backup JSON (v1 e v2) con scelta "Sostituisci tutto" / "Aggiungi" e copia di sicurezza prima di procedere
 - Copie di sicurezza automatiche sul dispositivo prima di ogni aggiornamento del database e di ogni import (Altro › Dati)
 - Offline completo via service worker, installabile come app (PWA)
+- Import dello storico da Wallet (BudgetBakers): [tools/wallet-export-console.js](tools/wallet-export-console.js)
 
 ## Uso
 
@@ -44,11 +45,20 @@ GitHub Pages: Settings → Pages → branch `main`, root. L'app sarà su
 ## Test
 
 ```sh
-node --test                      # test unitari (money.js, …): Node ≥ 20, nessuna dipendenza
+node --test                      # test unitari (money, ledger, sanitize): Node ≥ 20, nessuna dipendenza
 ```
 
-Golden test delle metriche (nessun numero deve cambiare tra `main` e un branch): vedi [tools/golden/README.md](tools/golden/README.md).
-Test end-to-end delle spese condivise sui dati reali, con verifica di tutte le sezioni: vedi [tools/e2e/README.md](tools/e2e/README.md).
+- **Golden test** delle metriche (nessun numero deve cambiare tra `main` e un branch): vedi [tools/golden/README.md](tools/golden/README.md).
+- **Test end-to-end** delle spese condivise sui dati reali, con la verifica di tutte le sezioni: vedi [tools/e2e/README.md](tools/e2e/README.md).
+- **Benchmark** al crescere dei record: vedi [tools/perf/bench.js](tools/perf/bench.js) e [docs/performance-assessment.md](docs/performance-assessment.md).
+
+## Sviluppo
+
+- [AGENTS.md](AGENTS.md): regole di progetto, comandi, mappa del codice e verifiche. È il punto di partenza per chi sviluppa, persona o agente AI. [CLAUDE.md](CLAUDE.md) lo importa per Claude Code, e `.claude/rules/` aggiunge le regole per tipo di file.
+- [docs/architettura.md](docs/architettura.md): moduli, database, flussi e ricette.
+- [docs/decisioni.md](docs/decisioni.md): le scelte di fondo e i loro motivi.
+- [docs/requisiti-condivise.md](docs/requisiti-condivise.md): regole di split, saldi, eventi e backup.
+- Rilascio: `./deploy.sh <branch>` unisce la PR su `main`, aggiorna la cache del service worker e controlla che il sito risponda.
 
 ## Backup
 

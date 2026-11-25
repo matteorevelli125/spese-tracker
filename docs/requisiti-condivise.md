@@ -1,7 +1,7 @@
 # Requisiti — Spese condivise, crediti ed eventi
 
 Stato: **confermato** (25/11/2026, RF-W3/RV-3 rivisti lo stesso giorno: pagato da altri con totale e divisione) · origine: sessione di grilling del 25/11/2026.
-Base per mockup e piano di sviluppo. Gli ID (`RC-…`, `RF-…`) servono per tracciare i requisiti nel piano e nei test.
+**Implementato e rilasciato** (v26–v30). Resta la fonte di verità per le regole di split, saldi, eventi e backup. Gli ID (`RC-…`, `RF-…`) servono per tracciare i requisiti nel piano e nei test.
 
 ---
 

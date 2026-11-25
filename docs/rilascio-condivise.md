@@ -2,6 +2,8 @@
 
 Riferimenti: [requisiti](requisiti-condivise.md) · [piano](piano-sviluppo-condivise.md) · [golden test](../tools/golden/README.md)
 
+> **Eseguito** il 25/11/2026 (v26). Resta il **modello** per ogni rilascio che cambia lo schema del DB: vedi la ricetta in [architettura](architettura.md#aggiungere-uno-store-o-un-indice-nuova-versione-dello-schema) e la decisione D13 in [decisioni](decisioni.md).
+
 Il rilascio è **uno solo** (D2). La PR `condivise → main` si unisce con `deploy.sh`, che aggiorna anche la cache del service worker. Al primo avvio la migrazione del DB v2 → v3 avviene una sola volta: aggiunge 3 store e **non riscrive nessun record**.
 
 ## Prima del rilascio (lo stesso giorno)

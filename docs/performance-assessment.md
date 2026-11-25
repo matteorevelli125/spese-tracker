@@ -73,7 +73,7 @@ Dataset sintetici realistici: circa 6% di entrate, 15% di spese condivise (un te
 ## Come verificare ogni intervento
 
 - **Golden test** (`tools/golden`): nessun numero deve cambiare.
-- **Scenario E2E** (`tools/e2e`): 968 controlli su tutte le sezioni.
+- **Scenario E2E** (`tools/e2e`): 992 controlli su tutte le sezioni.
 - **Benchmark** (`tools/perf/bench.js`): confronto prima e dopo, sugli stessi dataset.
 
 ## Interventi applicati (1 e 2) e risultati

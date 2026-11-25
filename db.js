@@ -1,6 +1,10 @@
 // Wrapper minimale su IndexedDB.
 const DB_NAME = 'spese-tracker';
-const DB_VERSION = 2;
+// VERSIONE DI RITORNO (rollback-v3): il codice è quello della v25, ma il DB sul
+// telefono è già alla v3 (spese condivise). Chiedere la v2 farebbe fallire l'apertura
+// con VersionError, quindi si chiede la v3. Gli store people/events/settlements
+// vengono creati se mancano e semplicemente ignorati: nessun dato viene toccato.
+const DB_VERSION = 3;
 let _db = null;
 
 function openDB() {
@@ -22,6 +26,11 @@ function openDB() {
       if (!db.objectStoreNames.contains('meta')) {
         db.createObjectStore('meta', { keyPath: 'key' });
       }
+      // Store della v3: creati vuoti se un telefono passa da qui senza essere mai
+      // stato aggiornato, così la versione nuova li ritrova quando viene ripubblicata.
+      ['people', 'events', 'settlements'].forEach(n => {
+        if (!db.objectStoreNames.contains(n)) db.createObjectStore(n, { keyPath: 'id' });
+      });
     };
     req.onsuccess = e => { _db = e.target.result; resolve(_db); };
     req.onerror = () => reject(req.error);

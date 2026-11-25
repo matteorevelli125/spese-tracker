@@ -119,7 +119,37 @@ const Ledger = (() => {
     return { expenses: expOut, events: evOut, settlements: stOut };
   }
 
-  return { normalize, validate, balances, totals, signFlips, mergePeople };
+  // Dal wizard al record (RF-W3…W7, RV-1…RV-4). Tutto in centesimi.
+  //   totalCents: importo digitato (pagato da me, oppure la mia quota se ha pagato un altro)
+  //   s: { payer, people: [personId], mode: 'equal'|'exact', notMe, exact: { personId: cents } }
+  // → { error } oppure { fields } con i campi da aggiungere al movimento.
+  //   Senza pagatore né persone: fields = { amount } e basta (record identico a prima).
+  function planSplit(totalCents, s = {}) {
+    if (!Number.isInteger(totalCents) || totalCents <= 0) return { error: 'total' };
+    if (s.payer) return { fields: { amount: M.fromCents(totalCents), paid: 0, payer: s.payer } };
+    const people = [...new Set(s.people || [])];
+    if (!people.length) return s.notMe ? { error: 'no-others' } : { fields: { amount: M.fromCents(totalCents) } };
+    let me, others;
+    if (s.mode === 'exact') {
+      others = people.map(id => ({ personId: id, cents: (s.exact && s.exact[id]) || 0 }));
+      if (others.some(o => !Number.isInteger(o.cents) || o.cents < 0)) return { error: 'amount' };
+      const sum = M.sum(others.map(o => o.cents));
+      if (sum > totalCents) return { error: 'over', sum };                          // RV-2
+      if (s.notMe && sum !== totalCents) return { error: 'notme-sum', sum };
+      me = totalCents - sum;
+    } else {
+      const r = M.splitEqual(totalCents, people.length, !s.notMe);
+      me = r.me;
+      others = people.map((id, i) => ({ personId: id, cents: r.others[i] }));
+    }
+    others = others.filter(o => o.cents > 0); // RV-4: quota 0 = fuori dallo split
+    if (!others.length) return me === totalCents && !s.notMe ? { fields: { amount: M.fromCents(totalCents) } } : { error: 'no-others' };
+    return { fields: { amount: M.fromCents(me), paid: M.fromCents(totalCents),
+      splits: others.map(o => ({ personId: o.personId, amount: M.fromCents(o.cents) })),
+      splitMode: s.mode === 'exact' ? 'exact' : 'equal' } };
+  }
+
+  return { normalize, validate, balances, totals, signFlips, mergePeople, planSplit };
 })();
 
 if (typeof module !== 'undefined' && module.exports) module.exports = Ledger;

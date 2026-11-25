@@ -33,6 +33,9 @@ const Split = (() => {
 
   // Preimposta chi ha pagato (scorciatoia "Ha pagato per me" dalla scheda persona, RF-P5).
   function setPayer(id) { st = fresh(); st.payer = id; render(); }
+  // Partecipanti di un evento in parti uguali (RF-W1, RF-W9).
+  function setPeople(ids) { st = fresh(); st.people = [...new Set(ids)]; render(); }
+  const isEmpty = () => !st.payer && !st.people.length;
 
   // Campi da salvare: { fields } oppure { error }. Per le entrate solo l'importo.
   function plan() {
@@ -281,5 +284,5 @@ const Split = (() => {
   $('#amountInput').addEventListener('input', () => { if (inUse()) render(); });
   render();
 
-  return { reset, load, setPayer, plan, isValid, usedPeople, note, render, confirmBalanceChange };
+  return { reset, load, setPayer, setPeople, isEmpty, plan, isValid, usedPeople, note, render, confirmBalanceChange };
 })();

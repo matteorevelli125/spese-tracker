@@ -185,3 +185,27 @@ test('isReferenced', () => {
   assert.equal(Ledger.isReferenced('zz', { expenses: marco, settlements: rimborsi }), false);
   assert.equal(Ledger.isReferenced('zz', { events: [{ participants: ['zz'] }] }), true);
 });
+
+// ---- eventi ----
+test('eventSummary: quota, cassa e categorie (mockup 5c)', () => {
+  const r = Ledger.eventSummary('sard', marco);
+  assert.equal(r.count, 4);
+  assert.equal(r.quota, 12500 + 2400 + 3500 + 13100);
+  assert.equal(r.paidByMe, 50000 + 9600 + 52400);
+  assert.equal(r.paidByOthers, 3500);
+  assert.equal(r.byCat.cibo.total, 2400 + 3500 + 12500 + 13100);
+  assert.deepEqual(Ledger.eventSummary('altro', marco), { quota: 0, paidByMe: 0, paidByOthers: 0, count: 0, byCat: {} });
+});
+
+test('eventsInProgress: date, giorno singolo, archiviati e senza date', () => {
+  const evs = [
+    { id: 'a', start: '2026-08-08', end: '2026-08-22' },
+    { id: 'b', start: '2026-12-06' },
+    { id: 'c' },
+    { id: 'd', start: '2026-08-01', end: '2026-08-31', archived: true },
+  ];
+  assert.deepEqual(Ledger.eventsInProgress(evs, '2026-08-12').map(e => e.id), ['a']);
+  assert.deepEqual(Ledger.eventsInProgress(evs, '2026-12-06').map(e => e.id), ['b']);
+  assert.deepEqual(Ledger.eventsInProgress(evs, '2026-08-22').map(e => e.id), ['a']);
+  assert.deepEqual(Ledger.eventsInProgress(evs, '2026-08-23').map(e => e.id), []);
+});

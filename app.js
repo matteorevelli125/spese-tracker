@@ -81,7 +81,7 @@ function showView(name) {
   if (name === 'recurring') renderRecurring();
   if (name === 'drive') renderDrive();
   if (name === 'settings') renderMoreMenu();
-  if (name === 'share' && typeof PeopleUI !== 'undefined') PeopleUI.renderList();
+  if (name === 'share' && typeof PeopleUI !== 'undefined') { PeopleUI.renderList(); EventsUI.renderList(); }
 }
 
 /* ---------- Altro: menu di voci (RF-N3) ---------- */
@@ -137,7 +137,8 @@ document.querySelectorAll('#typeToggle button').forEach(btn => {
     selCat = null; selSub = null;
     refreshAddTitles();
     renderCatGrid(); renderSubList(); updateSaveState();
-    Split.reset(); // RC-9: niente split sulle entrate
+    Split.reset(); // RC-9: niente split né evento sulle entrate
+    EventsUI.reset(); // tornando alle uscite: evento e partecipanti di nuovo
   });
 });
 
@@ -152,6 +153,7 @@ function resetAddForm() {
   refreshAddTitles();
   renderCatGrid(); renderSubList(); updateSaveState();
   if (typeof Split !== 'undefined') Split.reset();
+  if (typeof EventsUI !== 'undefined') EventsUI.reset(); // evento scelto in questa sessione o in corso oggi
 }
 
 // Apre il movimento in modifica nella schermata Aggiungi.
@@ -165,6 +167,7 @@ function startEdit(e) {
   showView('add');
   // Con uno split l'importo del wizard è il pagato; con un altro pagatore è la mia quota (RF-W11).
   $('#amountInput').value = String(Split.load(e)).replace('.', ',');
+  EventsUI.load(e);
   refreshAddTitles();
   renderCatGrid(); renderSubList(); updateSaveState();
 }
@@ -350,6 +353,9 @@ $('#saveBtn').addEventListener('click', async () => {
     ts: Date.now(),
     ...shared,
   };
+  // Evento (solo uscite, RC-9)
+  const eventId = income ? null : EventsUI.currentId();
+  if (eventId) record.eventId = eventId;
   if (Ledger.validate(record).length) { toast('Spesa non coerente: controlla gli importi'); return; }
   buzz();
   const used = Split.usedPeople();
@@ -374,7 +380,8 @@ $('#saveBtn').addEventListener('click', async () => {
   selSub = null;
   if (income) { selCat = null; renderCatGrid(); }
   renderSubList();
-  Split.reset(); // RF-W9: senza evento split e pagatore si azzerano
+  Split.reset(); // RF-W9: senza evento split e pagatore si azzerano…
+  EventsUI.afterSave(); // …con un evento restano evento, partecipanti e categoria predefinita
   updateSaveState();
 });
 
@@ -393,21 +400,23 @@ $('#deleteBtn').addEventListener('click', async () => {
 $('#searchInput').addEventListener('input', () => renderList());
 
 // Match semplice: sottocategoria, categoria, nota o importo contengono la query.
-function matchesQuery(e, q, people = new Map()) {
+function matchesQuery(e, q, people = new Map(), events = new Map()) {
   if (!q) return true;
   const c = isIncome(e) ? incomeCatById(e.cat) : catById(e.cat);
   // includo l'importo sia "grezzo" (18,9) sia a 2 decimali (18,90) per cercare in entrambi i modi
   const amt = `${String(e.amount).replace('.', ',')} ${e.amount.toFixed(2).replace('.', ',')}`;
   const who = [e.payer, ...(e.splits || []).map(s => s.personId)].filter(Boolean).map(id => (people.get(id) || {}).name || '').join(' ');
-  const hay = `${e.sub} ${c.name} ${e.note || ''} ${amt} ${who}`.toLowerCase();
+  const ev = e.eventId ? (events.get(e.eventId) || {}).name || '' : '';
+  const hay = `${e.sub} ${c.name} ${e.note || ''} ${amt} ${who} ${ev}`.toLowerCase();
   return hay.includes(q);
 }
 
 async function renderList() {
   const q = ($('#searchInput').value || '').trim().toLowerCase();
-  const people = await People.map();
+  const [people, evList] = await Promise.all([People.map(), DB.all('events')]);
+  const events = new Map(evList.map(ev => [ev.id, ev]));
   const all = (await DB.allExpenses())
-    .filter(e => matchesQuery(e, q, people))
+    .filter(e => matchesQuery(e, q, people, events))
     .sort((a, b) => b.date.localeCompare(a.date) || b.ts - a.ts);
   const wrap = $('#expList');
   wrap.innerHTML = '';
@@ -435,7 +444,8 @@ async function renderList() {
     // Spese condivise (RF-M1): importo = mia quota, sotto il pagato e i badge.
     // I movimenti normali restano identici a prima.
     const shared = !income && (e.payer || (e.splits && e.splits.length));
-    const tags = !shared ? '' : `<div class="meta">${e.payer
+    const ev = !income && e.eventId ? events.get(e.eventId) : null;
+    const tags = !shared && !ev ? '' : `<div class="meta">${ev ? `<span class="tag evt">${esc(ev.emoji)} ${esc(ev.name)}</span>` : ''}${!shared ? '' : e.payer
       ? `<span class="tag">pagato da ${esc((people.get(e.payer) || { name: 'Persona sconosciuta' }).name)}</span>`
       : `<span class="tag">${e.amount === 0 ? 'non partecipo · ' : ''}👥 ${e.splits.length}</span>`}</div>`;
     const amt = !shared ? `<span class="amt">${income ? '+' : ''}${fmt(e.amount)}</span>`

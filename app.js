@@ -66,16 +66,48 @@ document.querySelectorAll('nav button').forEach(btn => {
   });
 });
 function showView(name) {
+  const view = $(`#view-${name}`);
+  // Le pagine di Altro (budget, ricorrenti, Drive, dati) tengono attiva la tab Altro.
+  const tab = view.dataset.parent || name;
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b.dataset.view === name));
-  $(`#view-${name}`).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b.dataset.view === tab));
+  view.classList.add('active');
   const scroller = document.querySelector('.app-scroll');
   if (scroller) scroller.scrollTop = 0;
   if (name === 'list') renderList();
   if (name === 'stats') renderStats();
   if (name === 'budget') renderBudget();
-  if (name === 'settings') { renderRecurring(); renderDrive(); }
+  if (name === 'recurring') renderRecurring();
+  if (name === 'drive') renderDrive();
+  if (name === 'settings') renderMoreMenu();
 }
+
+/* ---------- Altro: menu di voci (RF-N3) ---------- */
+document.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => showView(b.dataset.open)));
+document.querySelectorAll('[data-back]').forEach(b => b.addEventListener('click', () => showView(b.dataset.back)));
+
+// Sottotitoli del menu con lo stato attuale di ogni voce.
+async function renderMoreMenu() {
+  const [budgets, rec, goal, last, granted] = await Promise.all([
+    DB.allBudgets(), DB.allRecurring(), DB.getMeta('savingsGoal'), lastBackupTime(), Drive.isGranted()]);
+  const parts = [];
+  if (budgets.length) parts.push(`${budgets.length} budget ${budgets.length === 1 ? 'mensile' : 'mensili'}`);
+  if (goal && goal.amount) parts.push(`obiettivo ${goal.label || 'di risparmio'}`);
+  $('#menuBudgetSub').textContent = parts.join(' · ') || 'budget mensili e obiettivo di risparmio';
+  $('#menuRecSub').textContent = rec.length ? `${rec.length} ${rec.length === 1 ? 'attiva' : 'attive'}` : 'nessuna: mensili e annuali, inserite in automatico';
+  const lastTxt = last ? `ultimo backup ${new Date(last).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' })}` : 'nessun backup ancora';
+  $('#menuDriveSub').textContent = granted ? lastTxt : `non collegato · ${lastTxt}`;
+}
+
+/* ---------- Condivise: Persone | Eventi (contenuto in F3–F5) ---------- */
+document.querySelectorAll('#shareSeg button').forEach(btn => btn.addEventListener('click', () => {
+  document.querySelectorAll('#shareSeg button').forEach(b => {
+    const on = b === btn;
+    b.classList.toggle('on', on);
+    b.setAttribute('aria-selected', String(on));
+  });
+  document.querySelectorAll('.share-pane').forEach(p => { p.hidden = p.dataset.pane !== btn.dataset.pane; });
+}));
 
 /* ---------- Inserimento ---------- */
 // I record hanno type 'expense' | 'income'; i record storici senza campo sono uscite.

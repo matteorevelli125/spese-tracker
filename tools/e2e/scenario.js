@@ -107,11 +107,19 @@ async function readBudget() {
   return { rows, total: parseEur($('#budgetSummary .amt').textContent) };
 }
 async function readCumulative() { await renderCumulative(); return parseEur($('#cumulativeChart .cum-head b').textContent); }
+// Apre Movimenti e usa "Mostra altri" finché il giorno non compare (o la lista finisce).
 async function readListDay(d) {
   $('#searchInput').value = '';
+  listLimit = LIST_PAGE;
   await renderList();
-  const h = $$('#expList .day-header').find(x => x.firstElementChild.textContent === dayLabel(d));
-  return h ? parseEur(h.lastElementChild.textContent) : null;
+  while (true) {
+    const h = $$('#expList .day-header').find(x => x.firstElementChild.textContent === dayLabel(d));
+    if (h) return parseEur(h.lastElementChild.textContent);
+    const more = $('#expList .list-more');
+    if (!more) return null;
+    more.click();
+    await sleep(150);
+  }
 }
 async function readDashboardMonth(m) {
   await renderYearDashboard();
@@ -168,10 +176,7 @@ async function checkAll() {
   }
   eq(b.total, o.budgets.reduce((a, x) => a + (cur.byCat[catName(x.cat)] || 0), 0), 'Budget: totale speso');
   eq(await readCumulative(), o.cumulative, 'Saldo cumulato');
-  // Movimenti mostra solo i 300 più recenti (limite dell'app): controllo i giorni visibili
-  const visible = new Set(o.exps.slice().sort((a, b) => b.date.localeCompare(a.date) || b.ts - a.ts).slice(0, 300).map(e => e.date));
   for (const d of touched.days) {
-    if (o.exps.some(e => e.date === d) && !visible.has(d)) continue;
     const v = await readListDay(d), want = o.day(d);
     const has = o.exps.some(e => e.date === d);
     ok(has ? v === want : v === null, `Movimenti ${d}: totale del giorno`, `atteso ${has ? want : 'giorno assente'}, trovato ${v}`);
@@ -499,6 +504,23 @@ export async function run() {
     const lines = csv.trim().split('\r\n');
     eq(lines.length - 1, (await DB.allExpenses()).length, 'righe CSV = movimenti');
     eq(lines[0].split(';').length, 11, 'colonne CSV');
+  });
+
+  await S('17b · Movimenti: "Mostra altri" fino in fondo, totali del giorno a cavallo delle pagine', async () => {
+    showView('list'); await sleep(300);
+    let pages = 1;
+    while ($('#expList .list-more')) { $('#expList .list-more').click(); await sleep(150); pages++; }
+    const o = await oracle();
+    eq($$('#expList .exp-item').length, o.exps.length, `tutti i movimenti visibili (${pages} pagine)`);
+    // ogni intestazione di giorno deve avere il totale di tutto il giorno
+    const byLabel = new Map([...new Set(o.exps.map(e => e.date))].map(x => [dayLabel(x), x]));
+    $$('#expList .day-header').forEach(h => {
+      const day = byLabel.get(h.firstElementChild.textContent);
+      if (day) eq(parseEur(h.lastElementChild.textContent), o.day(day), `totale del giorno ${day}`);
+    });
+    // il giorno a cavallo della prima pagina entra nei controlli successivi
+    const sorted = o.exps.slice().sort((a, b) => b.date.localeCompare(a.date) || b.ts - a.ts);
+    if (sorted[LIST_PAGE - 1]) touched.days.add(sorted[LIST_PAGE - 1].date);
   });
 
   await S('18 · Export v2 → "Sostituisci tutto": niente cambia', async () => {

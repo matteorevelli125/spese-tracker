@@ -41,4 +41,4 @@ Esporta il JSON dal telefono (**Altro → Esporta JSON**) e copialo in `private/
 - `seed.js` riscrive a mano il DB **locale** dell'origine di prova (`localhost:<porta>`), con lo schema v2 di produzione. Non tocca mai i dati del telefono.
 - `probe.js` legge gli interni di `app.js` (`periodOffset`, `drillCat`, funzioni `render*`). Se una fase li rinomina, va aggiornato nella stessa PR, mantenendo le stesse chiavi nello snapshot.
 - `make-fixture.mjs` rigenera `tests/fixtures/sample-backup.json` in modo deterministico.
-- Bug già presente in produzione, trovato con questo strumento: aprire il dettaglio di una categoria in Statistiche e poi passare a un periodo in cui quella categoria non ha spese manda in errore `renderCatBars`. Il probe per ora fa il dettaglio solo delle categorie presenti nel periodo.
+- Questo strumento ha trovato un bug in produzione: aprire il dettaglio di una categoria in Statistiche e poi passare a un periodo senza spese in quella categoria mandava in errore `renderCatBars`. È stato corretto nella v25 (#19). Il probe fa ancora il dettaglio solo delle categorie presenti nel periodo, così le chiavi degli snapshot restano le stesse.

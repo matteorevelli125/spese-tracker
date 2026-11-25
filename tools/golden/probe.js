@@ -57,7 +57,7 @@
         };
         if (type === 'month' || type === 'year') {
           // Solo le categorie con spese nel periodo: è ciò che l'utente può toccare.
-          // (Un drill su una categoria vuota manda in errore renderCatBars: bug noto, fuori da F0.)
+          // Dettaglio solo delle categorie presenti nel periodo (chiavi stabili; il crash su categoria vuota è corretto dalla v25).
           const r = periodRange(type, off);
           const present = new Set((await DB.expensesBetween(r.from, r.to)).filter(e => !isIncome(e)).map(e => e.cat));
           for (const c of CATEGORIES.filter(c => present.has(c.id))) {

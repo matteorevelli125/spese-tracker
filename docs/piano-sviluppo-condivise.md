@@ -1,7 +1,7 @@
 # Piano di sviluppo: Spese condivise, crediti ed eventi
 
 Riferimenti: [requisiti](requisiti-condivise.md) (gli ID RC-/RF-/RD- vengono da lì) · [mockup](mockup/condivise.html)
-Stato: **confermato** · 25/11/2026
+Stato: **completato e rilasciato** (v26, 25/11/2026). È un documento **storico**: per lo stato attuale vedi [architettura](architettura.md) e [decisioni](decisioni.md). Gli strumenti di §3 sono stati realizzati in [`tools/golden/`](../tools/golden/README.md), con nomi diversi da quelli previsti qui, e oggi esistono anche `node --test` e lo scenario E2E.
 
 ---
 

@@ -40,7 +40,8 @@ const CEL_MESSAGES = {
 function celebrate(kind, rec) {
   const el = $('#celebrate');
   const income = kind === 'godiment';
-  const where = income ? incomeCatById(rec.cat).name : `${catById(rec.cat).name} · ${rec.sub}`;
+  const extra = !income && typeof Split !== 'undefined' ? Split.note(rec) : '';
+  const where = (income ? incomeCatById(rec.cat).name : `${catById(rec.cat).name} · ${rec.sub}`) + (extra ? ` · ${extra}` : '');
   el.innerHTML = `<div class="cel-card ${kind}" role="alertdialog" aria-label="${income ? 'Entrata' : 'Spesa'} salvata">
     <div class="cel-head"><span>${income ? 'ENTRATA' : 'SPESA'} SALVATA</span><span class="cel-amount">${fmt(rec.amount)}</span></div>
     <div class="cel-msg">${CEL_MESSAGES[kind]()}</div>
@@ -135,6 +136,7 @@ document.querySelectorAll('#typeToggle button').forEach(btn => {
     selCat = null; selSub = null;
     refreshAddTitles();
     renderCatGrid(); renderSubList(); updateSaveState();
+    Split.reset(); // RC-9: niente split sulle entrate
   });
 });
 
@@ -148,6 +150,7 @@ function resetAddForm() {
   $('#dateInput').value = todayStr();
   refreshAddTitles();
   renderCatGrid(); renderSubList(); updateSaveState();
+  if (typeof Split !== 'undefined') Split.reset();
 }
 
 // Apre il movimento in modifica nella schermata Aggiungi.
@@ -156,10 +159,11 @@ function startEdit(e) {
   setType(isIncome(e) ? 'income' : 'expense');
   selCat = e.cat;
   selSub = isIncome(e) ? null : e.sub;
-  $('#amountInput').value = String(e.amount).replace('.', ',');
   $('#noteInput').value = e.note || '';
   $('#dateInput').value = e.date;
   showView('add');
+  // Con uno split l'importo del wizard è il pagato; con un altro pagatore è la mia quota (RF-W11).
+  $('#amountInput').value = String(Split.load(e)).replace('.', ',');
   refreshAddTitles();
   renderCatGrid(); renderSubList(); updateSaveState();
 }
@@ -322,14 +326,19 @@ function parseAmount(str) {
   return isFinite(v) && v > 0 ? Math.round(v * 100) / 100 : null;
 }
 function updateSaveState() {
-  const ok = parseAmount($('#amountInput').value) && selCat && (selType === 'income' || selSub);
+  const ok = parseAmount($('#amountInput').value) && selCat && (selType === 'income' || selSub) &&
+    (typeof Split === 'undefined' || Split.isValid());
   $('#saveBtn').disabled = !ok;
 }
 $('#amountInput').addEventListener('input', updateSaveState);
 
 $('#saveBtn').addEventListener('click', async () => {
-  const amount = parseAmount($('#amountInput').value);
   const income = selType === 'income';
+  // Importo, pagato, pagatore e quote dal wizard (Ledger.planSplit). Senza split il
+  // record è identico a prima: { date, amount, type, cat, sub, note, ts }.
+  const plan = Split.plan();
+  if (plan.error) { toast('Controlla la divisione della spesa'); return; }
+  const { amount, ...shared } = plan.fields;
   const record = {
     date: $('#dateInput').value || todayStr(),
     amount,
@@ -338,30 +347,40 @@ $('#saveBtn').addEventListener('click', async () => {
     sub: income ? incomeCatById(selCat).name : selSub,
     note: $('#noteInput').value.trim(),
     ts: Date.now(),
+    ...shared,
   };
+  if (Ledger.validate(record).length) { toast('Spesa non coerente: controlla gli importi'); return; }
   buzz();
+  const used = Split.usedPeople();
   if (editingId !== null) {
+    // RF-S2: se un saldo cambia segno chiedo conferma mostrando prima e dopo.
+    if (!(await Split.confirmBalanceChange(editingId, { ...record, id: editingId }))) return;
     await DB.putExpense({ ...record, id: editingId });
+    await People.touch(used);
     toast('Movimento aggiornato');
     resetAddForm();
     showView('list');
     return;
   }
   await DB.addExpense(record);
+  await People.touch(used);
+  const extra = Split.note(record);
   if (income) celebrate('godiment', record);
   else if (amount > 30) celebrate(pickAffanno(), record);
-  else toast(`Salvato: ${fmt(amount)} — ${selSub}`);
+  else toast(`Salvato: ${fmt(amount)} — ${selSub}${extra ? ` (${extra})` : ''}`);
   $('#amountInput').value = '';
   $('#noteInput').value = '';
   selSub = null;
   if (income) { selCat = null; renderCatGrid(); }
   renderSubList();
+  Split.reset(); // RF-W9: senza evento split e pagatore si azzerano
   updateSaveState();
 });
 
 $('#deleteBtn').addEventListener('click', async () => {
   if (editingId === null) return;
   if (confirm('Eliminare questo movimento?')) {
+    if (!(await Split.confirmBalanceChange(editingId, null))) return; // RF-S2
     await DB.deleteExpense(editingId);
     toast('Movimento eliminato');
     resetAddForm();
@@ -373,19 +392,21 @@ $('#deleteBtn').addEventListener('click', async () => {
 $('#searchInput').addEventListener('input', () => renderList());
 
 // Match semplice: sottocategoria, categoria, nota o importo contengono la query.
-function matchesQuery(e, q) {
+function matchesQuery(e, q, people = new Map()) {
   if (!q) return true;
   const c = isIncome(e) ? incomeCatById(e.cat) : catById(e.cat);
   // includo l'importo sia "grezzo" (18,9) sia a 2 decimali (18,90) per cercare in entrambi i modi
   const amt = `${String(e.amount).replace('.', ',')} ${e.amount.toFixed(2).replace('.', ',')}`;
-  const hay = `${e.sub} ${c.name} ${e.note || ''} ${amt}`.toLowerCase();
+  const who = [e.payer, ...(e.splits || []).map(s => s.personId)].filter(Boolean).map(id => (people.get(id) || {}).name || '').join(' ');
+  const hay = `${e.sub} ${c.name} ${e.note || ''} ${amt} ${who}`.toLowerCase();
   return hay.includes(q);
 }
 
 async function renderList() {
   const q = ($('#searchInput').value || '').trim().toLowerCase();
+  const people = await People.map();
   const all = (await DB.allExpenses())
-    .filter(e => matchesQuery(e, q))
+    .filter(e => matchesQuery(e, q, people))
     .sort((a, b) => b.date.localeCompare(a.date) || b.ts - a.ts);
   const wrap = $('#expList');
   wrap.innerHTML = '';
@@ -410,9 +431,17 @@ async function renderList() {
     const c = income ? incomeCatById(e.cat) : catById(e.cat);
     const item = document.createElement('div');
     item.className = 'exp-item' + (income ? ' income' : '');
+    // Spese condivise (RF-M1): importo = mia quota, sotto il pagato e i badge.
+    // I movimenti normali restano identici a prima.
+    const shared = !income && (e.payer || (e.splits && e.splits.length));
+    const tags = !shared ? '' : `<div class="meta">${e.payer
+      ? `<span class="tag">pagato da ${esc((people.get(e.payer) || { name: 'Persona sconosciuta' }).name)}</span>`
+      : `<span class="tag">${e.amount === 0 ? 'non partecipo · ' : ''}👥 ${e.splits.length}</span>`}</div>`;
+    const amt = !shared ? `<span class="amt">${income ? '+' : ''}${fmt(e.amount)}</span>`
+      : `<span class="amtcol"><span class="amt${e.amount === 0 ? ' zero' : ''}">${fmt(e.amount)}</span><small>${e.payer ? 'dal conto 0,00 €' : `pagati ${fmt(e.paid)}`}</small></span>`;
     item.innerHTML = `<span class="ico">${c.icon}</span>
-      <div class="info"><div class="cat">${esc(e.sub)}</div><div class="note">${esc(c.name)}${e.note ? ' · ' + esc(e.note) : ''}</div></div>
-      <span class="amt">${income ? '+' : ''}${fmt(e.amount)}</span>`;
+      <div class="info"><div class="cat">${esc(e.sub)}</div><div class="note">${esc(c.name)}${e.note ? ' · ' + esc(e.note) : ''}</div>${tags}</div>
+      ${amt}`;
     item.addEventListener('click', () => startEdit(e)); // tap = modifica (elimina dentro il form)
     dayCard.appendChild(item);
   });
@@ -1244,12 +1273,21 @@ async function exportData(format) {
     filename = `spese-backup-${todayStr()}.json`;
     await DB.setMeta('lastExportAt', new Date().toISOString()); // per il promemoria backup
   } else {
-    const expenses = await DB.allExpenses();
+    const [expenses, people, events] = await Promise.all([DB.allExpenses(), People.map(), DB.all('events')]);
+    const evName = new Map(events.map(ev => [ev.id, ev.name]));
+    const who = id => (people.get(id) || { name: 'Persona sconosciuta' }).name;
+    const num = n => String(n).replace('.', ',');
     const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-    const rows = [['data', 'tipo', 'importo', 'categoria', 'sottocategoria', 'nota']];
+    // `importo` resta la mia quota (coerente con le metriche); `tua quota` la ripete per chiarezza.
+    const rows = [['data', 'tipo', 'importo', 'categoria', 'sottocategoria', 'nota', 'pagato', 'tua quota', 'pagato da', 'diviso con', 'evento']];
     expenses.sort((a, b) => a.date.localeCompare(b.date))
-      .forEach(e => rows.push([e.date, isIncome(e) ? 'entrata' : 'uscita', String(e.amount).replace('.', ','),
-        (isIncome(e) ? incomeCatById(e.cat) : catById(e.cat)).name, e.sub, e.note]));
+      .forEach(e => {
+        const n = Ledger.normalize(e);
+        rows.push([e.date, isIncome(e) ? 'entrata' : 'uscita', num(e.amount),
+          (isIncome(e) ? incomeCatById(e.cat) : catById(e.cat)).name, e.sub, e.note,
+          num(n.paid), num(e.amount), e.payer ? who(e.payer) : 'io',
+          n.splits.map(s => `${who(s.personId)} ${num(s.amount)}`).join(' | '), e.eventId ? (evName.get(e.eventId) || '') : '']);
+      });
     blob = new Blob(['﻿' + rows.map(r => r.map(esc).join(';')).join('\r\n')], { type: 'text/csv' });
     filename = `spese-${todayStr()}.csv`;
   }

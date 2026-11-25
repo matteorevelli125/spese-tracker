@@ -107,3 +107,55 @@ test('mergePeople: somma le quote, sposta pagatore, rimborsi e partecipanti (RF-
 test('mergePeople: unione su sé stessi rifiutata', () => {
   assert.throws(() => Ledger.mergePeople({}, 'a', 'a'));
 });
+
+// ---- planSplit: dal wizard al record ----
+const base = { date: '2026-08-11', type: 'expense', cat: 'cibo', sub: 'Ristorante', note: '', ts: 1 };
+const rec = (total, s) => { const r = Ledger.planSplit(total, s); return r.error ? r : { ...base, ...r.fields }; };
+
+test('planSplit: senza persone il record resta quello di prima', () => {
+  assert.deepEqual(Ledger.planSplit(1250, {}), { fields: { amount: 12.5 } });
+  assert.deepEqual(Ledger.planSplit(1250, { people: [] }), { fields: { amount: 12.5 } });
+});
+
+test('planSplit: parti uguali (1a, 2a dei mockup)', () => {
+  const r = rec(8000, { people: ['gi'] });
+  assert.deepEqual([r.amount, r.paid, r.splits, r.splitMode], [40, 80, [{ personId: 'gi', amount: 40 }], 'equal']);
+  const r2 = rec(10000, { people: ['gi', 'ma'] });
+  assert.equal(r2.amount, 33.34);
+  assert.deepEqual(r2.splits.map(s => s.amount), [33.33, 33.33]);
+  assert.deepEqual(Ledger.validate(r2), []);
+});
+
+test('planSplit: non partecipo', () => {
+  const r = rec(3000, { people: ['lu'], notMe: true });
+  assert.deepEqual([r.amount, r.paid, r.splits], [0, 30, [{ personId: 'lu', amount: 30 }]]);
+  assert.deepEqual(Ledger.validate(r), []);
+  assert.deepEqual(Ledger.planSplit(3000, { people: [], notMe: true }), { error: 'no-others' });
+});
+
+test('planSplit: importi esatti, residuo a me, errori (RV-2)', () => {
+  const r = rec(10000, { people: ['gi', 'ma'], mode: 'exact', exact: { gi: 4500, ma: 2000 } });
+  assert.deepEqual([r.amount, r.splitMode], [35, 'exact']);
+  assert.deepEqual(Ledger.validate(r), []);
+  assert.deepEqual(Ledger.planSplit(10000, { people: ['gi', 'ma'], mode: 'exact', exact: { gi: 4500, ma: 7000 } }), { error: 'over', sum: 11500 });
+  // somma = totale → mia quota 0, come "non partecipo"
+  assert.equal(rec(10000, { people: ['gi'], mode: 'exact', exact: { gi: 10000 } }).amount, 0);
+  assert.deepEqual(Ledger.planSplit(10000, { people: ['gi'], mode: 'exact', exact: { gi: 9000 }, notMe: true }), { error: 'notme-sum', sum: 9000 });
+});
+
+test('planSplit: quota 0 di un altro lo toglie dallo split (RV-4)', () => {
+  const r = rec(10000, { people: ['gi', 'ma'], mode: 'exact', exact: { gi: 2500 } });
+  assert.deepEqual(r.splits, [{ personId: 'gi', amount: 25 }]);
+  assert.deepEqual(rec(5000, { people: ['gi'], mode: 'exact', exact: {} }), { ...base, amount: 50 });
+});
+
+test('planSplit: pagato da un altro (RC-7)', () => {
+  const r = rec(3500, { payer: 'ma', people: ['gi'] });
+  assert.deepEqual([r.amount, r.paid, r.payer, r.splits], [35, 0, 'ma', undefined]);
+  assert.deepEqual(Ledger.validate(r), []);
+});
+
+test('planSplit: totale non valido', () => {
+  assert.deepEqual(Ledger.planSplit(0, {}), { error: 'total' });
+  assert.deepEqual(Ledger.planSplit(12.5, {}), { error: 'total' });
+});

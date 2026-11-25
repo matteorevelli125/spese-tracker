@@ -39,7 +39,7 @@
     </div>
   </div>
   <div class="amount-wrap">
-    <div class="amount-label">Importo</div>
+    <div class="amount-label" id="amountLabel">Importo</div>
     <input id="amountInput" type="text" inputmode="decimal" placeholder="0,00 €" autocomplete="off">
   </div>
   <div class="section-label">CATEGORIA</div>
@@ -51,7 +51,10 @@
   <div class="field-list">
     <label class="field-row"><span>Data</span><input type="date" id="dateInput"></label>
     <label class="field-row"><span>Nota</span><input type="text" id="noteInput" placeholder="opzionale"></label>
+    <div class="field-row share-row" id="payerRow" role="button" tabindex="0" aria-haspopup="dialog" hidden><span>Pagato da</span><span class="val" id="payerVal"></span></div>
+    <div class="field-row share-row" id="splitRow" role="button" tabindex="0" aria-haspopup="dialog" hidden><span>Diviso con</span><span class="val" id="splitVal"></span></div>
   </div>
+  <div class="split-summary" id="splitSummary" aria-live="polite" hidden></div>
   <button class="btn-primary" id="saveBtn" disabled>Salva spesa</button>
   <button class="btn-danger-link" id="deleteBtn" style="display:none;width:100%;margin-top:12px;padding:10px">Elimina movimento</button>
 </section>
@@ -59,7 +62,7 @@
 <!-- MOVIMENTI -->
 <section id="view-list" class="view">
   <h1 class="page-title">Movimenti</h1>
-  <input type="search" id="searchInput" placeholder="Cerca (categoria, nota, importo)…" autocomplete="off">
+  <input type="search" id="searchInput" placeholder="Cerca (categoria, nota, importo, persona)…" autocomplete="off">
   <div id="expList"></div>
 </section>
 
@@ -260,8 +263,11 @@
 <script src="ledger.js"></script>
 <script src="sanitize.js"></script>
 <script src="backup.js"></script>
+<script src="ui.js"></script>
+<script src="people.js"></script>
 <script src="drive-config.js"></script>
 <script src="drive.js"></script>
 <script src="app.js"></script>
+<script src="split-ui.js"></script>
 </body>
 </html>

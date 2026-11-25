@@ -406,7 +406,7 @@ function matchesQuery(e, q, people = new Map(), events = new Map()) {
   const c = isIncome(e) ? incomeCatById(e.cat) : catById(e.cat);
   // includo l'importo sia "grezzo" (18,9) sia a 2 decimali (18,90) per cercare in entrambi i modi
   const amt = `${String(e.amount).replace('.', ',')} ${e.amount.toFixed(2).replace('.', ',')}`;
-  const who = [e.payer, ...(e.splits || []).map(s => s.personId)].filter(Boolean).map(id => (people.get(id) || {}).name || '').join(' ');
+  const who = [e.payer, ...(e.splits || []).map(s => s.personId), ...(e.shareWith || [])].filter(Boolean).map(id => (people.get(id) || {}).name || '').join(' ');
   const ev = e.eventId ? (events.get(e.eventId) || {}).name || '' : '';
   const hay = `${e.sub} ${c.name} ${e.note || ''} ${amt} ${who} ${ev}`.toLowerCase();
   return hay.includes(q);

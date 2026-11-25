@@ -244,3 +244,45 @@ test('mergePeople e isReferenced considerano shareWith', () => {
   assert.deepEqual(r2.expenses[0].shareWith, ['gi']);
   assert.deepEqual(Ledger.validate(r2.expenses[0]), []);
 });
+
+// ---- calcoli in un solo passaggio: stessi risultati di quelli per singola persona/evento ----
+function randomData(seedStart) {
+  let seed = seedStart;
+  const rnd = () => { seed = (seed * 1103515245 + 12345) & 0x7fffffff; return seed / 0x7fffffff; };
+  const ids = ['a', 'b', 'c', 'd', 'e'], evs = ['e1', 'e2', 'e3'];
+  const expenses = [];
+  for (let i = 0; i < 400; i++) {
+    const date = `2026-${String(1 + Math.floor(rnd() * 12)).padStart(2, '0')}-${String(1 + Math.floor(rnd() * 28)).padStart(2, '0')}`;
+    const amount = Math.round(rnd() * 10000) / 100 + 1;
+    const e = { id: i, date, amount, type: rnd() < 0.08 ? 'income' : 'expense', cat: ['cibo', 'svago', 'viaggi'][i % 3], sub: 'X', note: '', ts: Math.floor(rnd() * 5) };
+    if (e.type === 'expense' && rnd() < 0.5) {
+      if (rnd() < 0.4) Object.assign(e, { payer: ids[i % 5], paid: 0, payerTotal: amount * 2 });
+      else Object.assign(e, { splits: [{ personId: ids[i % 5], amount: 3 }, { personId: ids[(i + 2) % 5], amount: 2 }], paid: amount + 5 });
+      if (rnd() < 0.6) e.eventId = evs[i % 3];
+    }
+    expenses.push(e);
+  }
+  const settlements = Array.from({ length: 30 }, (_, i) => ({ id: 's' + i, personId: ids[i % 5], direction: i % 3 ? 'in' : 'out', amount: 7, date: expenses[i * 7].date, ts: i % 4 }));
+  return { expenses, settlements, ids, evs };
+}
+
+test('eventSummaries = eventSummary per ogni evento', () => {
+  for (const seedStart of [1, 2, 3]) {
+    const { expenses, evs } = randomData(seedStart);
+    const all = Ledger.eventSummaries(expenses);
+    for (const id of evs) assert.deepEqual(all.get(id), Ledger.eventSummary(id, expenses), `${seedStart}/${id}`);
+    assert.equal(all.get('nessuno'), undefined);
+  }
+});
+
+test('lastActivities = timeline(id)[0] per ogni persona (anche a parità di data e ts)', () => {
+  for (const seedStart of [1, 2, 3, 4]) {
+    const { expenses, settlements, ids } = randomData(seedStart);
+    const last = Ledger.lastActivities(expenses, settlements);
+    for (const id of ids) {
+      const t = Ledger.timeline(id, expenses, settlements)[0];
+      const l = last.get(id);
+      assert.deepEqual([l.kind, l.date, l.ts, (l.expense || l.settlement).id], [t.kind, t.date, t.ts, (t.expense || t.settlement).id], `${seedStart}/${id}`);
+    }
+  }
+});

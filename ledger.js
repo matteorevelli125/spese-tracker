@@ -233,13 +233,52 @@ const Ledger = (() => {
     return out;
   }
 
+  // Riepiloghi di TUTTI gli eventi in un solo passaggio (elenco Eventi): stesso risultato
+  // di eventSummary(id) per ogni evento, ma O(movimenti) invece di O(eventi × movimenti).
+  function eventSummaries(expenses) {
+    const out = new Map();
+    for (const raw of expenses) {
+      if (isIncome(raw) || !raw.eventId) continue;
+      const e = normalize(raw);
+      let s = out.get(raw.eventId);
+      if (!s) out.set(raw.eventId, (s = { quota: 0, paidByMe: 0, paidByOthers: 0, count: 0, byCat: {} }));
+      const q = c(e.amount);
+      s.count++;
+      s.quota += q;
+      if (e.payer) s.paidByOthers += q; else s.paidByMe += c(e.paid);
+      const k = s.byCat[e.cat] || (s.byCat[e.cat] = { total: 0, subs: {} });
+      k.total += q;
+      k.subs[e.sub] = (k.subs[e.sub] || 0) + q;
+    }
+    return out;
+  }
+
+  // Ultima voce dello storico di ogni persona in un solo passaggio (elenco Persone):
+  // stesso risultato di timeline(id)[0], senza ricostruire lo storico di ciascuno.
+  function lastActivities(expenses, settlements = []) {
+    const out = new Map();
+    const later = (a, b) => !b || a.date > b.date || (a.date === b.date && a.ts >= b.ts);
+    const offer = (id, item) => { if (later(item, out.get(id))) out.set(id, item); };
+    for (const raw of expenses) {
+      if (isIncome(raw)) continue;
+      const e = normalize(raw);
+      const ts = e.ts || 0;
+      if (e.payer) offer(e.payer, { kind: 'paid-for-me', date: e.date, ts, expense: raw });
+      else for (const s of e.splits) offer(s.personId, { kind: 'advance', date: e.date, ts, expense: raw });
+    }
+    for (const s of settlements) {
+      offer(s.personId, { kind: s.direction === 'out' ? 'repaid' : 'refund', date: s.date, ts: s.ts || 0, settlement: s });
+    }
+    return out;
+  }
+
   // Eventi attivi in corso alla data `day` (AAAA-MM-GG): start ≤ day ≤ end (senza end: un giorno).
   // Gli eventi senza date non sono mai "in corso".
   const inProgress = (ev, day) => !ev.archived && !!ev.start && ev.start <= day && day <= (ev.end || ev.start);
   const eventsInProgress = (events, day) => events.filter(ev => inProgress(ev, day));
 
   return { normalize, validate, balances, totals, signFlips, mergePeople, planSplit, timeline, isReferenced,
-    eventSummary, inProgress, eventsInProgress };
+    eventSummary, eventSummaries, lastActivities, inProgress, eventsInProgress };
 })();
 
 if (typeof module !== 'undefined' && module.exports) module.exports = Ledger;

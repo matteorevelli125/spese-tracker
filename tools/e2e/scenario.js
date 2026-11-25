@@ -286,6 +286,24 @@ export async function run() {
 
   await S('0 · Base: dati reali senza modifiche', async () => {});
 
+  await S('0b · Statistiche dalla barra: viste globali all\'apertura, stabili con ‹ / ›', async () => {
+    // svuoto le tre viste globali per accorgermi se l'apertura non le ridisegna
+    ['#cumulativeChart', '#dashKpi', '#insightWrap', '#tblMonthly'].forEach(sel => { $(sel).innerHTML = ''; });
+    $('nav button[data-view=stats]').click(); await sleep(900);
+    const o = await oracle();
+    eq(parseEur($('#cumulativeChart .cum-head b')?.textContent), o.cumulative, 'saldo cumulato disegnato all\'apertura');
+    ok($('#dashKpi').textContent.trim().length > 0 && $$('#tblMonthly tbody tr').length > 0, 'cruscotto disegnato all\'apertura');
+    ok($('#insightWrap').innerHTML.trim().length > 0, 'insight disegnati all\'apertura');
+    const snap = () => ['#cumulativeChart', '#dashKpi', '#tblMonthly', '#insightWrap'].map(sel => $(sel).textContent).join('|');
+    const before = snap(), label0 = $('#periodLabel').textContent;
+    $('#prevPeriod').click(); await sleep(400);
+    ok($('#periodLabel').textContent !== label0, 'periodo cambiato', $('#periodLabel').textContent);
+    eq(snap(), before, 'viste globali invariate dopo ‹');
+    $('#nextPeriod').click(); await sleep(400);
+    eq($('#periodLabel').textContent, label0, 'tornato al periodo corrente');
+    showView('add');
+  });
+
   let s1, s2, s3, s5, s7, s8;
   await S('1 · Spesa normale (controllo)', async () => {
     await W.fresh(); W.amount('12,5'); await W.cat('cibo', 'Bar e caffè'); W.note('E2E caffè');

@@ -18,8 +18,9 @@ const PeopleUI = (() => {
       DB.all('people'), DB.allExpenses(), DB.all('settlements'), DB.all('events')]);
     return { people, expenses, settlements, events, bal: Ledger.balances(expenses, settlements) };
   }
+  // d.last: ultima voce di ogni persona, calcolata una volta per tutto l'elenco (O(movimenti))
   const lastActivity = (id, d) => {
-    const t = Ledger.timeline(id, d.expenses, d.settlements)[0];
+    const t = (d.last || (d.last = Ledger.lastActivities(d.expenses, d.settlements))).get(id);
     if (!t) return 'nessun movimento';
     const what = t.settlement ? (t.kind === 'refund' ? 'rimborso' : 'restituito') : (t.expense.note || t.expense.sub);
     return `ultimo: ${shortDate(t.date)} · ${what}`;

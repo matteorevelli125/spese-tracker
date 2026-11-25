@@ -122,8 +122,10 @@ const EventsUI = (() => {
   async function renderList() {
     await load();
     const [exps, people] = await Promise.all([DB.allExpenses(), People.map()]);
+    const sums = Ledger.eventSummaries(exps); // tutti gli eventi in un solo passaggio
+    const empty = { quota: 0 };
     const card = ev => {
-      const sum = Ledger.eventSummary(ev.id, exps);
+      const sum = sums.get(ev.id) || empty;
       const avs = ev.participants.slice(0, 6).map(id => UI.avatar(people.get(id) || { id, name: '?' }, true)).join('');
       return `<button class="event-card${ev.archived ? ' archived' : ''}" data-id="${UI.esc(ev.id)}"><span class="ev-ico">${UI.esc(ev.emoji)}</span>
         <span class="info"><span class="t">${UI.esc(ev.name)}${Ledger.inProgress(ev, todayStr()) ? ' <span class="live">IN CORSO</span>' : ''}</span>

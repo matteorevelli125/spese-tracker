@@ -76,7 +76,7 @@ function showView(name) {
   const scroller = document.querySelector('.app-scroll');
   if (scroller) scroller.scrollTop = 0;
   if (name === 'list') { listLimit = LIST_PAGE; renderList(); }
-  if (name === 'stats') renderStats();
+  if (name === 'stats') { renderStats(); renderStatsGlobals(); }
   if (name === 'budget') renderBudget();
   if (name === 'recurring') renderRecurring();
   if (name === 'drive') renderDrive();
@@ -576,6 +576,12 @@ async function renderStats() {
   renderFilterChips();
   renderCatBars(cur);
   renderTrend(type, r, cur);
+}
+
+// Saldo cumulato, cruscotto annuale e insight NON dipendono dal periodo, dal filtro o
+// dal dettaglio scelti: si calcolano all'apertura di Statistiche, non a ogni ‹ / ›
+// (ognuno rilegge tutti i movimenti: vedi docs/performance-assessment.md).
+function renderStatsGlobals() {
   renderCumulative();
   renderYearDashboard();
   renderInsights();

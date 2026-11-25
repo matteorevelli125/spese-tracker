@@ -533,7 +533,10 @@ function renderCatBars(list) {
     });
   }
   groups.sort((a, b) => b.amount - a.amount);
-  const max = groups[0].amount;
+  // Dettaglio di una categoria senza spese nel periodo (ci si arriva cambiando
+  // periodo con il dettaglio aperto): stato vuoto, "← indietro" resta attivo.
+  if (!groups.length) wrap.innerHTML = `<div class="empty">Nessuna spesa in ${esc(catById(drillCat).name)} nel periodo.</div>`;
+  const max = groups.length ? groups[0].amount : 0;
   groups.forEach(g => {
     const row = document.createElement('div');
     row.className = 'hbar-row';

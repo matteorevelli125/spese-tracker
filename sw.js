@@ -7,7 +7,7 @@
 // "Nuova versione pronta · Aggiorna" e la versione nuova si usa da quel momento
 // o dall'apertura successiva. Una pagina carica sempre file di una sola versione:
 // mai un misto di vecchio e nuovo (che con lo schema del DB sarebbe pericoloso).
-const CACHE = 'spese-v29';
+const CACHE = 'spese-v30';
 const ASSETS = ['.', 'index.html', 'style.css', 'app.js', 'snapshots.js', 'db.js', 'money.js', 'ledger.js', 'sanitize.js', 'backup.js', 'ui.js', 'people.js', 'split-ui.js', 'people-ui.js', 'events-ui.js', 'categories.js', 'drive-config.js', 'drive.js', 'manifest.webmanifest', 'favicon.png', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png'];
 
 self.addEventListener('install', e => {

@@ -1538,8 +1538,31 @@ async function maybeBackupReminder() {
 }
 
 /* ---------- Aggiornamento del database (RD-10) ---------- */
-// Un'altra scheda con la versione vecchia tiene aperto il DB: l'aggiornamento aspetta.
-window.addEventListener('db-blocked', () => toast("Chiudi le altre schede dell'app per completare l'aggiornamento"));
+// Un'altra istanza con la versione vecchia (l'app rimasta aperta in background o una
+// scheda di Chrome con il sito) tiene aperto il DB: l'aggiornamento aspetta e ogni
+// lettura dei dati resta in sospeso. Schermata fissa finché non si sblocca da solo.
+window.addEventListener('db-blocked', () => {
+  if ($('#dbBlocked')) return;
+  const el = document.createElement('div');
+  el.id = 'dbBlocked';
+  el.className = 'sheet-backdrop dialog-backdrop';
+  el.innerHTML = `<div class="dialog" role="alertdialog" aria-modal="true" aria-label="Aggiornamento in attesa">
+    <h3>Aggiornamento in attesa ⏳</h3>
+    <div class="dialog-body"><p>Un'altra finestra dell'app usa ancora la versione precedente e blocca l'aggiornamento.
+      <b>I tuoi dati non sono stati toccati.</b></p>
+      <p style="margin-top:10px">Chiudi le altre finestre: dalle <b>app recenti</b> chiudi Spese e anche le <b>schede di Chrome</b> con il sito.
+      Questa schermata si sblocca da sola appena l'aggiornamento riparte.</p></div>
+  </div>`;
+  document.body.appendChild(el);
+});
+window.addEventListener('db-unblocked', () => {
+  const el = $('#dbBlocked');
+  if (el) el.remove();
+  const v = document.querySelector('.view.active');
+  if (v) showView(v.id.replace(/^view-/, '')); // ridisegna con i dati
+  if (typeof EventsUI !== 'undefined') EventsUI.reset();
+  toast('Aggiornamento completato'); // il popup "App aggiornata" arriva dalla chiamata dell'avvio, rimasta in attesa
+});
 // Un'altra scheda ha aggiornato il DB: questa ha già chiuso la connessione, va ricaricata.
 window.addEventListener('db-versionchange', () => {
   if (confirm("L'app è stata aggiornata in un'altra scheda. Ricaricare ora?")) location.reload();
@@ -1552,7 +1575,7 @@ window.addEventListener('db-versionchange', () => {
 // la salva anche come file nei Download (senza tocco il browser può bloccarlo).
 async function maybeShowUpgradeNotice() {
   const n = await DB.getMeta('upgradeNotice');
-  if (!n || n.shown) return;
+  if (!n || n.shown || document.querySelector('.update-dialog')) return;
   const snap = n.filename ? await Snapshots.latest('pre-upgrade') : null;
   const ok = snap && snap.filename === n.filename;
   const granted = await Drive.isGranted();

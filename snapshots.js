@@ -41,9 +41,22 @@ const Snapshots = (() => {
     return list.sort((a, b) => b.id - a.id)[0] || null;
   }
 
-  // Salva un file nei Download. Va chiamata DENTRO il gestore di un tocco: senza
-  // gesto dell'utente il browser può bloccare il download (decisione D1).
+  // Salva il file. Va chiamata DENTRO il gestore di un tocco: senza gesto il browser
+  // può bloccarla (decisione D1). Dove si può (Android, anche nell'app installata)
+  // usa la condivisione, come l'export JSON: il download diretto da un'app installata
+  // non è affidabile. Se la condivisione viene annullata o fallisce, scarica.
   function download(filename, json) {
+    try {
+      const file = new File([json], filename, { type: 'application/json' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({ files: [file], title: filename }).catch(() => anchorDownload(filename, json));
+        return;
+      }
+    } catch (e) { /* File o share non disponibili: download diretto */ }
+    anchorDownload(filename, json);
+  }
+
+  function anchorDownload(filename, json) {
     const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
     const a = document.createElement('a');
     a.href = url;

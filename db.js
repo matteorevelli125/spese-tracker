@@ -171,6 +171,23 @@ const DB = {
     }
   })),
 
+  // Più scritture in UNA transazione (es. unione di persone, RF-P10): tutto o niente.
+  //   { put: { store: [record] }, del: { store: [id] } }
+  applyChanges: ({ put = {}, del = {} }) => openDB().then(db => new Promise((resolve, reject) => {
+    const stores = [...new Set([...Object.keys(put), ...Object.keys(del)])];
+    if (!stores.length) return resolve();
+    const t = db.transaction(stores, 'readwrite');
+    t.oncomplete = resolve;
+    t.onabort = () => reject(t.error || new Error('operazione annullata'));
+    try {
+      Object.entries(put).forEach(([n, recs]) => recs.forEach(r => t.objectStore(n).put(r)));
+      Object.entries(del).forEach(([n, ids]) => ids.forEach(id => t.objectStore(n).delete(id)));
+    } catch (err) {
+      t.onabort = () => reject(err);
+      t.abort();
+    }
+  })),
+
   // Import "Aggiungi" (come prima per movimenti/ricorrenti: nuovi id) + persone,
   // eventi e rimborsi aggiornati per id (RD-7). Anche questo in una transazione.
   appendAll: data => openDB().then(db => new Promise((resolve, reject) => {

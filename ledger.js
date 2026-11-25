@@ -108,6 +108,9 @@ const Ledger = (() => {
           acc.set(id, (acc.get(id) || 0) + c(s.amount));
         }
         next.splits = [...acc].map(([personId, cents]) => ({ personId, amount: M.fromCents(cents) }));
+        // Due quote fuse in una: "parti uguali" ricalcolerebbe importi diversi alla prossima
+        // modifica, quindi la spesa passa a importi esatti (i valori restano quelli di oggi).
+        if (next.splits.length < e.splits.length) next.splitMode = 'exact';
         changed = true;
       }
       if (changed) expOut.push(next);
@@ -149,7 +152,39 @@ const Ledger = (() => {
       splitMode: s.mode === 'exact' ? 'exact' : 'equal' } };
   }
 
-  return { normalize, validate, balances, totals, signFlips, mergePeople, planSplit };
+  // Storico di una persona con il saldo progressivo (RF-P3), dal più recente.
+  // kind: 'advance' (ho pagato io, sua quota) · 'paid-for-me' (ha pagato lei, mia quota)
+  //       'refund' (mi ha restituito) · 'repaid' (le ho restituito). cents: effetto sul saldo.
+  function timeline(personId, expenses, settlements = []) {
+    const items = [];
+    for (const raw of expenses) {
+      if (isIncome(raw)) continue;
+      const e = normalize(raw);
+      if (e.payer === personId) items.push({ kind: 'paid-for-me', date: e.date, ts: e.ts || 0, cents: -c(e.amount), expense: raw });
+      else {
+        const s = e.splits.find(x => x.personId === personId);
+        if (s) items.push({ kind: 'advance', date: e.date, ts: e.ts || 0, cents: c(s.amount), expense: raw });
+      }
+    }
+    for (const s of settlements) {
+      if (s.personId !== personId) continue;
+      const out = s.direction === 'out';
+      items.push({ kind: out ? 'repaid' : 'refund', date: s.date, ts: s.ts || 0, cents: out ? c(s.amount) : -c(s.amount), settlement: s });
+    }
+    items.sort((a, b) => a.date.localeCompare(b.date) || a.ts - b.ts);
+    let run = 0;
+    for (const it of items) { run += it.cents; it.balance = run; }
+    return items.reverse();
+  }
+
+  // La persona compare in qualche movimento, rimborso o evento? (RF-P9: niente cancellazione)
+  function isReferenced(personId, { expenses = [], settlements = [], events = [] }) {
+    return expenses.some(e => e.payer === personId || (e.splits || []).some(s => s.personId === personId)) ||
+      settlements.some(s => s.personId === personId) ||
+      events.some(ev => (ev.participants || []).includes(personId));
+  }
+
+  return { normalize, validate, balances, totals, signFlips, mergePeople, planSplit, timeline, isReferenced };
 })();
 
 if (typeof module !== 'undefined' && module.exports) module.exports = Ledger;

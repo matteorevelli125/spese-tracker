@@ -695,3 +695,56 @@ select { appearance: none; }
 .exp-item .amtcol { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
 .exp-item .amtcol small { font: 600 10.5px/1 'Manrope'; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .exp-item .amt.zero { color: var(--muted); }
+
+/* ---------- Condivise › Persone (F4) ---------- */
+.owe-card { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 14px; margin-bottom: 18px; border-radius: var(--radius-lg);
+  background: var(--surface); border: var(--stroke) solid var(--ink); box-shadow: var(--block-shadow); }
+.owe-card > div { display: flex; flex-direction: column; gap: 6px; padding: 12px; border-radius: 12px; background: var(--card); }
+.owe-card .lbl { font: 800 10px/1 'Manrope'; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.owe-card b { font: 800 22px/1 'Manrope'; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.pos { color: var(--accent); }
+.neg { color: var(--danger); }
+.person-list { background: var(--surface); border: var(--stroke) solid var(--line); border-radius: 16px; overflow: hidden; }
+.person-row, .tl-row { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; text-align: left;
+  background: none; border: none; color: var(--text); font: inherit; cursor: pointer; }
+.person-row + .person-row, .tl-row + .tl-row { border-top: 1px solid var(--divider); }
+.person-row.zero { opacity: .55; }
+.person-row .info, .tl-row .info { flex: 1; min-width: 0; }
+.person-row b, .tl-row b { display: block; font: 800 14px/1.15 'Manrope'; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.person-row small, .tl-row .info small { display: block; margin-top: 2px; font: 600 11.5px/1.3 'Manrope'; color: var(--muted); }
+.person-row .r, .tl-row .r { text-align: right; font: 800 14px/1 'Manrope'; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.person-row .r small { display: block; margin-top: 4px; font: 700 10px/1 'Manrope'; letter-spacing: .04em; text-transform: uppercase; }
+.tl-row .r small { display: block; margin-top: 4px; font: 600 10.5px/1 'Manrope'; color: var(--muted); }
+.tl-row .ico { width: 36px; height: 36px; border-radius: 11px; background: var(--card); flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center; font-size: 16px; }
+.tl-row .tag { margin-top: 5px; }
+.person-row .chev { color: var(--faint); font: 800 16px/1 'Manrope'; }
+.person-row:active, .tl-row:active { background: var(--card); }
+.btn-secondary.wide { width: 100%; margin-top: 14px; }
+.collapse-row { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 22px; padding: 14px 16px;
+  border-radius: 16px; border: var(--stroke) dashed var(--line); background: none; color: var(--muted); font: 800 13.5px/1 'Manrope'; cursor: pointer; }
+.collapse-row + .person-list { margin-top: 10px; }
+.back-row { display: flex; align-items: center; justify-content: space-between; }
+.more-btn { width: 36px; height: 36px; border-radius: 10px; border: var(--stroke) solid var(--line); background: var(--surface);
+  color: var(--text); font: 800 16px/1 'Manrope'; cursor: pointer; }
+.person-hero { display: flex; flex-direction: column; gap: 6px; padding: 16px; margin-top: 6px; border-radius: var(--radius-lg);
+  background: var(--surface); border: var(--stroke) solid var(--ink); box-shadow: var(--block-shadow); }
+.person-hero .who { display: flex; align-items: center; gap: 10px; font: 800 18px/1.1 'Manrope'; }
+.person-hero .lbl { margin-top: 6px; font: 700 12.5px/1 'Manrope'; color: var(--muted); }
+.person-hero .big { font: 800 36px/1.05 'Manrope'; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.person-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.person-actions .btn-primary { grid-column: 1 / -1; margin-top: 0; height: 48px; }
+.person-actions .btn-secondary { font-size: 12.5px; }
+.btn-secondary:disabled { opacity: .4; cursor: default; }
+.amount-box { margin-top: 14px; padding: 10px 14px 12px; border-radius: var(--radius-lg); background: var(--surface);
+  border: var(--stroke) solid var(--ink); box-shadow: var(--block-shadow); }
+.amount-box .l { font: 700 12px/1.2 'Manrope'; color: var(--muted); }
+.amount-input { width: 100%; border: none; background: transparent; color: var(--text); outline: none; text-align: center;
+  font: 800 36px/1.1 'Manrope'; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.amount-input::placeholder { color: var(--faint); }
+.quick-row { display: flex; gap: 8px; margin-top: 10px; }
+.quick-row .chip { flex: 1; }
+.sheet .field-list { margin-top: 12px; }
+.row-select { width: 60%; height: auto; padding: 0; border: none; background: transparent; text-align: right; text-align-last: right;
+  color: var(--text); font: 700 14px/1 'Manrope'; }
+.sheet-cancel.danger, .pick-row.danger b { color: var(--danger); }

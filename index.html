@@ -137,12 +137,17 @@
     <button role="tab" data-pane="people" class="on" aria-selected="true">Persone</button>
     <button role="tab" data-pane="events" aria-selected="false">Eventi</button>
   </div>
-  <div class="share-pane" data-pane="people">
-    <div class="empty">Nessuna persona ancora.<br>Quando dividi una spesa con qualcuno, qui vedrai chi ti deve cosa.</div>
-  </div>
+  <div class="share-pane" data-pane="people" id="peoplePane"></div>
   <div class="share-pane" data-pane="events" hidden>
     <div class="empty">Nessun evento.<br>Raggruppa le spese di vacanze, picnic e uscite.</div>
   </div>
+</section>
+
+<!-- SCHEDA PERSONA (RF-P3): contenuto disegnato da people-ui.js -->
+<section id="view-person" class="view" data-parent="share">
+  <div class="back-row"><button class="back-link" data-back="share">‹ Persone</button>
+    <button class="more-btn" id="personMore" aria-label="Gestisci persona">⋯</button></div>
+  <div id="personBody"></div>
 </section>
 
 <!-- ALTRO: menu di voci, ognuna apre la sua pagina (RF-N3) -->
@@ -269,5 +274,6 @@
 <script src="drive.js"></script>
 <script src="app.js"></script>
 <script src="split-ui.js"></script>
+<script src="people-ui.js"></script>
 </body>
 </html>

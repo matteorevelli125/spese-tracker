@@ -3,7 +3,7 @@
 // "Rete" deve voler dire davvero rete: senza `cache` esplicito anche le fetch del
 // worker passano dalla cache HTTP del browser, che può tenere per minuti i file
 // della versione precedente (GitHub Pages manda max-age=600).
-const CACHE = 'spese-v26';
+const CACHE = 'spese-v27';
 const ASSETS = ['.', 'index.html', 'style.css', 'app.js', 'snapshots.js', 'db.js', 'money.js', 'ledger.js', 'sanitize.js', 'backup.js', 'ui.js', 'people.js', 'split-ui.js', 'people-ui.js', 'events-ui.js', 'categories.js', 'drive-config.js', 'drive.js', 'manifest.webmanifest', 'favicon.png', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png'];
 
 self.addEventListener('install', e => {

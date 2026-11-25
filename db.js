@@ -52,6 +52,7 @@ function openDB() {
     try { upgrade = await snapshotBeforeUpgrade(); }
     catch (err) { upgrade = { error: String(err && err.message || err) }; }
 
+    let wasBlocked = false;
     const db = await new Promise((resolve, reject) => {
       const req = indexedDB.open(DB_NAME, DB_VERSION);
       req.onupgradeneeded = e => {
@@ -69,7 +70,7 @@ function openDB() {
         if (!d.objectStoreNames.contains('settlements')) d.createObjectStore('settlements', { keyPath: 'id' });
       };
       // RD-10: una scheda con la versione vecchia tiene aperto il DB.
-      req.onblocked = () => window.dispatchEvent(new Event('db-blocked'));
+      req.onblocked = () => { wasBlocked = true; window.dispatchEvent(new Event('db-blocked')); };
       req.onsuccess = () => resolve(req.result);
       req.onerror = () => reject(req.error);
     });
@@ -91,6 +92,8 @@ function openDB() {
       });
     }
     _db = db;
+    // L'attesa è finita (l'altra istanza si è chiusa): la UI può ridisegnarsi.
+    if (wasBlocked) setTimeout(() => window.dispatchEvent(new Event('db-unblocked')), 0);
     return db;
   })();
   _opening.catch(() => { _opening = null; });

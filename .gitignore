@@ -1,2 +1,4 @@
 .DS_Store
 node_modules/
+# Dati reali e fotografie delle metriche: non escono mai dal Mac
+private/

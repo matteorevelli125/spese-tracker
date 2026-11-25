@@ -1203,13 +1203,13 @@ async function applyRecurring() {
 
 /* ---------- Export / Import ---------- */
 async function exportData(format) {
-  const [expenses, budgets, recurring] = await Promise.all([DB.allExpenses(), DB.allBudgets(), DB.allRecurring()]);
   let blob, filename;
   if (format === 'json') {
-    blob = new Blob([JSON.stringify({ version: 1, exported: new Date().toISOString(), expenses, budgets, recurring }, null, 2)], { type: 'application/json' });
+    blob = new Blob([JSON.stringify(await buildBackup(), null, 2)], { type: 'application/json' });
     filename = `spese-backup-${todayStr()}.json`;
     await DB.setMeta('lastExportAt', new Date().toISOString()); // per il promemoria backup
   } else {
+    const expenses = await DB.allExpenses();
     const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
     const rows = [['data', 'tipo', 'importo', 'categoria', 'sottocategoria', 'nota']];
     expenses.sort((a, b) => a.date.localeCompare(b.date))

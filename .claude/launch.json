@@ -1,6 +1,39 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "spese", "runtimeExecutable": "python3", "runtimeArgs": ["-m", "http.server", "8123"], "port": 8123 }
+    {
+      "name": "spese",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8123"
+      ],
+      "port": 8123
+    },
+    {
+      "name": "golden-main",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/golden/server.mjs",
+        "--root",
+        "private/main-wt",
+        "--port",
+        "8131"
+      ],
+      "port": 8131
+    },
+    {
+      "name": "golden-branch",
+      "runtimeExecutable": "node",
+      "runtimeArgs": [
+        "tools/golden/server.mjs",
+        "--root",
+        ".",
+        "--port",
+        "8132"
+      ],
+      "port": 8132
+    }
   ]
 }

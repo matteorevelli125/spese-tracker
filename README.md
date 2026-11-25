@@ -33,6 +33,14 @@ Su Android: apri l'URL in Chrome → menu → "Aggiungi a schermata Home".
 GitHub Pages: Settings → Pages → branch `main`, root. L'app sarà su
 `https://matteorevelli125.github.io/spese-tracker/`.
 
+## Test
+
+```sh
+node --test                      # test unitari (money.js, …): Node ≥ 20, nessuna dipendenza
+```
+
+Golden test delle metriche (nessun numero deve cambiare tra `main` e un branch): vedi [tools/golden/README.md](tools/golden/README.md).
+
 ## Backup
 
 I dati stanno solo sul dispositivo: esporta periodicamente il JSON da **Altro → Esporta JSON**.

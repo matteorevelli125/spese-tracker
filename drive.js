@@ -106,12 +106,8 @@ const Drive = (() => {
     return id;
   }
 
-  async function buildDump() {
-    const [expenses, budgets, recurring] = await Promise.all([
-      DB.allExpenses(), DB.allBudgets(), DB.allRecurring(),
-    ]);
-    return { version: 1, exported: new Date().toISOString(), source: 'spese-tracker', expenses, budgets, recurring };
-  }
+  // Stesso contenuto dell'export JSON (backup.js), con l'origine in intestazione.
+  const buildDump = () => buildBackup({ source: 'spese-tracker' });
 
   async function uploadBackup(folderId, filename, jsonString) {
     const boundary = '----spese' + Date.now();

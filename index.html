@@ -48,6 +48,8 @@
     <div class="section-label" id="subLabel">SOTTOCATEGORIA</div>
     <div class="sub-list" id="subList"></div>
   </div>
+  <!-- Salva sopra il riquadro dei dettagli: sempre visibile senza scorrere -->
+  <button class="btn-primary" id="saveBtn" disabled>Salva spesa</button>
   <div class="field-list">
     <label class="field-row"><span>Data</span><input type="date" id="dateInput"></label>
     <label class="field-row"><span>Nota</span><input type="text" id="noteInput" placeholder="opzionale"></label>
@@ -56,7 +58,6 @@
     <div class="field-row share-row" id="splitRow" role="button" tabindex="0" aria-haspopup="dialog" hidden><span>Diviso con</span><span class="val" id="splitVal"></span></div>
   </div>
   <div class="split-summary" id="splitSummary" aria-live="polite" hidden></div>
-  <button class="btn-primary" id="saveBtn" disabled>Salva spesa</button>
   <button class="btn-danger-link" id="deleteBtn" style="display:none;width:100%;margin-top:12px;padding:10px">Elimina movimento</button>
 </section>
 

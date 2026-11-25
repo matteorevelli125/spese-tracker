@@ -2,7 +2,9 @@
 // Caricato DOPO app.js: usa $, fmt, selType, parseAmount, updateSaveState.
 // Il calcolo vero (centesimi, resto a me, validazioni) è in Ledger.planSplit.
 const Split = (() => {
-  const fresh = () => ({ payer: null, people: [], mode: 'equal', notMe: false, exact: {} });
+  // payer: chi ha pagato (null = io) · people: con chi divido (con un altro pagatore: gli
+  // altri partecipanti oltre a me e a lui) · exactMe: mia quota scritta a mano se ha pagato un altro
+  const fresh = () => ({ payer: null, people: [], mode: 'equal', notMe: false, exact: {}, exactMe: 0 });
   let st = fresh();
   let names = new Map(); // id → persona, per i riepiloghi (aggiornata a ogni render)
 
@@ -19,8 +21,14 @@ const Split = (() => {
   function load(e) {
     st = fresh();
     if (e.type !== 'income') {
-      if (e.payer) st.payer = e.payer;
-      else if (Array.isArray(e.splits) && e.splits.length) {
+      if (e.payer) {
+        // Ha pagato un altro: l'importo del wizard è il totale che ha pagato (RF-W3 rivisto).
+        // I record precedenti non hanno il totale: si riaprono con la mia quota "a mano".
+        st.payer = e.payer;
+        st.people = Array.isArray(e.shareWith) ? [...e.shareWith] : [];
+        st.mode = e.payerTotal != null && e.splitMode !== 'exact' ? 'equal' : 'exact';
+        if (st.mode === 'exact') st.exactMe = Money.toCents(e.amount);
+      } else if (Array.isArray(e.splits) && e.splits.length) {
         st.people = e.splits.map(s => s.personId);
         st.mode = e.splitMode === 'exact' ? 'exact' : 'equal';
         st.notMe = e.amount === 0;
@@ -28,7 +36,7 @@ const Split = (() => {
       }
     }
     render();
-    return e.payer ? e.amount : (e.paid != null ? e.paid : e.amount);
+    return e.payer ? (e.payerTotal != null ? e.payerTotal : e.amount) : (e.paid != null ? e.paid : e.amount);
   }
 
   // Preimposta chi ha pagato (scorciatoia "Ha pagato per me" dalla scheda persona, RF-P5).
@@ -36,6 +44,13 @@ const Split = (() => {
   // Partecipanti di un evento in parti uguali (RF-W1, RF-W9).
   function setPeople(ids) { st = fresh(); st.people = [...new Set(ids)]; render(); }
   const isEmpty = () => !st.payer && !st.people.length;
+  // Partecipanti di un evento se non ho ancora scelto con chi dividere: anche quando
+  // ha pagato un altro ("Diviso tra"), pagatore escluso perché è già contato.
+  function applyEventPeople(ids) {
+    if (st.people.length || (st.payer && st.mode === 'exact')) return;
+    st.people = [...new Set(ids)].filter(id => id !== st.payer);
+    render();
+  }
 
   // Campi da salvare: { fields } oppure { error }. Per le entrate solo l'importo.
   function plan() {
@@ -43,7 +58,7 @@ const Split = (() => {
     return Ledger.planSplit(totalCents(), st);
   }
   const isValid = () => { const p = plan(); return !p.error || p.error === 'total'; };
-  const usedPeople = () => (st.payer ? [st.payer] : st.people);
+  const usedPeople = () => (st.payer ? [st.payer, ...st.people] : st.people);
 
   // Testo breve per conferme e toast: "pagati 80,00 €" / "pagato da Marco".
   function note(rec) {
@@ -57,6 +72,8 @@ const Split = (() => {
     'notme-sum': p => `Con "Non partecipo" le quote devono fare ${money(totalCents())} (ora ${money(p.sum)}).`,
     'no-others': () => 'Scegli almeno una persona con cui dividere.',
     amount: () => 'Controlla gli importi delle quote.',
+    'my-share': () => 'Scrivi la tua quota.',
+    'my-share-over': () => `La tua quota supera il totale pagato (${money(totalCents())}).`,
   };
 
   // ---------- righe del wizard ----------
@@ -64,19 +81,28 @@ const Split = (() => {
     names = await People.map();
     const exp = isExpense();
     $('#payerRow').hidden = !exp;
-    $('#splitRow').hidden = !exp || !!st.payer;          // RV-3
+    $('#splitRow').hidden = !exp;
+    // Con un altro pagatore la riga diventa "Diviso tra" (io, lui e gli altri partecipanti)
+    $('#splitRow').querySelector('span').textContent = st.payer ? 'Diviso tra' : 'Diviso con';
     $('#payerRow').classList.toggle('sel', !!st.payer);
-    $('#splitRow').classList.toggle('sel', st.people.length > 0);
+    $('#splitRow').classList.toggle('sel', st.people.length > 0 || !!st.payer);
     $('#payerVal').innerHTML = st.payer
       ? `${UI.avatar(names.get(st.payer) || { id: st.payer, name: '?' }, true)} ${UI.esc(nameOf(st.payer))} <span class="chev">›</span>`
       : 'Io <span class="chev">›</span>';
     $('#payerVal').classList.toggle('on', true);
     const ppl = st.people.map(id => names.get(id) || { id, name: '?' });
-    $('#splitVal').innerHTML = ppl.length
-      ? `${ppl.slice(0, 3).map(p => UI.avatar(p, true)).join('')} ${UI.esc(ppl.length <= 2 ? ppl.map(p => p.name).join(', ') : `${ppl.length} persone`)} <span class="chev">›</span>`
-      : 'nessuno <span class="chev">›</span>';
-    $('#splitVal').classList.toggle('on', ppl.length > 0);
-    $('#amountLabel').textContent = !exp ? 'Importo' : st.payer ? 'La tua quota' : st.people.length ? 'Importo pagato' : 'Importo';
+    if (st.payer) {
+      const all = [names.get(st.payer) || { id: st.payer, name: '?' }, ...ppl];
+      $('#splitVal').innerHTML = st.mode === 'exact' ? `tua quota a mano <span class="chev">›</span>`
+        : `${UI.avatarMe(true)}${all.slice(0, 3).map(p => UI.avatar(p, true)).join('')} ${UI.esc(all.length <= 2 ? `tu, ${all.map(p => p.name).join(', ')}` : `${all.length + 1} persone`)} <span class="chev">›</span>`;
+    } else {
+      $('#splitVal').innerHTML = ppl.length
+        ? `${ppl.slice(0, 3).map(p => UI.avatar(p, true)).join('')} ${UI.esc(ppl.length <= 2 ? ppl.map(p => p.name).join(', ') : `${ppl.length} persone`)} <span class="chev">›</span>`
+        : 'nessuno <span class="chev">›</span>';
+    }
+    $('#splitVal').classList.toggle('on', ppl.length > 0 || !!st.payer);
+    $('#amountLabel').textContent = !exp ? 'Importo' : st.payer ? `Totale pagato da ${nameOf(st.payer)}`
+      : st.people.length ? 'Importo pagato' : 'Importo';
 
     const sum = $('#splitSummary');
     sum.classList.remove('err');
@@ -88,7 +114,9 @@ const Split = (() => {
         sum.classList.add('err');
         sum.innerHTML = `<span>${UI.esc(ERR[p.error] ? ERR[p.error](p) : 'Divisione non valida')}</span>`;
       } else if (st.payer) {
-        sum.innerHTML = `<span>dal tuo conto <b>0,00 €</b></span><span>saldo ${UI.esc(nameOf(st.payer))} −${money(totalCents())}</span>`;
+        const mine = p.fields ? Money.toCents(p.fields.amount) : 0;
+        const how = st.mode === 'exact' ? 'quota a mano' : `${st.people.length + 2} parti uguali`;
+        sum.innerHTML = `<span>dal tuo conto <b>0,00 €</b> · ${how}</span><span>tua quota <b>${money(mine)}</b></span>`;
       } else {
         const how = st.mode === 'exact' ? 'importi esatti' : st.notMe ? `diviso tra ${st.people.length}, non partecipi`
           : `diviso in ${st.people.length + 1} parti uguali`;
@@ -106,13 +134,17 @@ const Split = (() => {
     const balTxt = id => { const c = bal.get(id) || 0; return c > 0 ? `ti deve ${money(c)}` : c < 0 ? `devi ${money(-c)}` : 'in pari'; };
     const s = UI.sheet(`
       <h3>Chi ha pagato?</h3>
-      <div class="sheet-sub">Se ha pagato un'altra persona, l'importo è solo la tua quota.</div>
+      <div class="sheet-sub">Se ha pagato un'altra persona, inserisci il totale che ha pagato: la tua quota la calcolo io (o la scrivi tu).</div>
       <input type="text" class="pick-search" placeholder="Cerca o aggiungi persona…" autocomplete="off" aria-label="Cerca persona">
       <div class="pick-list" role="listbox"></div>`, { label: 'Chi ha pagato?' });
     const list = s.root.querySelector('.pick-list'), q = s.root.querySelector('.pick-search');
     const choose = id => {
-      st.payer = id;
-      if (id) { st.people = []; st.notMe = false; st.exact = {}; st.mode = 'equal'; }
+      const prev = st.payer;
+      // I partecipanti restano (es. quelli dell'evento): il nuovo pagatore esce dall'elenco,
+      // quello precedente (se torno a "Io") ci rientra.
+      let ppl = st.people.filter(x => x !== id);
+      if (prev && prev !== id && !ppl.includes(prev)) ppl = [prev, ...ppl];
+      st = { ...fresh(), payer: id, people: ppl };
       s.close();
       render();
     };
@@ -142,25 +174,27 @@ const Split = (() => {
     const draft = JSON.parse(JSON.stringify(st));
     let people = await People.recent();
     const total = totalCents();
+    const P = draft.payer; // con un altro pagatore il pannello è "Diviso tra"
     const s = UI.sheet(`
-      <h3>Diviso con</h3>
-      <div class="sheet-sub">${total ? `Totale pagato ${money(total)}` : 'Inserisci l\'importo per vedere le quote'}</div>
+      <h3>${P ? 'Diviso tra' : 'Diviso con'}</h3>
+      <div class="sheet-sub">${!total ? 'Inserisci l\'importo per vedere le quote'
+        : P ? `Totale pagato da ${UI.esc(nameOf(P))}: ${money(total)}. Conta solo la tua quota.` : `Totale pagato ${money(total)}`}</div>
       <input type="text" class="pick-search" placeholder="Cerca o aggiungi persona…" autocomplete="off" aria-label="Cerca o aggiungi persona">
       <div class="pick-suggest"></div>
       <div class="chips"></div>
       <div class="opt-list">
-        <label class="opt-row"><span>Importi esatti<small>altrimenti parti uguali</small></span><input type="checkbox" class="switch" data-opt="exact"></label>
-        <label class="opt-row"><span>Non partecipo<small>anticipo puro: la tua quota è 0</small></span><input type="checkbox" class="switch" data-opt="notMe"></label>
+        <label class="opt-row"><span>${P ? 'Scrivo la mia quota' : 'Importi esatti'}<small>altrimenti parti uguali</small></span><input type="checkbox" class="switch" data-opt="exact"></label>
+        ${P ? '' : '<label class="opt-row"><span>Non partecipo<small>anticipo puro: la tua quota è 0</small></span><input type="checkbox" class="switch" data-opt="notMe"></label>'}
       </div>
       <div class="split-rows"></div>
       <div class="sheet-warn" data-err hidden></div>
       <button class="btn-primary" data-ok>Conferma</button>
-      <button class="sheet-cancel" data-cancel>${st.people.length ? 'Togli la divisione' : 'Annulla'}</button>`, { label: 'Diviso con' });
+      <button class="sheet-cancel" data-cancel>${st.people.length || (P && st.mode === 'exact') ? (P ? 'Solo io e ' + UI.esc(nameOf(P)) : 'Togli la divisione') : 'Annulla'}</button>`, { label: P ? 'Diviso tra' : 'Diviso con' });
     const R = sel => s.root.querySelector(sel);
     const q = R('.pick-search'), sug = R('.pick-suggest'), chips = R('.chips'), rows = R('.split-rows'), err = R('[data-err]'), ok = R('[data-ok]');
     const byId = () => new Map(people.map(p => [p.id, p]));
     R('[data-opt=exact]').checked = draft.mode === 'exact';
-    R('[data-opt=notMe]').checked = draft.notMe;
+    if (R('[data-opt=notMe]')) R('[data-opt=notMe]').checked = draft.notMe;
 
     const toggle = id => {
       const i = draft.people.indexOf(id);
@@ -169,14 +203,14 @@ const Split = (() => {
     };
     const paintChips = () => {
       const m = byId();
-      const shown = [...new Set([...draft.people, ...people.slice(0, 10).map(p => p.id)])].map(id => m.get(id)).filter(Boolean);
+      const shown = [...new Set([...draft.people, ...people.slice(0, 10).map(p => p.id)])].filter(id => id !== P).map(id => m.get(id)).filter(Boolean);
       chips.innerHTML = shown.map(p => `<button class="chip${draft.people.includes(p.id) ? ' selected' : ''}" data-id="${UI.esc(p.id)}" aria-pressed="${draft.people.includes(p.id)}">
         ${UI.avatar(p, true)}${UI.esc(p.name)}</button>`).join('') || '<div class="pick-hint">Scrivi un nome per aggiungere la prima persona.</div>';
     };
     const paintSuggest = () => {
       const k = q.value.trim().toLocaleLowerCase('it-IT');
       if (!k) { sug.innerHTML = ''; return; }
-      const matches = people.filter(p => p.name.toLocaleLowerCase('it-IT').includes(k)).slice(0, 5);
+      const matches = people.filter(p => p.id !== P && p.name.toLocaleLowerCase('it-IT').includes(k)).slice(0, 5);
       const exact = people.find(p => p.name.toLocaleLowerCase('it-IT') === k);
       sug.innerHTML = matches.map(p => `<button class="pick-row" data-id="${UI.esc(p.id)}">${UI.avatar(p, true)}<span class="info"><b>${UI.esc(p.name)}</b></span>${draft.people.includes(p.id) ? '<span class="tick">✓</span>' : ''}</button>`).join('') +
         (exact ? '' : `<button class="pick-row create" data-create="1">＋ Crea "${UI.esc(q.value.trim())}"</button>`);
@@ -185,6 +219,21 @@ const Split = (() => {
     // si scrive (perderebbero il focus): si aggiornano solo residuo ed errore.
     const paintRows = () => {
       const m = byId();
+      if (P) { // io + pagatore + altri: le quote degli altri sono solo informative (RC-8)
+        const row = (p, q, extra = '') => `<div class="split-row">${UI.avatar(p, true)}<span class="nm">${UI.esc(p.name)}${extra}</span><span class="q">${q}</span></div>`;
+        const payer = m.get(P) || names.get(P) || { id: P, name: '?' };
+        if (draft.mode === 'exact') {
+          rows.innerHTML = `<div class="split-row me">${UI.avatarMe(true)}<span class="nm">La tua quota<small>le quote degli altri non servono</small></span>
+            <input class="split-inp" inputmode="decimal" data-me-inp value="${draft.exactMe ? String(draft.exactMe / 100).replace('.', ',') : ''}" placeholder="0,00" aria-label="La tua quota"></div>`;
+        } else {
+          const eq = Money.splitEqual(total, draft.people.length + 1, true);
+          rows.innerHTML = row(payer, money(eq.others[0]), '<small>ha pagato</small>') +
+            draft.people.map((id, i) => row(m.get(id) || { id, name: '?' }, money(eq.others[i + 1]))).join('') +
+            `<div class="split-row me">${UI.avatarMe(true)}<span class="nm">Tu${eq.me !== eq.others[0] ? '<small>+ arrotondamento</small>' : ''}</span><span class="q">${money(eq.me)}</span></div>`;
+        }
+        status();
+        return;
+      }
       if (!draft.people.length) { rows.innerHTML = ''; status(); return; }
       if (draft.mode === 'exact') {
         rows.innerHTML = draft.people.map(id => `<div class="split-row">${UI.avatar(m.get(id) || { id, name: '?' }, true)}<span class="nm">${UI.esc((m.get(id) || {}).name || '?')}</span>
@@ -229,14 +278,22 @@ const Split = (() => {
     q.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); const b = sug.querySelector('button'); if (b) b.click(); } });
     R('[data-opt=exact]').addEventListener('change', e => {
       draft.mode = e.target.checked ? 'exact' : 'equal';
-      if (draft.mode === 'exact') { // parto dalle quote uguali attuali
+      if (P) { // parto dalla mia quota in parti uguali
+        if (draft.mode === 'exact' && !draft.exactMe) draft.exactMe = Money.splitEqual(total, draft.people.length + 1, true).me;
+      } else if (draft.mode === 'exact') { // parto dalle quote uguali attuali
         const eq = Money.splitEqual(total, Math.max(draft.people.length, 1), !draft.notMe);
         draft.people.forEach((id, i) => { if (draft.exact[id] == null) draft.exact[id] = eq.others[i] || 0; });
       }
       paintRows();
     });
-    R('[data-opt=notMe]').addEventListener('change', e => { draft.notMe = e.target.checked; paintRows(); });
+    if (R('[data-opt=notMe]')) R('[data-opt=notMe]').addEventListener('change', e => { draft.notMe = e.target.checked; paintRows(); });
     rows.addEventListener('input', e => {
+      if (e.target.matches('[data-me-inp]')) {
+        const c = e.target.value.trim() ? Money.toCents(e.target.value.replace(/[€\s]/g, '')) : 0;
+        draft.exactMe = Number.isFinite(c) && c >= 0 ? c : -1;
+        status();
+        return;
+      }
       const inp = e.target.closest('.split-inp');
       if (!inp) return;
       const c = inp.value.trim() ? Money.toCents(inp.value.replace(/[€\s]/g, '')) : 0;
@@ -244,13 +301,13 @@ const Split = (() => {
       status();
     });
     ok.addEventListener('click', () => {
-      if (!draft.people.length) { draft.notMe = false; draft.mode = 'equal'; draft.exact = {}; }
+      if (!P && !draft.people.length) { draft.notMe = false; draft.mode = 'equal'; draft.exact = {}; }
       st = draft;
       s.close();
       render();
     });
     R('[data-cancel]').addEventListener('click', () => {
-      if (st.people.length) { st.people = []; st.notMe = false; st.exact = {}; st.mode = 'equal'; render(); }
+      if (st.people.length || (P && st.mode === 'exact')) { st = { ...fresh(), payer: st.payer }; render(); }
       s.close();
     });
     paintChips(); paintRows();
@@ -284,5 +341,5 @@ const Split = (() => {
   $('#amountInput').addEventListener('input', () => { if (inUse()) render(); });
   render();
 
-  return { reset, load, setPayer, setPeople, isEmpty, plan, isValid, usedPeople, note, render, confirmBalanceChange };
+  return { reset, load, setPayer, setPeople, applyEventPeople, isEmpty, plan, isValid, usedPeople, note, render, confirmBalanceChange };
 })();

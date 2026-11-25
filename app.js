@@ -450,7 +450,7 @@ async function renderList() {
       ? `<span class="tag">pagato da ${esc((people.get(e.payer) || { name: 'Persona sconosciuta' }).name)}</span>`
       : `<span class="tag">${e.amount === 0 ? 'non partecipo · ' : ''}👥 ${e.splits.length}</span>`}</div>`;
     const amt = !shared ? `<span class="amt">${income ? '+' : ''}${fmt(e.amount)}</span>`
-      : `<span class="amtcol"><span class="amt${e.amount === 0 ? ' zero' : ''}">${fmt(e.amount)}</span><small>${e.payer ? 'dal conto 0,00 €' : `pagati ${fmt(e.paid)}`}</small></span>`;
+      : `<span class="amtcol"><span class="amt${e.amount === 0 ? ' zero' : ''}">${fmt(e.amount)}</span><small>${e.payer ? (e.payerTotal != null ? `su ${fmt(e.payerTotal)}` : 'dal conto 0,00 €') : `pagati ${fmt(e.paid)}`}</small></span>`;
     item.innerHTML = `<span class="ico">${c.icon}</span>
       <div class="info"><div class="cat">${esc(e.sub)}</div><div class="note">${esc(c.name)}${e.note ? ' · ' + esc(e.note) : ''}</div>${tags}</div>
       ${amt}`;
@@ -1297,7 +1297,7 @@ async function exportData(format) {
         const n = Ledger.normalize(e);
         rows.push([e.date, isIncome(e) ? 'entrata' : 'uscita', num(e.amount),
           (isIncome(e) ? incomeCatById(e.cat) : catById(e.cat)).name, e.sub, e.note,
-          num(n.paid), num(e.amount), e.payer ? who(e.payer) : 'io',
+          num(n.paid), num(e.amount), e.payer ? `${who(e.payer)}${e.payerTotal != null ? ` (${num(e.payerTotal)})` : ''}` : 'io',
           n.splits.map(s => `${who(s.personId)} ${num(s.amount)}`).join(' | '), e.eventId ? (evName.get(e.eventId) || '') : '']);
       });
     blob = new Blob(['﻿' + rows.map(r => r.map(esc).join(';')).join('\r\n')], { type: 'text/csv' });

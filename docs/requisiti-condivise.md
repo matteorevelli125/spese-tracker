@@ -1,6 +1,6 @@
 # Requisiti — Spese condivise, crediti ed eventi
 
-Stato: **confermato** (25/11/2026) · origine: sessione di grilling del 25/11/2026.
+Stato: **confermato** (25/11/2026, RF-W3/RV-3 rivisti lo stesso giorno: pagato da altri con totale e divisione) · origine: sessione di grilling del 25/11/2026.
 Base per mockup e piano di sviluppo. Gli ID (`RC-…`, `RF-…`) servono per tracciare i requisiti nel piano e nei test.
 
 ---
@@ -55,13 +55,15 @@ saldo(P) =  Σ quote di P nelle spese pagate da me
 | `paid` | number ≥ 0 | uscito dal mio conto. **Se manca vale `amount`**. |
 | `payer` | personId | se manca, ho pagato io. |
 | `splits` | `[{ personId, amount }]` | quote degli altri, solo se `payer` manca. |
+| `payerTotal` | number > 0 | solo con `payer`: totale pagato dall'altra persona (≥ mia quota). Facoltativo: i record precedenti non ce l'hanno. |
+| `shareWith` | `[personId]` | solo con `payer`: altri partecipanti oltre a me e al pagatore, per riaprire la divisione in modifica. |
 | `splitMode` | `'equal'` \| `'exact'` | serve a riaprire lo split come era stato inserito. |
 | `eventId` | eventId | facoltativo. |
 | _(invariati)_ | `date, type, cat, sub, note, ts` | |
 
 Invarianti:
 - `payer` mancante → `paid = amount + Σ splits.amount`
-- `payer` presente → `paid = 0`, `splits` vuoto, `amount > 0`
+- `payer` presente → `paid = 0`, `splits` vuoto, `amount > 0`, `amount ≤ payerTotal` (se presente)
 - `type = 'income'` → niente `payer`, `splits` o `eventId` (RC-9). L'evento si potrà valutare in futuro.
 
 ### 3.2 Store nuovi
@@ -96,7 +98,7 @@ Il flusso a 3 tap (importo → categoria → sottocategoria → salva) **non cam
 |---|---|
 | RF-W1 | Riga **"Evento"**: compare solo se esiste almeno un evento attivo. Scegliere un evento propone la sua categoria predefinita (che si cambia con un tap) e riempie "Diviso con" con **tutti i partecipanti in parti uguali**. |
 | RF-W2 | Se oggi cade tra `start` e `end` di un evento attivo, l'evento è **già selezionato** e si toglie con un tap. Se gli eventi in corso sono più di uno, non se ne seleziona nessuno. |
-| RF-W3 | Riga **"Pagato da: Io ▾"**. Se scelgo una persona: l'importo inserito è **la mia quota**, `paid = 0`, la riga "Diviso con" si nasconde. |
+| RF-W3 | Riga **"Pagato da: Io ▾"**. Se scelgo una persona, l'importo è il **totale pagato da lei** ("Totale pagato da Marco") e la riga diventa **"Diviso tra"**: di default parti uguali tra me e il pagatore; con un evento, tra tutti i partecipanti (pagatore compreso). Con "Importi esatti" scrivo direttamente **la mia quota**. Nelle metriche va solo la mia quota, `paid = 0`, e il saldo del pagatore scende della mia quota. *(Rivisto il 25/11/2026: prima si inseriva solo la propria quota.)* |
 | RF-W4 | Riga **"Diviso con"**: si apre un pannello con le persone in chip (prima le più recenti), una ricerca con autocompletamento e **"+ Crea '‹nome›'"**. Per ogni spesa posso togliere o aggiungere persone rispetto ai partecipanti dell'evento. |
 | RF-W5 | Di default l'importo è diviso **in parti uguali** tra me e le persone selezionate (RC-11). |
 | RF-W6 | Interruttore **"Importi esatti"**: inserisco la quota di ciascuno e la mia si calcola come residuo e si aggiorna in tempo reale. |
@@ -113,7 +115,7 @@ Il flusso a 3 tap (importo → categoria → sottocategoria → salva) **non cam
 |---|---|
 | RV-1 | Con "Diviso con" attivo serve almeno 1 altra persona. "Non partecipo" richiede almeno 1 persona. |
 | RV-2 | Con gli importi esatti: se Σ quote degli altri > totale, il salvataggio è disabilitato e compare un messaggio. Se Σ = totale, la mia quota è 0 (equivale a "non partecipo"). |
-| RV-3 | Non posso usare "Pagato da ‹persona›" e "Diviso con" insieme. |
+| RV-3 | Con "Pagato da ‹persona›" la divisione non crea crediti verso gli altri partecipanti (RC-8): conta solo la mia quota verso il pagatore. "Non partecipo" non è disponibile. La mia quota (importi esatti) deve essere > 0 e ≤ totale. |
 | RV-4 | Tutte le quote sono ≥ 0. Una quota 0 per un'altra persona equivale a toglierla dallo split. |
 | RV-5 | La rubrica non contiene "io": l'utente non può selezionare sé stesso. |
 

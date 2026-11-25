@@ -555,3 +555,31 @@ select { appearance: none; }
   border-radius: 12px; background: var(--surface); color: var(--text); font: 600 13px 'Manrope'; }
 .goal-btns { display: flex; gap: 12px; align-items: center; margin-top: 2px; }
 .goal-btns .btn-primary { width: auto; margin: 0; padding: 10px 20px; }
+
+/* ---------- Pannello dal basso (sheet): import, e in seguito split/rimborsi ---------- */
+.sheet-backdrop { position: fixed; inset: 0; z-index: 40; display: flex; align-items: flex-end; justify-content: center;
+  background: rgba(10,15,12,.55); animation: cel-fade .2s ease both; }
+.sheet { width: 100%; max-width: 640px; max-height: 92vh; overflow-y: auto; background: var(--surface); color: var(--text);
+  border-top: var(--stroke) solid var(--ink); border-radius: 24px 24px 0 0;
+  padding: 10px 20px calc(22px + env(safe-area-inset-bottom)); }
+.sheet-handle { width: 40px; height: 4px; border-radius: 4px; background: var(--line); margin: 0 auto 14px; }
+.sheet h3 { font: 800 18px/1.2 'Manrope'; margin-bottom: 4px; }
+.sheet-sub { font: 600 12.5px/1.45 'Manrope'; color: var(--muted); overflow-wrap: anywhere; }
+.sheet-warn { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: #fff0d1; color: #8a5200; font: 700 12.5px/1.45 'Manrope'; }
+.sheet-note { margin-top: 14px; padding: 10px 12px; border-radius: 12px; background: var(--accent-soft); font: 700 12px/1.45 'Manrope'; overflow-wrap: anywhere; }
+.sheet-note b { font-weight: 800; }
+.sheet .btn-primary { margin-top: 14px; }
+.sheet-cancel { display: block; margin: 8px auto 0; padding: 10px 16px; background: none; border: none; color: var(--muted);
+  font: 800 13px/1 'Manrope'; cursor: pointer; }
+.choice { display: flex; gap: 12px; align-items: flex-start; margin-top: 10px; padding: 14px; cursor: pointer;
+  border: var(--stroke) solid var(--line); border-radius: 14px; }
+.choice input { position: absolute; opacity: 0; pointer-events: none; }
+.choice.selected { border-color: var(--ink); box-shadow: var(--block-shadow); background: var(--accent-soft); }
+.choice:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+.choice .dot { width: 20px; height: 20px; flex-shrink: 0; margin-top: 1px; border-radius: 50%;
+  border: var(--stroke) solid var(--ink); background: var(--surface); }
+.choice.selected .dot { background: radial-gradient(circle, var(--ink) 0 4px, var(--surface) 5px); }
+.choice b { display: block; font: 800 14px/1.2 'Manrope'; }
+.choice small { display: block; margin-top: 3px; font: 600 12px/1.4 'Manrope'; color: var(--muted); }
+.choice .rec { margin-left: 6px; font: 800 10px/1 'Manrope'; letter-spacing: .06em; color: var(--accent); }
+@media (prefers-color-scheme: dark) { .sheet-warn { background: #3a2a0e; color: #ffc267; } }

@@ -1234,59 +1234,81 @@ async function exportData(format) {
 $('#exportJsonBtn').addEventListener('click', () => exportData('json'));
 $('#exportCsvBtn').addEventListener('click', () => exportData('csv'));
 
-// Validazione/sanificazione dei record importati: si accettano solo campi
-// attesi con i tipi corretti. Le stringhe vengono limitate in lunghezza per
-// evitare payload abnormi; i record non validi vengono scartati.
-const isDateStr = s => typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s);
-const cleanStr = (s, max = 200) => (typeof s === 'string' ? s : '').slice(0, max);
-const cleanAmount = a => {
-  const n = typeof a === 'number' ? a : parseFloat(a);
-  return isFinite(n) && n > 0 ? Math.round(n * 100) / 100 : null;
-};
-function sanitizeExpense(e) {
-  if (!e || typeof e !== 'object') return null;
-  const amount = cleanAmount(e.amount);
-  if (!isDateStr(e.date) || amount === null) return null;
-  return { date: e.date, amount, type: e.type === 'income' ? 'income' : 'expense',
-    cat: cleanStr(e.cat, 40), sub: cleanStr(e.sub, 60), note: cleanStr(e.note, 200), ts: Number.isFinite(e.ts) ? e.ts : Date.now() };
-}
-function sanitizeRecurring(r) {
-  if (!r || typeof r !== 'object') return null;
-  const amount = cleanAmount(r.amount);
-  if (!amount || !isDateStr(r.nextDue)) return null;
-  return { name: cleanStr(r.name, 80), amount, type: r.type === 'income' ? 'income' : 'expense',
-    cat: cleanStr(r.cat, 40), sub: cleanStr(r.sub, 60),
-    freq: r.freq === 'yearly' ? 'yearly' : 'monthly', nextDue: r.nextDue };
-}
-
+/* ---------- Import con scelta (RD-11) ---------- */
+// La sanificazione (v1 e v2, segnaposto per i riferimenti mancanti) è in sanitize.js.
 $('#importBtn').addEventListener('click', () => $('#importFile').click());
 $('#importFile').addEventListener('change', async ev => {
   const f = ev.target.files[0];
+  ev.target.value = '';
   if (!f) return;
   try {
     if (f.size > 20 * 1024 * 1024) throw new Error('file troppo grande');
-    const data = JSON.parse(await f.text());
-    if (!data || !Array.isArray(data.expenses)) throw new Error('formato non valido');
-    let ok = 0, skipped = 0;
-    for (const raw of data.expenses) {
-      const e = sanitizeExpense(raw);
-      if (e) { await DB.addExpense(e); ok++; } else skipped++;
-    }
-    for (const b of Array.isArray(data.budgets) ? data.budgets : []) {
-      const amount = cleanAmount(b && b.amount);
-      const cat = cleanStr(b && b.cat, 40);
-      if (cat && amount) await DB.setBudget(cat, amount);
-    }
-    for (const raw of Array.isArray(data.recurring) ? data.recurring : []) {
-      const r = sanitizeRecurring(raw);
-      if (r) await DB.addRecurring(r);
-    }
-    toast(`Importate ${ok} spese${skipped ? ` (${skipped} scartate)` : ''}`);
+    const clean = Sanitize.backup(JSON.parse(await f.text()), { keepId: true });
+    // Copia dei dati attuali preparata ORA: al tocco di "Importa" il download parte
+    // subito, dentro il gesto dell'utente (decisione D1).
+    const current = JSON.stringify(await buildBackup({ source: 'pre-import' }), null, 2);
+    openImportSheet(f.name, clean, { filename: `spese-pre-import-${todayStr()}.json`, json: current });
   } catch (err) {
     toast('Import fallito: ' + err.message);
   }
-  ev.target.value = '';
 });
+
+function openImportSheet(fileName, clean, safety) {
+  const n = clean.expenses.length, st = clean.stats;
+  const plural = (k, one, many) => `${k} ${k === 1 ? one : many}`;
+  const parts = [plural(n, 'movimento', 'movimenti')];
+  if (clean.people.length) parts.push(plural(clean.people.length, 'persona', 'persone'));
+  if (clean.events.length) parts.push(plural(clean.events.length, 'evento', 'eventi'));
+  const notes = [];
+  if (st.skipped) notes.push(st.skipped === 1 ? '1 record non valido verrà scartato' : `${st.skipped} record non validi verranno scartati`);
+  if (st.repaired) notes.push(`${plural(st.repaired, 'movimento corretto', 'movimenti corretti')} (dati incoerenti)`);
+  if (st.placeholders) notes.push(`${plural(st.placeholders, 'riferimento mancante sostituito', 'riferimenti mancanti sostituiti')} da un segnaposto`);
+
+  const el = document.createElement('div');
+  el.className = 'sheet-backdrop';
+  el.innerHTML = `
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="importTitle">
+      <div class="sheet-handle"></div>
+      <h3 id="importTitle">Importa backup</h3>
+      <div class="sheet-sub">${esc(fileName)} · ${parts.join(' · ')}</div>
+      ${notes.length ? `<div class="sheet-warn">${notes.map(esc).join('<br>')}</div>` : ''}
+      <label class="choice selected"><input type="radio" name="importMode" value="replace" checked>
+        <span class="dot"></span><span><b>Sostituisci tutto <span class="rec">CONSIGLIATO</span></b>
+        <small>I dati attuali vengono sostituiti da quelli del file. Se qualcosa va storto non cambia niente.</small></span></label>
+      <label class="choice"><input type="radio" name="importMode" value="append">
+        <span class="dot"></span><span><b>Aggiungi ai dati attuali</b>
+        <small>Come prima. Attenzione: importare due volte lo stesso file duplica le spese.</small></span></label>
+      <div class="sheet-note">💾 Prima di procedere salvo <b>${esc(safety.filename)}</b> sul dispositivo.</div>
+      <button class="btn-primary" data-act="go">Importa</button>
+      <button class="sheet-cancel" data-act="cancel">Annulla</button>
+    </div>`;
+  const close = () => { el.remove(); document.removeEventListener('keydown', onKey); };
+  const onKey = e => { if (e.key === 'Escape') close(); };
+  document.addEventListener('keydown', onKey);
+  el.addEventListener('click', e => { if (e.target === el) close(); });
+  el.querySelectorAll('input[name=importMode]').forEach(r => r.addEventListener('change', () => {
+    el.querySelectorAll('.choice').forEach(c => c.classList.toggle('selected', c.querySelector('input').checked));
+  }));
+  el.querySelector('[data-act=cancel]').onclick = close;
+  el.querySelector('[data-act=go]').onclick = async ev => {
+    const mode = el.querySelector('input[name=importMode]:checked').value;
+    Snapshots.download(safety.filename, safety.json); // sincrono: siamo nel gesto
+    ev.target.disabled = true;
+    try {
+      await Snapshots.save({ kind: 'pre-import', filename: safety.filename, json: safety.json });
+      if (mode === 'replace') await DB.replaceAll(clean);
+      else await DB.appendAll(clean);
+      close();
+      toast(mode === 'replace' ? `Dati sostituiti: ${n} movimenti` : `Importati ${n} movimenti`);
+      renderRecurring();
+    } catch (err) {
+      ev.target.disabled = false;
+      toast('Import fallito, dati invariati: ' + err.message);
+    }
+  };
+  document.body.appendChild(el);
+  el.querySelector('[data-act=go]').focus();
+}
 
 $('#wipeBtn').addEventListener('click', async () => {
   if (confirm('Cancellare TUTTI i dati? Operazione irreversibile.') && confirm('Sei davvero sicuro?')) {
@@ -1433,6 +1455,15 @@ async function maybeBackupReminder() {
   toast('⚠️ Nessun backup da oltre 30 giorni — vai in Altro per salvarlo');
 }
 
+/* ---------- Aggiornamento del database (RD-10) ---------- */
+// Un'altra scheda con la versione vecchia tiene aperto il DB: l'aggiornamento aspetta.
+window.addEventListener('db-blocked', () => toast("Chiudi le altre schede dell'app per completare l'aggiornamento"));
+// Un'altra scheda ha aggiornato il DB: questa ha già chiuso la connessione, va ricaricata.
+window.addEventListener('db-versionchange', () => {
+  if (confirm("L'app è stata aggiornata in un'altra scheda. Ricaricare ora?")) location.reload();
+  else toast('Ricarica la pagina per continuare');
+});
+
 /* ---------- Avvio ---------- */
 (async function init() {
   $('#dateInput').value = todayStr();
@@ -1446,6 +1477,7 @@ async function maybeBackupReminder() {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   }
   Drive.maybeAutoBackup(); // backup mensile "all'apertura" (silenzioso se già collegato)
+  setTimeout(() => Drive.maybeUploadUpgradeSnapshot(), 3000); // RD-12: copia pre-aggiornamento anche su Drive
   setTimeout(maybeBackupReminder, 4000); // dopo l'eventuale toast delle ricorrenti
   // Apertura diretta da scorciatoia PWA (long-press sull'icona → Statistiche/Movimenti)
   const qv = new URLSearchParams(location.search).get('view');

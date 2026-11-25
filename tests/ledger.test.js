@@ -1,0 +1,109 @@
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const Ledger = require('../ledger.js');
+
+const exp = (o) => ({ date: '2026-08-11', type: 'expense', cat: 'cibo', sub: 'Ristorante', note: '', ts: 1, ...o });
+
+test('normalize: i record vecchi hanno paid = amount, nessun pagatore né split', () => {
+  const n = Ledger.normalize({ date: '2025-01-01', amount: 12.5, cat: 'cibo', sub: 'Spesa' });
+  assert.equal(n.paid, 12.5);
+  assert.equal(n.payer, null);
+  assert.deepEqual(n.splits, []);
+});
+
+test('validate: record vecchi ed entrate sono validi', () => {
+  assert.deepEqual(Ledger.validate(exp({ amount: 10 })), []);
+  assert.deepEqual(Ledger.validate({ date: '2025-01-01', amount: 10, cat: 'cibo', sub: 'Spesa' }), []);
+  assert.deepEqual(Ledger.validate({ date: '2025-01-27', amount: 2100, type: 'income', cat: 'stipendio', sub: 'Stipendio' }), []);
+});
+
+test('validate: spesa divisa coerente (80 € in 2)', () => {
+  assert.deepEqual(Ledger.validate(exp({ amount: 40, paid: 80, splits: [{ personId: 'gi', amount: 40 }] })), []);
+  assert.deepEqual(Ledger.validate(exp({ amount: 33.34, paid: 100, splits: [{ personId: 'gi', amount: 33.33 }, { personId: 'ma', amount: 33.33 }] })), []);
+});
+
+test('validate: non partecipo (quota 0) solo con split', () => {
+  assert.deepEqual(Ledger.validate(exp({ amount: 0, paid: 30, splits: [{ personId: 'lu', amount: 30 }] })), []);
+  assert.ok(Ledger.validate(exp({ amount: 0 })).includes('amount'));
+});
+
+test('validate: pagato da altri', () => {
+  assert.deepEqual(Ledger.validate(exp({ amount: 35, paid: 0, payer: 'ma' })), []);
+  assert.ok(Ledger.validate(exp({ amount: 35, paid: 35, payer: 'ma' })).includes('payer-paid'));
+  assert.ok(Ledger.validate(exp({ amount: 35, paid: 0, payer: 'ma', splits: [{ personId: 'gi', amount: 5 }] })).includes('payer-splits'));
+});
+
+test('validate: errori di split', () => {
+  assert.ok(Ledger.validate(exp({ amount: 40, paid: 70, splits: [{ personId: 'gi', amount: 40 }] })).includes('paid-sum'));
+  assert.ok(Ledger.validate(exp({ amount: 40, paid: 80, splits: [{ personId: 'gi', amount: 20 }, { personId: 'gi', amount: 20 }] })).includes('split-duplicate'));
+  assert.ok(Ledger.validate(exp({ amount: 80, paid: 80, splits: [{ personId: 'gi', amount: 0 }] })).includes('split-amount'));
+  assert.ok(Ledger.validate({ date: '2025-01-27', amount: 10, type: 'income', cat: 'bonus', sub: 'Bonus', eventId: 'ev' }).includes('income-shared'));
+});
+
+// Scenario dei mockup: storico di Marco (requisiti/mockup 4b) → saldo 155 €
+const marco = [
+  exp({ date: '2026-05-02', amount: 125, paid: 500, splits: [{ personId: 'ma', amount: 125 }, { personId: 'lu', amount: 125 }, { personId: 'gi', amount: 125 }], eventId: 'sard' }),
+  exp({ date: '2026-08-11', amount: 24, paid: 96, splits: [{ personId: 'ma', amount: 24 }, { personId: 'lu', amount: 24 }, { personId: 'gi', amount: 24 }], eventId: 'sard' }),
+  exp({ date: '2026-08-12', amount: 35, paid: 0, payer: 'ma', eventId: 'sard' }),
+  exp({ date: '2026-08-14', amount: 131, paid: 524, splits: [{ personId: 'ma', amount: 131 }, { personId: 'lu', amount: 131 }, { personId: 'gi', amount: 131 }], eventId: 'sard' }),
+  exp({ date: '2026-08-10', amount: 12.5 }), // spesa normale: nessun effetto
+  { date: '2026-08-27', amount: 2100, type: 'income', cat: 'stipendio', sub: 'Stipendio' },
+];
+const rimborsi = [{ id: 's1', personId: 'ma', direction: 'in', amount: 90, date: '2026-05-20' }];
+
+test('balances: scenario Marco = 155 € (mockup 4b)', () => {
+  const b = Ledger.balances(marco, rimborsi);
+  assert.equal(b.get('ma'), 15500);
+  assert.equal(b.get('lu'), 28000);
+  assert.equal(b.get('gi'), 28000);
+});
+
+test('balances: filtro per evento (saldi generati, RF-E6)', () => {
+  const b = Ledger.balances(marco, rimborsi, { eventId: 'sard' });
+  assert.equal(b.get('ma'), 24500); // il rimborso non è legato all'evento
+});
+
+test('balances: rimborso dato (out) aumenta il saldo', () => {
+  const b = Ledger.balances([exp({ amount: 20, paid: 0, payer: 'fe' })], [{ personId: 'fe', direction: 'out', amount: 2, date: '2026-01-01' }]);
+  assert.equal(b.get('fe'), -1800);
+});
+
+test('totals', () => {
+  assert.deepEqual(Ledger.totals(new Map([['a', 15500], ['b', 8500], ['c', -1800], ['d', 0]])), { owedToMe: 24000, iOwe: 1800 });
+});
+
+test('signFlips: da 0 a negativo avvisa, verso 0 no, aumento no (RF-S2)', () => {
+  const before = new Map([['ma', 0], ['gi', 4650], ['lu', 1000]]);
+  const after = new Map([['ma', -2000], ['gi', 0], ['lu', 3000]]);
+  assert.deepEqual(Ledger.signFlips(before, after), [{ personId: 'ma', before: 0, after: -2000 }]);
+  assert.deepEqual(Ledger.signFlips(new Map([['x', -500]]), new Map([['x', 700]])), [{ personId: 'x', before: -500, after: 700 }]);
+});
+
+test('mergePeople: somma le quote, sposta pagatore, rimborsi e partecipanti (RF-P10)', () => {
+  const data = {
+    expenses: [
+      exp({ id: 1, amount: 30, paid: 90, splits: [{ personId: 'giuli', amount: 30 }, { personId: 'giulia', amount: 30 }] }),
+      exp({ id: 2, amount: 10, paid: 0, payer: 'giuli' }),
+      exp({ id: 3, amount: 5 }),
+    ],
+    events: [{ id: 'e1', participants: ['giuli', 'giulia', 'ma'] }, { id: 'e2', participants: ['ma'] }],
+    settlements: [{ id: 's', personId: 'giuli', direction: 'in', amount: 3, date: '2026-01-01' }],
+  };
+  const before = Ledger.balances(data.expenses, data.settlements);
+  const r = Ledger.mergePeople(data, 'giuli', 'giulia');
+  assert.deepEqual(r.expenses.map(e => e.id), [1, 2]);
+  assert.deepEqual(r.expenses[0].splits, [{ personId: 'giulia', amount: 60 }]);
+  assert.equal(r.expenses[1].payer, 'giulia');
+  assert.deepEqual(r.events, [{ id: 'e1', participants: ['giulia', 'ma'] }]);
+  assert.equal(r.settlements[0].personId, 'giulia');
+  // il saldo risultante è la somma dei due
+  const merged = { ...data, expenses: data.expenses.map(e => r.expenses.find(x => x.id === e.id) || e), settlements: r.settlements };
+  const after = Ledger.balances(merged.expenses, merged.settlements);
+  assert.equal(after.get('giulia'), before.get('giuli') + before.get('giulia'));
+  assert.equal(after.get('giuli'), undefined);
+  assert.deepEqual(Ledger.validate(r.expenses[0]), []);
+});
+
+test('mergePeople: unione su sé stessi rifiutata', () => {
+  assert.throws(() => Ledger.mergePeople({}, 'a', 'a'));
+});

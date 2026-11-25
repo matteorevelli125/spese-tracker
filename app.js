@@ -81,6 +81,7 @@ function showView(name) {
   if (name === 'recurring') renderRecurring();
   if (name === 'drive') renderDrive();
   if (name === 'settings') renderMoreMenu();
+  if (name === 'data') renderSnapshots();
   if (name === 'share' && typeof PeopleUI !== 'undefined') { PeopleUI.renderList(); EventsUI.renderList(); }
 }
 
@@ -1545,6 +1546,53 @@ window.addEventListener('db-versionchange', () => {
   else toast('Ricarica la pagina per continuare');
 });
 
+/* ---------- Popup "App aggiornata" (RD-12, RD-13, decisione D1) ---------- */
+// Una sola volta dopo l'aggiornamento del DB. La copia dei dati com'erano è già nel
+// DB di backup del dispositivo (snapshots.js); il tocco su "Scarica copia e continua"
+// la salva anche come file nei Download (senza tocco il browser può bloccarlo).
+async function maybeShowUpgradeNotice() {
+  const n = await DB.getMeta('upgradeNotice');
+  if (!n || n.shown) return;
+  const snap = n.filename ? await Snapshots.latest('pre-upgrade') : null;
+  const ok = snap && snap.filename === n.filename;
+  const granted = await Drive.isGranted();
+  const el = document.createElement('div');
+  el.className = 'sheet-backdrop dialog-backdrop';
+  el.innerHTML = `<div class="dialog update-dialog" role="alertdialog" aria-modal="true" aria-label="App aggiornata">
+    <h3>App aggiornata 🎉</h3>
+    <div class="dialog-body">Ecco le novità di questa versione:</div>
+    <ul class="news">
+      <li><span>👥</span><span><b>Spese divise</b>: nel wizard trovi "Diviso con" e "Pagato da". Nelle statistiche conta solo la tua quota.</span></li>
+      <li><span>💸</span><span><b>Condivise › Persone</b>: chi ti deve cosa, rimborsi e compensazioni.</span></li>
+      <li><span>✈️</span><span><b>Eventi</b>: raggruppa le spese di vacanze, picnic e uscite.</span></li>
+      <li><span>⋯</span><span><b>Altro</b> è diventato un menu, e dentro trovi Budget.</span></li>
+    </ul>
+    ${ok ? `<div class="sheet-note">✅ I tuoi dati sono intatti. Copia di prima dell'aggiornamento salvata sul dispositivo${granted ? ' (e caricata anche su Google Drive)' : ''}: <b>${esc(snap.filename)}</b> · ${n.count} movimenti.</div>`
+      : `<div class="sheet-warn">Non è stato possibile fare la copia automatica${n.error ? ` (${esc(n.error)})` : ''}. I dati non sono stati modificati: esporta comunque un backup adesso.</div>`}
+    <button class="btn-primary" data-act="go">${ok ? 'Scarica copia e continua' : 'Esporta backup e continua'}</button>
+  </div>`;
+  el.querySelector('[data-act=go]').onclick = async () => {
+    if (ok) Snapshots.download(snap.filename, snap.json); // nel gesto: il download parte
+    else exportData('json');
+    el.remove();
+    await DB.setMeta('upgradeNotice', { ...(await DB.getMeta('upgradeNotice')), shown: true, shownAt: new Date().toISOString() });
+  };
+  document.body.appendChild(el);
+}
+
+/* ---------- Copie di sicurezza sul dispositivo (Altro › Dati) ---------- */
+async function renderSnapshots() {
+  const list = (await Snapshots.all()).sort((a, b) => b.id - a.id);
+  const what = { 'pre-upgrade': "Prima dell'aggiornamento", 'pre-import': "Prima di un import" };
+  $('#snapList').innerHTML = list.length ? list.map(s => `<div class="rec-item"><span class="ico">💾</span>
+      <span class="info">${esc(what[s.kind] || s.kind)}<small>${esc(new Date(s.at).toLocaleString('it-IT', { dateStyle: 'medium', timeStyle: 'short' }))} · ${(s.json.length / 1024).toFixed(0)} KB</small></span>
+      <button class="btn-secondary" data-snap="${s.id}">Scarica</button></div>`).join('')
+    : '<div class="empty">Nessuna copia: ne viene fatta una prima di ogni aggiornamento del database e di ogni import.</div>';
+  $('#snapList').querySelectorAll('[data-snap]').forEach(b => {
+    b.onclick = () => { const s = list.find(x => x.id === +b.dataset.snap); Snapshots.download(s.filename, s.json); };
+  });
+}
+
 /* ---------- Avvio ---------- */
 (async function init() {
   $('#dateInput').value = todayStr();
@@ -1560,6 +1608,7 @@ window.addEventListener('db-versionchange', () => {
   Drive.maybeAutoBackup(); // backup mensile "all'apertura" (silenzioso se già collegato)
   setTimeout(() => Drive.maybeUploadUpgradeSnapshot(), 3000); // RD-12: copia pre-aggiornamento anche su Drive
   setTimeout(maybeBackupReminder, 4000); // dopo l'eventuale toast delle ricorrenti
+  maybeShowUpgradeNotice(); // RD-13: una volta sola dopo l'aggiornamento del DB
   // Apertura diretta da scorciatoia PWA (long-press sull'icona → Statistiche/Movimenti)
   const qv = new URLSearchParams(location.search).get('view');
   if (qv && document.querySelector(`#view-${qv}`)) showView(qv);

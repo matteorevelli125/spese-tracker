@@ -795,3 +795,12 @@ select { appearance: none; }
 .ev-bal .v { font: 800 14px/1 'Manrope'; font-variant-numeric: tabular-nums; }
 .chip.sm { height: 30px; padding: 0 12px; }
 .chip-sp { width: 58px; }
+
+/* ---------- Popup aggiornamento e copie di sicurezza (F6) ---------- */
+.update-dialog { max-height: 90vh; overflow-y: auto; }
+.news { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+.news li { display: flex; gap: 10px; font: 600 13px/1.4 'Manrope'; }
+.news li > span:first-child { font-size: 17px; flex-shrink: 0; }
+.news b { font-weight: 800; }
+.update-dialog .sheet-note, .update-dialog .sheet-warn { margin-top: 14px; }
+#snapList .rec-item .btn-secondary { min-height: 36px; font-size: 12px; }

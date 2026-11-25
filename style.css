@@ -811,3 +811,6 @@ select { appearance: none; }
   background: var(--text); color: var(--bg); font: 700 13px/1 'Manrope'; white-space: nowrap; box-shadow: 0 6px 20px rgba(0,0,0,.25); }
 .update-banner button { height: 32px; padding: 0 14px; border: none; border-radius: var(--radius-pill); cursor: pointer;
   background: var(--accent); color: var(--on-accent); font: 800 12.5px/1 'Manrope'; }
+
+/* Movimenti: pagina successiva */
+.list-more { display: block; width: 100%; margin-top: 16px; }

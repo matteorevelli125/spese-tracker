@@ -75,7 +75,7 @@ function showView(name) {
   view.classList.add('active');
   const scroller = document.querySelector('.app-scroll');
   if (scroller) scroller.scrollTop = 0;
-  if (name === 'list') renderList();
+  if (name === 'list') { listLimit = LIST_PAGE; renderList(); }
   if (name === 'stats') renderStats();
   if (name === 'budget') renderBudget();
   if (name === 'recurring') renderRecurring();
@@ -398,7 +398,11 @@ $('#deleteBtn').addEventListener('click', async () => {
 });
 
 /* ---------- Movimenti ---------- */
-$('#searchInput').addEventListener('input', () => renderList());
+// La lista mostra i movimenti a pagine (i più recenti prima): "Mostra altri" ne aggiunge
+// un'altra pagina. Nuova ricerca o nuova apertura di Movimenti ripartono dalla prima.
+const LIST_PAGE = 300;
+let listLimit = LIST_PAGE;
+$('#searchInput').addEventListener('input', () => { listLimit = LIST_PAGE; renderList(); });
 
 // Match semplice: sottocategoria, categoria, nota o importo contengono la query.
 function matchesQuery(e, q, people = new Map(), events = new Map()) {
@@ -406,7 +410,7 @@ function matchesQuery(e, q, people = new Map(), events = new Map()) {
   const c = isIncome(e) ? incomeCatById(e.cat) : catById(e.cat);
   // includo l'importo sia "grezzo" (18,9) sia a 2 decimali (18,90) per cercare in entrambi i modi
   const amt = `${String(e.amount).replace('.', ',')} ${e.amount.toFixed(2).replace('.', ',')}`;
-  const who = [e.payer, ...(e.splits || []).map(s => s.personId)].filter(Boolean).map(id => (people.get(id) || {}).name || '').join(' ');
+  const who = [e.payer, ...(e.splits || []).map(s => s.personId), ...(e.shareWith || [])].filter(Boolean).map(id => (people.get(id) || {}).name || '').join(' ');
   const ev = e.eventId ? (events.get(e.eventId) || {}).name || '' : '';
   const hay = `${e.sub} ${c.name} ${e.note || ''} ${amt} ${who} ${ev}`.toLowerCase();
   return hay.includes(q);
@@ -423,9 +427,11 @@ async function renderList() {
   wrap.innerHTML = '';
   if (!all.length) { wrap.innerHTML = `<div class="empty">${q ? 'Nessun movimento trovato.' : 'Nessuna spesa registrata.'}</div>`; return; }
   let curDay = null, dayCard = null;
-  const recent = all.slice(0, 300);
-  const dayTotals = {}; // netto del giorno: entrate − uscite
-  recent.forEach(e => { dayTotals[e.date] = (dayTotals[e.date] || 0) + (isIncome(e) ? e.amount : -e.amount); });
+  const recent = all.slice(0, listLimit);
+  // Netto del giorno (entrate − uscite) su TUTTI i movimenti del giorno, anche quelli
+  // della pagina successiva: prima, un giorno a cavallo del limite mostrava un totale parziale.
+  const dayTotals = {};
+  all.forEach(e => { dayTotals[e.date] = (dayTotals[e.date] || 0) + (isIncome(e) ? e.amount : -e.amount); });
   recent.forEach(e => {
     if (e.date !== curDay) {
       curDay = e.date;
@@ -457,6 +463,14 @@ async function renderList() {
     item.addEventListener('click', () => startEdit(e)); // tap = modifica (elimina dentro il form)
     dayCard.appendChild(item);
   });
+  if (all.length > recent.length) {
+    const more = document.createElement('button');
+    more.className = 'btn-secondary list-more';
+    const left = all.length - recent.length;
+    more.textContent = `Mostra altri ${Math.min(left, LIST_PAGE)} (${left} rimanenti)`;
+    more.onclick = () => { listLimit += LIST_PAGE; renderList(); };
+    wrap.appendChild(more);
+  }
 }
 
 /* ---------- Statistiche ---------- */

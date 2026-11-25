@@ -48,6 +48,7 @@ node --test                      # test unitari (money.js, …): Node ≥ 20, ne
 ```
 
 Golden test delle metriche (nessun numero deve cambiare tra `main` e un branch): vedi [tools/golden/README.md](tools/golden/README.md).
+Test end-to-end delle spese condivise sui dati reali, con verifica di tutte le sezioni: vedi [tools/e2e/README.md](tools/e2e/README.md).
 
 ## Backup
 

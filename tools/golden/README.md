@@ -36,6 +36,8 @@ Esporta il JSON dal telefono (**Altro → Esporta JSON**) e copialo in `private/
 
 ## Note
 
+- **Service worker «prima la cache»**: `seed.html` lo disattiva prima di aprire l'app. Per misurare **senza** passare dal seed (es. dopo il test e2e), disattivalo prima dalla console: `for (const r of await navigator.serviceWorker.getRegistrations()) await r.unregister()`. Altrimenti la pagina arriva dalla cache, senza `freeze-time.js` e `probe.js`.
+
 - `seed.js` riscrive a mano il DB **locale** dell'origine di prova (`localhost:<porta>`), con lo schema v2 di produzione. Non tocca mai i dati del telefono.
 - `probe.js` legge gli interni di `app.js` (`periodOffset`, `drillCat`, funzioni `render*`). Se una fase li rinomina, va aggiornato nella stessa PR, mantenendo le stesse chiavi nello snapshot.
 - `make-fixture.mjs` rigenera `tests/fixtures/sample-backup.json` in modo deterministico.

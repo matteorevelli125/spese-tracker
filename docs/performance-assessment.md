@@ -1,6 +1,6 @@
 # Assessment prestazioni: come degradano con la crescita dei record
 
-Data: 25/11/2026 · versione analizzata: v31 · benchmark: [`tools/perf/bench.js`](../tools/perf/bench.js)
+Data: 25/11/2026 · versione analizzata: v31 (ottimizzazioni 1 e 2 applicate nella versione successiva, vedi in fondo) · benchmark: [`tools/perf/bench.js`](../tools/perf/bench.js)
 
 ## In breve
 
@@ -46,7 +46,7 @@ Dataset sintetici realistici: circa 6% di entrate, 15% di spese condivise (un te
 2. **Viste ricalcolate senza motivo.** `renderStats` rilancia ogni volta saldo cumulato, cruscotto annuale e insight ([app.js:579](../app.js:579)), che non dipendono dal periodo scelto. Se tocchi ‹ più volte di seguito, i calcoli si accumulano in parallelo.
 3. **Calcoli "per persona" e "per evento" con più passaggi.**
    - In Persone, l'"ultima attività" ricalcola lo storico di ogni persona sull'intero archivio: costo O(persone × movimenti).
-   - In Eventi, ogni evento rilegge tutti i movimenti: costo O(eventi × movimenti). Con l'elenco degli **archiviati** aperto, e quindi con decine o centinaia di eventi, diventa la vista più lenta (secondi).
+   - In Eventi, ogni evento rilegge tutti i movimenti: costo O(eventi × movimenti). Con l'elenco degli **archiviati** aperto (250 eventi con 50.000 movimenti): 385 ms sul Mac, circa 1,5 s su un telefono.
 4. **Saldi ricalcolati a richiesta**: aprendo "Pagato da" e salvando ogni modifica (controllo del cambio di segno RF-S2), sempre sull'intero archivio.
 5. **Spazio occupato dalle copie di sicurezza.** Ogni import e ogni aggiornamento del database salvano una copia JSON completa, con indentazione, nel database di backup. Se ne tengono fino a **10**: con 20.000 movimenti fanno circa 45 MB. Anche il backup su Drive e l'export usano JSON indentato, circa il 25% più grande del necessario.
 6. **Già sotto controllo:**
@@ -58,8 +58,8 @@ Dataset sintetici realistici: circa 6% di entrate, 15% di spese condivise (un te
 
 | # | Intervento | Effetto atteso | Rischio | Quando |
 |---|---|---|---|---|
-| 1 | **Statistiche: ricalcolare saldo cumulato, cruscotto e insight solo all'apertura** della schermata (o se i dati cambiano), non a ogni ‹ / › | Il cambio periodo scende da 116 ms a meno di 10 ms con 6.000 movimenti (circa 50 volte meno lavoro) | Basso. Lo copre il golden test: le viste non cambiano | **Subito** |
-| 2 | **Persone ed Eventi in un solo passaggio**: un giro sui movimenti per calcolare saldi, ultima attività e riepiloghi di tutti | Da O(P·N) / O(E·N) a O(N). Elimina i secondi con gli archiviati aperti | Basso, con test Node sui risultati | **Subito** |
+| 1 ✅ | **Statistiche: ricalcolare saldo cumulato, cruscotto e insight solo all'apertura** della schermata (o se i dati cambiano), non a ogni ‹ / › | Il cambio periodo scende da 116 ms a meno di 10 ms con 6.000 movimenti (circa 50 volte meno lavoro) | Basso. Lo copre il golden test: le viste non cambiano | **Subito** |
+| 2 ✅ | **Persone ed Eventi in un solo passaggio**: un giro sui movimenti per calcolare saldi, ultima attività e riepiloghi di tutti | Da O(P·N) / O(E·N) a O(N). Elimina i secondi con gli archiviati aperti | Basso, con test Node sui risultati | **Subito** |
 | 3 | **Cache in memoria dei movimenti** per la sessione: una sola lettura, aggiornata a ogni scrittura (`add`/`put`/`delete`/`replaceAll`) e invalidata da `versionchange` o da un `BroadcastChannel` tra schede | Toglie la lettura completa (23 ms a 6.000, 188 ms a 50.000) da quasi tutte le viste | Medio: va gestito bene con più schede aperte | Quando si superano circa 3.000 movimenti |
 | 4 | **Query per intervallo** dove basta l'anno: cruscotto e insight (anno corrente) con `expensesBetween` invece di leggere tutto | Lettura proporzionale a un anno, non a tutta la storia | Basso | Insieme al 3 |
 | 5 | **Aggregati mensili precalcolati** (entrate, uscite, per categoria, spese fisse, conteggio) in uno store, aggiornati a ogni scrittura del mese toccato | Statistiche, cruscotto, saldo cumulato e insight leggono circa 12 righe all'anno invece di migliaia | Medio-alto: è una seconda fonte di verità. Il golden test deve confermare l'equivalenza | Solo oltre circa 20.000 movimenti |
@@ -75,3 +75,23 @@ Dataset sintetici realistici: circa 6% di entrate, 15% di spese condivise (un te
 - **Golden test** (`tools/golden`): nessun numero deve cambiare.
 - **Scenario E2E** (`tools/e2e`): 968 controlli su tutte le sezioni.
 - **Benchmark** (`tools/perf/bench.js`): confronto prima e dopo, sugli stessi dataset.
+
+## Interventi applicati (1 e 2) e risultati
+
+1. **Statistiche**: saldo cumulato, cruscotto annuale e insight si calcolano all'apertura della schermata (`renderStatsGlobals`) e non più a ogni ‹ / ›, cambio di tipo di periodo o dettaglio di categoria. Nessuno dei tre dipende da periodo, filtro o dettaglio: verificato nel codice.
+2. **Persone ed Eventi in un solo passaggio**: `Ledger.lastActivities` (ultima voce di ogni persona) e `Ledger.eventSummaries` (riepilogo di ogni evento) fanno un solo giro sui movimenti. Due test Node confrontano i risultati con i calcoli per singola persona o evento, su dati casuali e anche a parità di data.
+
+Benchmark sugli stessi dataset (Mac, ms, mediana di 3, prima → dopo):
+
+| | 600 | 6.000 | 20.000 | 50.000 |
+|---|---:|---:|---:|---:|
+| **Statistiche: tocco di ‹ / ›** | 63 → **8** | 193 → **9** | 408 → **10** | 1.132 → **8** |
+| Persone (elenco) | 22 → 6 | 64 → 28 | 200 → 83 | 477 → 206 |
+| Eventi con gli archiviati aperti | 9 → 10 | 56 → 32 | 135 → 78 | 385 → 196 |
+| Scheda persona² | 28 → 9 | 83 → 34 | 201 → 105 | 518 → 263 |
+
+² La scheda persona non è cambiata. Il miglioramento viene dal fatto che, prima, i calcoli lanciati dalle Statistiche continuavano in sottofondo e rallentavano anche le misure successive. Vale lo stesso, in parte, per le altre righe.
+
+Il tocco di ‹ / › ora costa **meno di 10 ms a qualunque volume** (sul telefono ~30–50 ms): prima il costo cresceva con i dati. Quello che resta in Persone, Eventi e scheda persona è soprattutto la **lettura completa** dei movimenti (188 ms con 50.000). È il prossimo intervento, il 3, da fare quando si superano circa 3.000 movimenti.
+
+Verifiche: golden test sui dati reali identico (537/537), scenario E2E **992/992** (con un nuovo passo che apre Statistiche dalla barra e controlla che le viste globali siano disegnate e restino invariate con ‹ / ›), `node --test` 49/49.

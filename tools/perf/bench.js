@@ -46,7 +46,7 @@ async function time(fn, runs = 3) {
   return Math.round(t.sort((a, b) => a - b)[Math.floor(runs / 2)]);
 }
 
-export async function run(sizes = [600, 3000, 6000, 20000, 50000]) {
+export async function run(sizes = [600, 3000, 6000, 20000, 50000], label = 'perf-report') {
   window.confirm = () => true;
   const out = { ua: navigator.userAgent, cpu: navigator.hardwareConcurrency, results: [] };
   for (const n of sizes) {
@@ -57,11 +57,13 @@ export async function run(sizes = [600, 3000, 6000, 20000, 50000]) {
     r.allExpenses = await time(() => DB.allExpenses());
     r.monthRange = await time(() => { const d = new Date(); return DB.expensesBetween(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-01`, `${d.getFullYear()}-${pad(d.getMonth() + 1)}-31`); });
     $('#periodType').value = 'month'; periodOffset = 0; drillCat = null; statFilter.clear();
+    await sleep(300);
     r.statsCard = await time(() => renderStats());
     r.cumulative = await time(() => renderCumulative());
     r.yearDashboard = await time(() => renderYearDashboard());
     r.insights = await time(() => renderInsights());
-    r.statisticheTotale = r.statsCard + r.cumulative + r.yearDashboard + r.insights;
+    // lavoro per ogni tocco di ‹ / ›: prima tutte e 4 le viste, ora solo la scheda del periodo
+    r.cambioPeriodo = typeof renderStatsGlobals === 'function' ? r.statsCard : r.statsCard + r.cumulative + r.yearDashboard + r.insights;
     $('#searchInput').value = ''; listLimit = LIST_PAGE;
     r.movimenti = await time(() => renderList());
     $('#searchInput').value = 'nota'; r.ricerca = await time(() => renderList()); $('#searchInput').value = '';
@@ -69,6 +71,10 @@ export async function run(sizes = [600, 3000, 6000, 20000, 50000]) {
     r.persone = await time(() => PeopleUI.renderList());
     r.schedaPersona = await time(() => PeopleUI.openPerson('p0'));
     r.eventi = await time(() => EventsUI.renderList());
+    // con la sezione "Archiviati" aperta (tutti gli eventi in elenco)
+    if (!document.querySelector('#eventsPane [data-act=arch][aria-expanded=true]')) { document.querySelector('#eventsPane [data-act=arch]')?.click(); await sleep(300); }
+    r.eventiArchiviati = await time(() => EventsUI.renderList());
+    document.querySelector('#eventsPane [data-act=arch]')?.click(); await sleep(200);
     r.saldiPagatoDa = await time(async () => Ledger.balances(await DB.allExpenses(), await DB.all('settlements')));
     let json = '';
     r.exportJson = await time(async () => { json = JSON.stringify(await buildBackup(), null, 2); });
@@ -77,7 +83,7 @@ export async function run(sizes = [600, 3000, 6000, 20000, 50000]) {
     console.table([r]);
     showView('add');
   }
-  try { await fetch('/__golden/save?label=perf-report', { method: 'POST', body: JSON.stringify(out, null, 1) }); } catch (e) { /* solo locale */ }
+  try { await fetch(`/__golden/save?label=${label}`, { method: 'POST', body: JSON.stringify(out, null, 1) }); } catch (e) { /* solo locale */ }
   window.__perf = out;
   return out;
 }

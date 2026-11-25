@@ -4,7 +4,7 @@
 // worker passano dalla cache HTTP del browser, che può tenere per minuti i file
 // della versione precedente (GitHub Pages manda max-age=600).
 const CACHE = 'spese-v25';
-const ASSETS = ['.', 'index.html', 'style.css', 'app.js', 'db.js', 'categories.js', 'drive-config.js', 'drive.js', 'manifest.webmanifest', 'icon.svg'];
+const ASSETS = ['.', 'index.html', 'style.css', 'app.js', 'snapshots.js', 'db.js', 'money.js', 'ledger.js', 'sanitize.js', 'backup.js', 'ui.js', 'people.js', 'split-ui.js', 'people-ui.js', 'events-ui.js', 'categories.js', 'drive-config.js', 'drive.js', 'manifest.webmanifest', 'favicon.png', 'apple-touch-icon.png', 'icon-192.png', 'icon-512.png', 'icon-maskable-512.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE)

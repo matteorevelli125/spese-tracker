@@ -19,8 +19,8 @@
 ">
 <title>Spese</title>
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon.svg">
+<link rel="icon" href="favicon.png" type="image/png" sizes="48x48">
+<link rel="apple-touch-icon" href="apple-touch-icon.png" sizes="180x180">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bowlby+One+SC&family=Bungee&family=Manrope:wght@400;500;600;700;800&family=Monoton&family=Permanent+Marker&family=Rubik+Mono+One&display=swap" rel="stylesheet">
@@ -39,7 +39,7 @@
     </div>
   </div>
   <div class="amount-wrap">
-    <div class="amount-label">Importo</div>
+    <div class="amount-label" id="amountLabel">Importo</div>
     <input id="amountInput" type="text" inputmode="decimal" placeholder="0,00 €" autocomplete="off">
   </div>
   <div class="section-label">CATEGORIA</div>
@@ -51,7 +51,11 @@
   <div class="field-list">
     <label class="field-row"><span>Data</span><input type="date" id="dateInput"></label>
     <label class="field-row"><span>Nota</span><input type="text" id="noteInput" placeholder="opzionale"></label>
+    <div class="field-row share-row" id="eventRow" role="button" tabindex="0" aria-haspopup="dialog" hidden><span class="lbl2">Evento<small id="eventHint"></small></span><span class="val" id="eventVal"></span></div>
+    <div class="field-row share-row" id="payerRow" role="button" tabindex="0" aria-haspopup="dialog" hidden><span>Pagato da</span><span class="val" id="payerVal"></span></div>
+    <div class="field-row share-row" id="splitRow" role="button" tabindex="0" aria-haspopup="dialog" hidden><span>Diviso con</span><span class="val" id="splitVal"></span></div>
   </div>
+  <div class="split-summary" id="splitSummary" aria-live="polite" hidden></div>
   <button class="btn-primary" id="saveBtn" disabled>Salva spesa</button>
   <button class="btn-danger-link" id="deleteBtn" style="display:none;width:100%;margin-top:12px;padding:10px">Elimina movimento</button>
 </section>
@@ -59,7 +63,7 @@
 <!-- MOVIMENTI -->
 <section id="view-list" class="view">
   <h1 class="page-title">Movimenti</h1>
-  <input type="search" id="searchInput" placeholder="Cerca (categoria, nota, importo)…" autocomplete="off">
+  <input type="search" id="searchInput" placeholder="Cerca (categoria, nota, importo, persona)…" autocomplete="off">
   <div id="expList"></div>
 </section>
 
@@ -116,7 +120,8 @@
 </section>
 
 <!-- BUDGET -->
-<section id="view-budget" class="view">
+<section id="view-budget" class="view" data-parent="settings">
+  <button class="back-link" data-back="settings">‹ Altro</button>
   <h1 class="page-title">Budget mensili</h1>
   <div class="summary-card" id="budgetSummary"></div>
   <div id="budgetProgress"></div>
@@ -126,10 +131,49 @@
   <div class="card" id="budgetEditor"></div>
 </section>
 
-<!-- IMPOSTAZIONI -->
+<!-- CONDIVISE: persone e crediti, eventi (contenuto in F3–F5) -->
+<section id="view-share" class="view">
+  <h1 class="page-title">Condivise</h1>
+  <div class="seg" id="shareSeg" role="tablist">
+    <button role="tab" data-pane="people" class="on" aria-selected="true">Persone</button>
+    <button role="tab" data-pane="events" aria-selected="false">Eventi</button>
+  </div>
+  <div class="share-pane" data-pane="people" id="peoplePane"></div>
+  <div class="share-pane" data-pane="events" id="eventsPane" hidden></div>
+</section>
+
+<!-- SCHEDA PERSONA (RF-P3): contenuto disegnato da people-ui.js -->
+<section id="view-person" class="view" data-parent="share">
+  <div class="back-row"><button class="back-link" data-back="share">‹ Persone</button>
+    <button class="more-btn" id="personMore" aria-label="Gestisci persona">⋯</button></div>
+  <div id="personBody"></div>
+</section>
+
+<!-- EVENTO: scheda (RF-E5, RF-E6) e form (RF-E1…E3), disegnati da events-ui.js -->
+<section id="view-event" class="view" data-parent="share">
+  <div class="back-row"><button class="back-link" data-back="share">‹ Eventi</button>
+    <button class="more-btn" id="eventMore" aria-label="Gestisci evento">⋯</button></div>
+  <div id="eventBody"></div>
+</section>
+<section id="view-event-form" class="view" data-parent="share">
+  <button class="back-link" data-back="share">‹ Eventi</button>
+  <div id="eventForm"></div>
+</section>
+
+<!-- ALTRO: menu di voci, ognuna apre la sua pagina (RF-N3) -->
 <section id="view-settings" class="view">
   <h1 class="page-title">Altro</h1>
-  <h2>Spese ricorrenti</h2>
+  <div class="menu-list">
+    <button class="menu-item" data-open="budget"><span class="ico">🎯</span><span class="info"><b>Budget</b><small id="menuBudgetSub">budget mensili e obiettivo di risparmio</small></span><span class="chev">›</span></button>
+    <button class="menu-item" data-open="recurring"><span class="ico">🔁</span><span class="info"><b>Spese ricorrenti</b><small id="menuRecSub">mensili e annuali, inserite in automatico</small></span><span class="chev">›</span></button>
+    <button class="menu-item" data-open="drive"><span class="ico">☁️</span><span class="info"><b>Backup Google Drive</b><small id="menuDriveSub">backup automatico mensile</small></span><span class="chev">›</span></button>
+    <button class="menu-item" data-open="data"><span class="ico">🗂️</span><span class="info"><b>Dati</b><small>esporta, importa, cancella</small></span><span class="chev">›</span></button>
+  </div>
+</section>
+
+<section id="view-recurring" class="view" data-parent="settings">
+  <button class="back-link" data-back="settings">‹ Altro</button>
+  <h1 class="page-title">Spese ricorrenti</h1>
   <div class="card">
     <div id="recList"></div>
     <div class="row"><input type="text" id="recName" placeholder="Nome (es. Netflix, Stipendio)"></div>
@@ -153,7 +197,11 @@
     </div>
     <button class="btn-primary" id="recAddBtn">Aggiungi ricorrente</button>
   </div>
-  <h2>Backup Google Drive</h2>
+</section>
+
+<section id="view-drive" class="view" data-parent="settings">
+  <button class="back-link" data-back="settings">‹ Altro</button>
+  <h1 class="page-title">Backup Google Drive</h1>
   <div class="card" id="driveCard">
     <div class="drive-status" id="driveStatus"></div>
     <div id="driveClientIdRow">
@@ -174,7 +222,11 @@
       <button class="btn-danger-link" id="driveClearIdBtn">Rimuovi Client ID</button>
     </div>
   </div>
-  <h2>Dati</h2>
+</section>
+
+<section id="view-data" class="view" data-parent="settings">
+  <button class="back-link" data-back="settings">‹ Altro</button>
+  <h1 class="page-title">Dati</h1>
   <div class="card">
     <div class="row">
       <button class="btn-secondary" id="exportJsonBtn" style="flex:1">Esporta JSON</button>
@@ -188,6 +240,8 @@
       <button class="btn-danger-link" id="wipeBtn">Cancella tutti i dati</button>
     </div>
   </div>
+  <h2>Copie di sicurezza sul dispositivo</h2>
+  <div class="card" id="snapList"></div>
 </section>
 
 </main>
@@ -205,9 +259,9 @@
     <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20v-7M12 20V6M19 20v-10"/></svg>
     Statistiche
   </button>
-  <button data-view="budget">
-    <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>
-    Budget
+  <button data-view="share">
+    <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="3.2"/><circle cx="17" cy="10" r="2.6"/><path d="M3.5 19c.8-3 3-4.6 5.5-4.6s4.7 1.6 5.5 4.6M14.5 15.2c.8-.5 1.6-.7 2.5-.7 2 0 3.6 1.3 4.2 3.5"/></svg>
+    Condivise
   </button>
   <button data-view="settings">
     <svg class="ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></svg>
@@ -220,9 +274,19 @@
 
 <script src="https://accounts.google.com/gsi/client" async></script>
 <script src="categories.js"></script>
+<script src="snapshots.js"></script>
 <script src="db.js"></script>
+<script src="money.js"></script>
+<script src="ledger.js"></script>
+<script src="sanitize.js"></script>
+<script src="backup.js"></script>
+<script src="ui.js"></script>
+<script src="people.js"></script>
 <script src="drive-config.js"></script>
 <script src="drive.js"></script>
 <script src="app.js"></script>
+<script src="split-ui.js"></script>
+<script src="people-ui.js"></script>
+<script src="events-ui.js"></script>
 </body>
 </html>

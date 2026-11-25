@@ -106,12 +106,8 @@ const Drive = (() => {
     return id;
   }
 
-  async function buildDump() {
-    const [expenses, budgets, recurring] = await Promise.all([
-      DB.allExpenses(), DB.allBudgets(), DB.allRecurring(),
-    ]);
-    return { version: 1, exported: new Date().toISOString(), source: 'spese-tracker', expenses, budgets, recurring };
-  }
+  // Stesso contenuto dell'export JSON (backup.js), con l'origine in intestazione.
+  const buildDump = () => buildBackup({ source: 'spese-tracker' });
 
   async function uploadBackup(folderId, filename, jsonString) {
     const boundary = '----spese' + Date.now();
@@ -191,5 +187,21 @@ const Drive = (() => {
     } catch (e) { /* rete o quota: riprova al prossimo avvio */ }
   }
 
-  return { isConfigured, isGranted, connect, disconnect, backupNow, maybeAutoBackup, loadConfig, setClientId, getClientId: () => clientId };
+  // RD-12: carica su Drive la copia fatta prima dell'aggiornamento del DB (snapshots.js),
+  // in silenzio e solo se Drive è già collegato. Se non riesce riprova al prossimo avvio.
+  async function maybeUploadUpgradeSnapshot() {
+    try {
+      const n = await DB.getMeta('upgradeNotice');
+      if (!n || n.driveUploaded || !n.filename) return;
+      await loadConfig();
+      if (!isConfigured() || !(await isGranted())) return;
+      const snap = await Snapshots.latest('pre-upgrade');
+      if (!snap || snap.filename !== n.filename) return;
+      if (!(await ensureToken(false))) return;
+      await uploadBackup(await getFolderId(), snap.filename, snap.json);
+      await DB.setMeta('upgradeNotice', { ...n, driveUploaded: true, driveAt: new Date().toISOString() });
+    } catch (e) { /* rete, quota o GSI non ancora caricato: riprova al prossimo avvio */ }
+  }
+
+  return { isConfigured, isGranted, connect, disconnect, backupNow, maybeAutoBackup, maybeUploadUpgradeSnapshot, loadConfig, setClientId, getClientId: () => clientId };
 })();

@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockup Condivise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css">
+<style>
+/* ---------- Galleria (solo mockup) ---------- */
+body { height: auto; overflow: auto; display: block; background: var(--bg); }
+.gal-head { max-width: 1240px; margin: 0 auto; padding: 28px 20px 8px; }
+.gal-head h1 { font: 800 28px/1.1 'Manrope'; letter-spacing: -.02em; }
+.gal-head p { font: 600 13.5px/1.5 'Manrope'; color: var(--muted); margin-top: 8px; max-width: 760px; }
+.gal-sec { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+.gal-sec > h2 { margin-top: 36px; }
+.gal { display: flex; flex-wrap: wrap; gap: 28px; align-items: flex-start; }
+.shot { width: 375px; max-width: 100%; }
+.cap { margin: 10px 4px 0; font: 600 12.5px/1.45 'Manrope'; color: var(--muted); }
+.cap b { color: var(--text); font-weight: 800; }
+.cap .ids { display: inline-block; margin-top: 4px; font: 700 10.5px/1 'Manrope'; letter-spacing: .04em; color: var(--accent); }
+
+/* Telefono */
+.phone { position: relative; width: 375px; max-width: 100%; min-height: 760px; display: flex; flex-direction: column;
+  background: var(--bg); border: 2px solid var(--ink); border-radius: 34px; overflow: hidden; box-shadow: 0 6px 0 var(--ink); }
+.phone .scr { flex: 1; padding: 18px 20px 24px; }
+.phone nav { height: 64px; flex: 0 0 auto; }
+.phone nav button { pointer-events: none; }
+
+/* ---------- Componenti nuovi (prefisso mo-) ---------- */
+.mo-catbar { height: 52px; border: var(--stroke) solid var(--ink); border-radius: var(--radius-md); background: var(--accent-soft);
+  box-shadow: var(--block-shadow); display: flex; align-items: center; justify-content: space-between; padding: 0 14px; }
+.mo-catbar .n { display: flex; gap: 10px; align-items: center; font: 800 13.5px/1 'Manrope'; }
+.mo-catbar .e { font: 800 10.5px/1 'Manrope'; letter-spacing: .07em; color: var(--accent); }
+.mo-subs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.mo-subs .sub-tile { opacity: 1; transform: none; }
+
+.field-row .val { font: 700 14px/1 'Manrope'; color: var(--faint); display: flex; white-space: nowrap; align-items: center; gap: 6px; text-align: right; }
+.field-row .val.on { color: var(--text); }
+.field-row .val .chev { color: var(--faint); font-weight: 800; }
+.field-row .val .x { width: 22px; height: 22px; border-radius: 50%; background: var(--card); display: inline-flex;
+  align-items: center; justify-content: center; font-size: 11px; color: var(--muted); }
+.field-row.sel { background: var(--accent-soft); }
+.field-row .lbl2 { display: flex; flex-direction: column; gap: 3px; }
+.field-row .lbl2 small { font: 600 11px/1 'Manrope'; color: var(--muted); }
+.mo-quota { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding: 0 4px;
+  font: 700 12.5px/1 'Manrope'; color: var(--muted); }
+.mo-quota b { color: var(--text); font-weight: 800; font-variant-numeric: tabular-nums; }
+
+/* Bottom sheet e dialoghi */
+.mo-dim { position: absolute; inset: 0; background: rgba(10,15,12,.55); z-index: 15; }
+.mo-sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 16; background: var(--surface);
+  border-top: var(--stroke) solid var(--ink); border-radius: 24px 24px 0 0; padding: 10px 20px 22px; }
+.mo-sheet .handle { width: 40px; height: 4px; border-radius: 4px; background: var(--line); margin: 0 auto 14px; }
+.mo-sheet h3, .mo-dialog h3 { font: 800 18px/1.2 'Manrope'; margin-bottom: 4px; }
+.mo-sheet .sub, .mo-dialog .sub { font: 600 12.5px/1.45 'Manrope'; color: var(--muted); }
+.mo-dialog { position: absolute; left: 22px; right: 22px; top: 50%; transform: translateY(-50%); z-index: 16;
+  background: var(--surface); border: var(--stroke) solid var(--ink); box-shadow: var(--block-shadow);
+  border-radius: var(--radius-lg); padding: 20px; }
+.mo-dialog .btns { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.mo-dialog .btn-primary { margin-top: 0; }
+.mo-dialog .btn-secondary { width: 100%; }
+.mo-link { background: none; border: none; font: 800 13px/1 'Manrope'; color: var(--muted); padding: 10px; cursor: pointer; }
+
+.mo-search { width: 100%; height: 44px; border-radius: 12px; border: var(--stroke) solid var(--line); background: var(--card);
+  padding: 0 12px; display: flex; align-items: center; gap: 8px; font: 600 13px/1 'Manrope'; color: var(--faint); margin: 14px 0 10px; }
+.mo-search.typing { color: var(--text); border-color: var(--ink); background: var(--surface); }
+.mo-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.mo-chips .chip { display: inline-flex; align-items: center; gap: 6px; }
+.chip.add { border-style: dashed; color: var(--accent); }
+.mo-suggest { border: var(--stroke) solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 10px; }
+.mo-suggest div { padding: 12px 14px; font: 700 13.5px/1 'Manrope'; display: flex; align-items: center; gap: 10px; }
+.mo-suggest div + div { border-top: 1px solid var(--divider); }
+.mo-suggest .new { color: var(--accent); font-weight: 800; }
+
+.mo-opts { display: flex; flex-direction: column; margin: 14px 0 4px; border-top: 1px solid var(--divider); }
+.mo-opt { display: flex; justify-content: space-between; align-items: center; min-height: 48px; border-bottom: 1px solid var(--divider);
+  font: 700 14px/1.2 'Manrope'; }
+.mo-opt small { display: block; font: 600 11.5px/1.3 'Manrope'; color: var(--muted); margin-top: 2px; }
+.mo-switch { flex-shrink: 0; position: relative; width: 50px; height: 30px; border: var(--stroke) solid var(--ink);
+  border-radius: var(--radius-pill); background: var(--card); }
+.mo-switch::after { content: ''; position: absolute; top: 2.5px; left: 3px; width: 22px; height: 22px; border: var(--stroke) solid var(--ink);
+  border-radius: 50%; background: var(--surface); box-sizing: border-box; }
+.mo-switch.on { background: var(--accent); }
+.mo-switch.on::after { transform: translateX(19px); }
+
+.mo-split { margin-top: 6px; }
+.mo-split-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; }
+.mo-split-row + .mo-split-row { border-top: 1px solid var(--divider); }
+.mo-split-row .nm { flex: 1; font: 700 14px/1.1 'Manrope'; }
+.mo-split-row .nm small { display: block; font: 600 11px/1 'Manrope'; color: var(--muted); margin-top: 3px; }
+.mo-split-row .q { font: 800 14px/1 'Manrope'; font-variant-numeric: tabular-nums; }
+.mo-split-row .inp { width: 96px; height: 38px; border-radius: 10px; border: var(--stroke) solid var(--line); background: var(--surface);
+  display: flex; align-items: center; justify-content: flex-end; padding: 0 10px; font: 800 14px/1 'Manrope'; font-variant-numeric: tabular-nums; }
+.mo-split-row .inp.focus { border-color: var(--ink); }
+.mo-split-row .inp.auto { background: var(--card); color: var(--muted); border-style: dashed; }
+.mo-split-row.me .nm { font-weight: 800; }
+.mo-err { margin-top: 10px; padding: 10px 12px; border-radius: 12px; background: #ffe6df; color: #b3301b; font: 700 12.5px/1.4 'Manrope'; }
+.mo-warn { margin-top: 10px; padding: 10px 12px; border-radius: 12px; background: #fff0d1; color: #8a5200; font: 700 12.5px/1.4 'Manrope'; }
+@media (prefers-color-scheme: dark) {
+  .mo-err { background: #3a1812; color: #ff8a78; }
+  .mo-warn { background: #3a2a0e; color: #ffc267; }
+}
+.mo-total { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 0 0; margin-top: 4px;
+  border-top: var(--stroke) solid var(--rule); font: 700 13px/1 'Manrope'; color: var(--muted); }
+.mo-total b { font: 800 16px/1 'Manrope'; color: var(--text); font-variant-numeric: tabular-nums; }
+
+.av { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+  font: 800 12.5px/1 'Manrope'; color: #15221b; border: var(--stroke) solid var(--ink); }
+.av.s { width: 22px; height: 22px; font-size: 9.5px; border-width: 1px; }
+.av.a1 { background: #ffd6e0; } .av.a2 { background: #cfe8ff; } .av.a3 { background: #ffe9b8; } .av.a4 { background: #d8f5d0; } .av.a5 { background: #e6dcff; }
+.av.me { background: var(--accent); color: var(--on-accent); }
+
+/* Movimenti: extra */
+.exp-item .info .meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+.tag { display: inline-flex; align-items: center; gap: 4px; height: 20px; padding: 0 7px; border-radius: var(--radius-pill);
+  background: var(--card); font: 700 10.5px/1 'Manrope'; color: var(--muted); white-space: nowrap; }
+.tag.evt { background: var(--accent-soft); color: var(--accent); }
+.exp-item .amtcol { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
+.exp-item .amtcol small { font: 600 10.5px/1 'Manrope'; color: var(--muted); font-variant-numeric: tabular-nums; }
+.exp-item .amt.zero { color: var(--muted); }
+
+/* Condivise */
+.mo-seg { display: flex; gap: 2px; background: var(--surface); border: var(--stroke) solid var(--ink); border-radius: var(--radius-pill);
+  padding: 3px; margin-bottom: 16px; }
+.mo-seg button { flex: 1; border: none; background: transparent; height: 36px; border-radius: var(--radius-pill);
+  font: 700 13.5px/1 'Manrope'; color: var(--muted); }
+.mo-seg button.on { background: var(--accent); color: var(--on-accent); font-weight: 800; }
+.mo-owe { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.mo-owe > div { padding: 12px; border-radius: 12px; background: var(--card); display: flex; flex-direction: column; gap: 6px; }
+.mo-owe .lbl { font: 800 10px/1 'Manrope'; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.mo-owe b { font: 800 22px/1 'Manrope'; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.pos { color: var(--accent); } .neg { color: var(--danger); } .muted { color: var(--muted); }
+.mo-list { background: var(--surface); border: var(--stroke) solid var(--line); border-radius: 16px; overflow: hidden; }
+.mo-li { display: flex; align-items: center; gap: 12px; padding: 12px 14px; }
+.mo-li + .mo-li { border-top: 1px solid var(--divider); }
+.mo-li .info { flex: 1; min-width: 0; }
+.mo-li .info .t { font: 800 14px/1.15 'Manrope'; }
+.mo-li .info .s { font: 600 11.5px/1.3 'Manrope'; color: var(--muted); margin-top: 2px; }
+.mo-li .r { text-align: right; font: 800 14px/1 'Manrope'; font-variant-numeric: tabular-nums; }
+.mo-li .r small { display: block; font: 700 10px/1 'Manrope'; letter-spacing: .04em; text-transform: uppercase; margin-top: 4px; }
+.mo-li.zero { opacity: .5; }
+.mo-li .chev { color: var(--faint); font: 800 16px/1 'Manrope'; }
+.mo-fab { display: flex; gap: 8px; margin-top: 14px; }
+.mo-fab .btn-secondary { flex: 1; }
+
+.mo-back { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; font: 800 13px/1 'Manrope'; color: var(--accent); }
+.mo-back .more { width: 34px; height: 34px; border-radius: 10px; border: var(--stroke) solid var(--line); display: inline-flex;
+  align-items: center; justify-content: center; color: var(--text); font-size: 16px; }
+.mo-hero { background: var(--surface); border: var(--stroke) solid var(--ink); box-shadow: var(--block-shadow);
+  border-radius: var(--radius-lg); padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.mo-hero .who { display: flex; align-items: center; gap: 10px; font: 800 18px/1 'Manrope'; }
+.mo-hero .lbl { font: 700 12.5px/1 'Manrope'; color: var(--muted); margin-top: 6px; }
+.mo-hero .big { font: 800 36px/1.05 'Manrope'; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.mo-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; }
+.mo-actions .btn-primary { grid-column: 1 / -1; margin-top: 0; height: 48px; }
+.mo-actions .btn-secondary { font-size: 12.5px; }
+
+.mo-tl .mo-li .ico { width: 36px; height: 36px; border-radius: 11px; background: var(--card); display: inline-flex; align-items: center;
+  justify-content: center; font-size: 16px; flex-shrink: 0; }
+.mo-tl .mo-li .r .d { display: block; font: 600 10.5px/1 'Manrope'; color: var(--muted); margin-top: 4px; text-transform: none; letter-spacing: 0; }
+
+.mo-amount-sm { background: var(--surface); border: var(--stroke) solid var(--ink); box-shadow: var(--block-shadow); border-radius: var(--radius-lg);
+  padding: 10px 14px 12px; margin-top: 14px; }
+.mo-amount-sm .l { font: 700 12px/1.2 'Manrope'; color: var(--muted); }
+.mo-amount-sm .v { font: 800 36px/1.1 'Manrope'; text-align: center; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.mo-quick { display: flex; gap: 8px; margin-top: 10px; }
+.mo-quick .chip { flex: 1; }
+
+/* Diff saldo */
+.mo-diff { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin-top: 14px; padding: 12px;
+  border-radius: 12px; background: var(--card); text-align: center; }
+.mo-diff .lbl { font: 800 10px/1 'Manrope'; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.mo-diff b { display: block; font: 800 17px/1 'Manrope'; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.mo-diff .arrow { font: 800 18px/1 'Manrope'; color: var(--muted); }
+
+/* Eventi */
+.mo-evt { background: var(--surface); border: var(--stroke) solid var(--line); border-radius: 16px; padding: 14px; display: flex; gap: 12px; align-items: center; }
+.mo-evt + .mo-evt { margin-top: 10px; }
+.mo-evt .em { width: 46px; height: 46px; border-radius: 14px; background: var(--accent-soft); display: inline-flex; align-items: center;
+  justify-content: center; font-size: 22px; flex-shrink: 0; border: var(--stroke) solid var(--ink); }
+.mo-evt .info { flex: 1; min-width: 0; }
+.mo-evt .t { font: 800 15px/1.15 'Manrope'; display: flex; align-items: center; gap: 6px; }
+.mo-evt .s { font: 600 11.5px/1.3 'Manrope'; color: var(--muted); margin-top: 3px; }
+.mo-evt .avs { display: flex; margin-top: 7px; }
+.mo-evt .avs .av { margin-right: -5px; }
+.mo-evt .r { text-align: right; font: 800 15px/1 'Manrope'; font-variant-numeric: tabular-nums; }
+.mo-evt .r small { display: block; font: 600 10.5px/1 'Manrope'; color: var(--muted); margin-top: 4px; }
+.live { display: inline-flex; height: 18px; padding: 0 6px; align-items: center; border-radius: var(--radius-pill);
+  background: var(--accent); color: var(--on-accent); font: 800 9.5px/1 'Manrope'; letter-spacing: .06em; }
+.mo-collapse { display: flex; justify-content: space-between; align-items: center; margin-top: 22px; padding: 14px 16px;
+  border-radius: 16px; border: var(--stroke) dashed var(--line); font: 800 13.5px/1 'Manrope'; color: var(--muted); }
+
+.mo-tpl { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.mo-tpl .cat-btn { height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+.mo-tpl .cat-btn span { font-size: 20px; }
+.mo-form .field-list { margin-top: 0; }
+.mo-form .section-label { margin: 20px 0 10px; }
+.mo-form input[type=text] { height: 50px; font-size: 15px; font-weight: 700; }
+
+.mo-kpi { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 4px; }
+.mo-kpi > div { padding: 10px 9px; border-radius: 12px; background: var(--card); display: flex; flex-direction: column; gap: 5px; }
+.mo-kpi .lbl { font: 800 9px/1.15 'Manrope'; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.mo-kpi b { font: 800 15px/1 'Manrope'; font-variant-numeric: tabular-nums; }
+.mo-hero .big.sm { font-size: 32px; }
+
+/* Altro: menu */
+.mo-menu .mo-li { padding: 15px 14px; }
+.mo-menu .mo-li .ico { width: 38px; height: 38px; border-radius: 12px; background: var(--card); display: inline-flex; align-items: center;
+  justify-content: center; font-size: 18px; flex-shrink: 0; }
+
+/* Popup aggiornamento */
+.mo-news { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-top: 14px; }
+.mo-news li { display: flex; gap: 10px; font: 600 13px/1.4 'Manrope'; }
+.mo-news li span:first-child { font-size: 17px; }
+.mo-news b { font-weight: 800; }
+.mo-ok { margin-top: 14px; padding: 10px 12px; border-radius: 12px; background: var(--accent-soft); font: 700 12px/1.45 'Manrope'; }
+.mo-ok b { font-weight: 800; }
+.mo-radio { display: flex; gap: 12px; align-items: flex-start; padding: 14px; border-radius: 14px; border: var(--stroke) solid var(--line); margin-top: 10px; }
+.mo-radio.on { border-color: var(--ink); box-shadow: var(--block-shadow); background: var(--accent-soft); }
+.mo-radio .dot { width: 20px; height: 20px; border-radius: 50%; border: var(--stroke) solid var(--ink); flex-shrink: 0; margin-top: 1px; background: var(--surface); }
+.mo-radio.on .dot { background: radial-gradient(circle, var(--ink) 0 4px, var(--surface) 5px); }
+.mo-radio .t { font: 800 14px/1.2 'Manrope'; }
+.mo-radio .s { font: 600 12px/1.4 'Manrope'; color: var(--muted); margin-top: 3px; }
+.rec { font: 800 10px/1 'Manrope'; letter-spacing: .06em; color: var(--accent); margin-left: 6px; }
+</style>
+</head>
+<body>
+
+<!-- SVG icone della tab bar (riusate) -->
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-add" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-stats" viewBox="0 0 24 24"><path d="M5 20v-7M12 20V6M19 20v-10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="3.2"/><circle cx="17" cy="10" r="2.6"/><path d="M3.5 19c.8-3 3-4.6 5.5-4.6s4.7 1.6 5.5 4.6M14.5 15.2c.8-.5 1.6-.7 2.5-.7 2 0 3.6 1.3 4.2 3.5"/></g></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></g></symbol>
+</svg>
+
+<template id="nav-tpl">
+  <nav>
+    <button data-v="add"><svg class="ico"><use href="#i-add"/></svg>Aggiungi</button>
+    <button data-v="list"><svg class="ico"><use href="#i-list"/></svg>Movimenti</button>
+    <button data-v="stats"><svg class="ico"><use href="#i-stats"/></svg>Statistiche</button>
+    <button data-v="share"><svg class="ico"><use href="#i-share"/></svg>Condivise</button>
+    <button data-v="more"><svg class="ico"><use href="#i-more"/></svg>Altro</button>
+  </nav>
+</template>
+
+<header class="gal-head">
+  <h1>Mockup · Spese condivise, crediti ed eventi</h1>
+  <p>Schermate statiche con lo stile reale dell'app (<code>style.css</code>), anche in tema scuro. Sotto ogni schermata ci sono gli ID dei requisiti in <code>docs/requisiti-condivise.md</code>.
+  Scenario: oggi è il <b>12 agosto 2026</b>, durante l'evento "Sardegna agosto". Persone: Giulia, Marco, Luca, Federica, Sara.</p>
+</header>
+
+<!-- ============ 1. WIZARD ============ -->
+<section class="gal-sec">
+  <h2>1 · Aggiungi: il wizard</h2>
+  <div class="gal">
+
+    <!-- 1a -->
+    <div class="shot">
+      <div class="phone" data-nav="add"><div class="scr">
+        <div class="add-head"><h1 class="page-title">Nuova spesa</h1>
+          <div class="type-toggle"><button class="selected">Uscita</button><button>Entrata</button></div></div>
+        <div class="amount-wrap"><div class="amount-label">Importo pagato</div>
+          <div style="font:800 44px/1 'Manrope';text-align:center;letter-spacing:-.02em">80,00 €</div></div>
+        <div class="section-label">CATEGORIA</div>
+        <div class="mo-catbar"><span class="n">🍽️ Cibo e bevande</span><span class="e">MODIFICA</span></div>
+        <div class="mo-subs">
+          <div class="sub-tile">Spesa</div><div class="sub-tile selected">Ristorante</div>
+          <div class="sub-tile">Bar e caffè</div><div class="sub-tile">Take away</div>
+        </div>
+        <div class="field-list">
+          <div class="field-row"><span>Data</span><span class="val on">12/08/2026</span></div>
+          <div class="field-row"><span>Nota</span><span class="val">opzionale</span></div>
+          <div class="field-row"><span>Pagato da</span><span class="val on">Io <span class="chev">›</span></span></div>
+          <div class="field-row sel"><span>Diviso con</span><span class="val on"><span class="av s a1">GI</span> Giulia <span class="chev">›</span></span></div>
+        </div>
+        <div class="mo-quota"><span>👥 diviso in 2 parti uguali</span><span>tua quota <b>40,00 €</b></span></div>
+        <button class="btn-primary">Salva spesa</button>
+      </div></div>
+      <p class="cap"><b>1a · Spesa divisa, flusso normale.</b> I 3 tap restano uguali. Sotto Data e Nota ci sono le nuove righe, chiuse e con il riepilogo. "Evento" non c'è perché non ci sono eventi attivi. Quando c'è uno split l'etichetta diventa "Importo pagato".<br><span class="ids">RF-W3 · RF-W4 · RF-W8</span></p>
+    </div>
+
+    <!-- 1b -->
+    <div class="shot">
+      <div class="phone" data-nav="add"><div class="scr">
+        <div class="add-head"><h1 class="page-title">Nuova spesa</h1>
+          <div class="type-toggle"><button class="selected">Uscita</button><button>Entrata</button></div></div>
+        <div class="amount-wrap"><div class="amount-label">Importo pagato</div>
+          <div style="font:800 44px/1 'Manrope';text-align:center;letter-spacing:-.02em">96,00 €</div></div>
+        <div class="section-label">CATEGORIA</div>
+        <div class="mo-catbar"><span class="n">✈️ Vacanze</span><span class="e">MODIFICA</span></div>
+        <div class="mo-subs">
+          <div class="sub-tile">Alloggio</div><div class="sub-tile">Trasporto</div>
+          <div class="sub-tile">Attività</div><div class="sub-tile selected">Cibo</div>
+        </div>
+        <div class="field-list">
+          <div class="field-row"><span>Data</span><span class="val on">11/08/2026</span></div>
+          <div class="field-row"><span>Nota</span><span class="val on">Supermercato Conad</span></div>
+          <div class="field-row sel"><span class="lbl2">Evento<small>in corso oggi</small></span><span class="val on">✈️ Sardegna agosto <span class="x">✕</span></span></div>
+          <div class="field-row"><span>Pagato da</span><span class="val on">Io <span class="chev">›</span></span></div>
+          <div class="field-row sel"><span>Diviso con</span><span class="val on"><span class="av s a2">MA</span><span class="av s a3">LU</span><span class="av s a1">GI</span> 3 persone <span class="chev">›</span></span></div>
+        </div>
+        <div class="mo-quota"><span>👥 4 parti uguali</span><span>tua quota <b>24,00 €</b></span></div>
+        <button class="btn-primary">Salva spesa</button>
+      </div></div>
+      <p class="cap"><b>1b · Durante un evento.</b> Oggi rientra nelle date di "Sardegna agosto", quindi l'evento è già selezionato (si toglie con ✕). La categoria Vacanze è un suggerimento, lo split comprende tutti i partecipanti in parti uguali. Dopo il salvataggio l'evento <i>resta selezionato</i>, così puoi inserire più scontrini di fila.<br><span class="ids">RF-W1 · RF-W2 · RF-W9 · RF-E3</span></p>
+    </div>
+
+    <!-- 1c -->
+    <div class="shot">
+      <div class="phone" data-nav="add"><div class="scr">
+        <div class="add-head"><h1 class="page-title">Nuova spesa</h1>
+          <div class="type-toggle"><button class="selected">Uscita</button><button>Entrata</button></div></div>
+        <div class="amount-wrap"><div class="amount-label">La tua quota</div>
+          <div style="font:800 44px/1 'Manrope';text-align:center;letter-spacing:-.02em">35,00 €</div></div>
+        <div class="section-label">CATEGORIA</div>
+        <div class="mo-catbar"><span class="n">🍽️ Cibo e bevande</span><span class="e">MODIFICA</span></div>
+        <div class="mo-subs">
+          <div class="sub-tile">Spesa</div><div class="sub-tile selected">Ristorante</div>
+          <div class="sub-tile">Bar e caffè</div><div class="sub-tile">Take away</div>
+        </div>
+        <div class="field-list">
+          <div class="field-row"><span>Data</span><span class="val on">12/08/2026</span></div>
+          <div class="field-row"><span>Nota</span><span class="val on">Cena Porto Cervo</span></div>
+          <div class="field-row sel"><span class="lbl2">Evento</span><span class="val on">✈️ Sardegna agosto <span class="x">✕</span></span></div>
+          <div class="field-row sel"><span>Pagato da</span><span class="val on"><span class="av s a2">MA</span> Marco <span class="chev">›</span></span></div>
+        </div>
+        <div class="mo-quota"><span>dal tuo conto <b>0,00 €</b></span><span>saldo Marco −35,00 €</span></div>
+        <button class="btn-primary">Salva spesa</button>
+      </div></div>
+      <p class="cap"><b>1c · Ha pagato un'altra persona.</b> Con "Pagato da Marco" l'importo diventa <i>la tua quota</i> e la riga "Diviso con" sparisce. Nelle statistiche risultano 35 €, dal tuo conto 0 €, e il saldo di Marco scende di 35 €.<br><span class="ids">RC-7 · RF-W3 · RV-3 · RF-E10</span></p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ 2. SHEET SPLIT ============ -->
+<section class="gal-sec">
+  <h2>2 · Pannelli "Diviso con" e "Pagato da"</h2>
+  <div class="gal">
+
+    <!-- 2a -->
+    <div class="shot">
+      <div class="phone" data-nav="add"><div class="scr" style="opacity:.9">
+        <div class="add-head"><h1 class="page-title">Nuova spesa</h1></div>
+        <div class="amount-wrap"><div class="amount-label">Importo pagato</div><div style="font:800 44px/1 'Manrope';text-align:center">100,00 €</div></div>
+      </div>
+        <div class="mo-dim"></div>
+        <div class="mo-sheet"><div class="handle"></div>
+          <h3>Diviso con</h3><div class="sub">Totale pagato 100,00 €</div>
+          <div class="mo-search">🔍 Cerca o aggiungi persona…</div>
+          <div class="mo-chips">
+            <span class="chip selected"><span class="av s a1">GI</span>Giulia</span>
+            <span class="chip selected"><span class="av s a2">MA</span>Marco</span>
+            <span class="chip"><span class="av s a3">LU</span>Luca</span>
+            <span class="chip"><span class="av s a4">SA</span>Sara</span>
+          </div>
+          <div class="mo-opts">
+            <div class="mo-opt"><div>Importi esatti<small>altrimenti parti uguali</small></div><span class="mo-switch"></span></div>
+            <div class="mo-opt"><div>Non partecipo<small>anticipo puro, tua quota 0</small></div><span class="mo-switch"></span></div>
+          </div>
+          <div class="mo-split">
+            <div class="mo-split-row"><span class="av s a1">GI</span><span class="nm">Giulia</span><span class="q">33,33 €</span></div>
+            <div class="mo-split-row"><span class="av s a2">MA</span><span class="nm">Marco</span><span class="q">33,33 €</span></div>
+            <div class="mo-split-row me"><span class="av s me">IO</span><span class="nm">Tu<small>+1 cent di arrotondamento</small></span><span class="q">33,34 €</span></div>
+          </div>
+          <button class="btn-primary">Conferma</button>
+        </div>
+      </div>
+      <p class="cap"><b>2a · Parti uguali (default).</b> Le persone recenti sono in chip, un tap le seleziona. Il centesimo che avanza va a te. "Non partecipo" divide il totale solo tra gli altri.<br><span class="ids">RF-W4 · RF-W5 · RF-W7 · RC-11</span></p>
+    </div>
+
+    <!-- 2b -->
+    <div class="shot">
+      <div class="phone" data-nav="add"><div class="scr" style="opacity:.9">
+        <div class="add-head"><h1 class="page-title">Nuova spesa</h1></div>
+        <div class="amount-wrap"><div class="amount-label">Importo pagato</div><div style="font:800 44px/1 'Manrope';text-align:center">100,00 €</div></div>
+      </div>
+        <div class="mo-dim"></div>
+        <div class="mo-sheet"><div class="handle"></div>
+          <h3>Diviso con</h3><div class="sub">Totale pagato 100,00 €</div>
+          <div class="mo-search typing">🔍 Fede<span style="opacity:.4">|</span></div>
+          <div class="mo-suggest">
+            <div><span class="av s a5">FE</span>Federica</div>
+            <div class="new">＋ Crea "Fede"</div>
+          </div>
+          <div class="mo-opts">
+            <div class="mo-opt"><div>Importi esatti</div><span class="mo-switch on"></span></div>
+          </div>
+          <div class="mo-split">
+            <div class="mo-split-row"><span class="av s a1">GI</span><span class="nm">Giulia</span><span class="inp">45,00</span></div>
+            <div class="mo-split-row"><span class="av s a2">MA</span><span class="nm">Marco</span><span class="inp focus">70,00</span></div>
+            <div class="mo-split-row me"><span class="av s me">IO</span><span class="nm">Tu<small>calcolato</small></span><span class="inp auto">−15,00</span></div>
+          </div>
+          <div class="mo-err">Le quote degli altri (115,00 €) superano il totale pagato (100,00 €). Correggi per salvare.</div>
+          <button class="btn-primary" disabled>Conferma</button>
+        </div>
+      </div>
+      <p class="cap"><b>2b · Importi esatti e autocompletamento.</b> Scrivi le quote degli altri e la tua si calcola come residuo. Se le quote superano il totale non puoi confermare. Scrivendo un nome compaiono i suggerimenti e "+ Crea".<br><span class="ids">RF-W6 · RV-2 · RF-P9 · Q5</span></p>
+    </div>
+
+    <!-- 2c -->
+    <div class="shot">
+      <div class="phone" data-nav="add"><div class="scr" style="opacity:.9">
+        <div class="add-head"><h1 class="page-title">Nuova spesa</h1></div>
+        <div class="amount-wrap"><div class="amount-label">Importo</div><div style="font:800 44px/1 'Manrope';text-align:center">35,00 €</div></div>
+      </div>
+        <div class="mo-dim"></div>
+        <div class="mo-sheet"><div class="handle"></div>
+          <h3>Chi ha pagato?</h3><div class="sub">Se ha pagato un altro, l'importo è solo la tua quota.</div>
+          <div class="mo-list" style="margin-top:14px">
+            <div class="mo-li"><span class="av me">IO</span><div class="info"><div class="t">Io</div></div><span class="chev">○</span></div>
+            <div class="mo-li" style="background:var(--accent-soft)"><span class="av a2">MA</span><div class="info"><div class="t">Marco</div><div class="s">ti deve 155,00 €</div></div><span class="chev" style="color:var(--text)">●</span></div>
+            <div class="mo-li"><span class="av a1">GI</span><div class="info"><div class="t">Giulia</div><div class="s">ti deve 46,50 €</div></div><span class="chev">○</span></div>
+            <div class="mo-li"><span class="av a3">LU</span><div class="info"><div class="t">Luca</div><div class="s">ti deve 85,00 €</div></div><span class="chev">○</span></div>
+          </div>
+          <div class="mo-search">🔍 Altra persona…</div>
+          <button class="btn-primary" style="margin-top:6px">Conferma</button>
+        </div>
+      </div>
+      <p class="cap"><b>2c · Pagato da.</b> Mostrare il saldo attuale di ciascuno aiuta a decidere se compensare. Scegliendo una persona diversa da "Io", lo split si disattiva.<br><span class="ids">RF-W3 · RV-3 · RV-5</span></p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ 3. MOVIMENTI ============ -->
+<section class="gal-sec">
+  <h2>3 · Movimenti</h2>
+  <div class="gal">
+    <div class="shot">
+      <div class="phone" data-nav="list"><div class="scr">
+        <h1 class="page-title">Movimenti</h1>
+        <div id="searchInput" style="display:flex;align-items:center;color:var(--faint)">Cerca (nota, persona, evento…)</div>
+        <div class="day-header"><span>Mercoledì 12 agosto</span><span>−59,00 €</span></div>
+        <div class="day-card">
+          <div class="exp-item"><span class="ico">🍽️</span><div class="info"><div class="cat">Ristorante</div><div class="note">Cibo e bevande · Cena Porto Cervo</div>
+            <div class="meta"><span class="tag evt">✈️ Sardegna agosto</span><span class="tag">pagato da Marco</span></div></div>
+            <div class="amtcol"><span class="amt">35,00 €</span><small>dal conto 0,00</small></div></div>
+          <div class="exp-item"><span class="ico">✈️</span><div class="info"><div class="cat">Cibo</div><div class="note">Vacanze · Supermercato Conad</div>
+            <div class="meta"><span class="tag evt">✈️ Sardegna agosto</span><span class="tag">👥 4</span></div></div>
+            <div class="amtcol"><span class="amt">24,00 €</span><small>pagati 96,00</small></div></div>
+        </div>
+        <div class="day-header"><span>Martedì 11 agosto</span><span>−0,00 €</span></div>
+        <div class="day-card">
+          <div class="exp-item"><span class="ico">🎁</span><div class="info"><div class="cat">Regali</div><div class="note">Regali · Compleanno Sara (per Luca)</div>
+            <div class="meta"><span class="tag">non partecipo · 👥 1</span></div></div>
+            <div class="amtcol"><span class="amt zero">0,00 €</span><small>pagati 30,00</small></div></div>
+        </div>
+        <div class="day-header"><span>Lunedì 10 agosto</span><span>−12,50 €</span></div>
+        <div class="day-card">
+          <div class="exp-item"><span class="ico">🚗</span><div class="info"><div class="cat">Carburante</div><div class="note">Automobile</div></div>
+            <div class="amtcol"><span class="amt">12,50 €</span></div></div>
+        </div>
+      </div></div>
+      <p class="cap"><b>3 · Elenco.</b> L'importo principale è sempre la <b>tua quota</b>, il pagato è in piccolo. Badge per evento, numero di persone, pagatore e "non partecipo". I totali del giorno usano la quota. I rimborsi non compaiono qui.<br><span class="ids">RF-M1 · RF-M2 · RF-M3 · RF-M4 · RF-M5</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. PERSONE ============ -->
+<section class="gal-sec">
+  <h2>4 · Condivise › Persone</h2>
+  <div class="gal">
+
+    <!-- 4a -->
+    <div class="shot">
+      <div class="phone" data-nav="share"><div class="scr">
+        <h1 class="page-title">Condivise</h1>
+        <div class="mo-seg"><button class="on">Persone</button><button>Eventi</button></div>
+        <div class="mo-hero" style="margin-bottom:18px">
+          <div class="mo-owe">
+            <div><span class="lbl">Ti devono</span><b class="pos">286,50 €</b></div>
+            <div><span class="lbl">Devi</span><b class="neg">18,00 €</b></div>
+          </div>
+        </div>
+        <div class="mo-list">
+          <div class="mo-li"><span class="av a2">MA</span><div class="info"><div class="t">Marco</div><div class="s">ultimo: 14 ago · gommone</div></div><div class="r pos">155,00 €<small>ti deve</small></div><span class="chev">›</span></div>
+          <div class="mo-li"><span class="av a3">LU</span><div class="info"><div class="t">Luca</div><div class="s">ultimo: 14 ago · gommone</div></div><div class="r pos">85,00 €<small>ti deve</small></div><span class="chev">›</span></div>
+          <div class="mo-li"><span class="av a1">GI</span><div class="info"><div class="t">Giulia</div><div class="s">ultimo: 9 ago · cena</div></div><div class="r pos">46,50 €<small>ti deve</small></div><span class="chev">›</span></div>
+          <div class="mo-li"><span class="av a5">FE</span><div class="info"><div class="t">Federica</div><div class="s">ultimo: 2 ago · aperitivo</div></div><div class="r neg">18,00 €<small>le devi</small></div><span class="chev">›</span></div>
+          <div class="mo-li zero"><span class="av a4">SA</span><div class="info"><div class="t">Sara</div><div class="s">in pari</div></div><div class="r">0,00 €</div><span class="chev">›</span></div>
+        </div>
+        <div class="mo-fab"><button class="btn-secondary">＋ Nuova persona</button></div>
+      </div></div>
+      <p class="cap"><b>4a · Elenco dei saldi.</b> In alto il riepilogo, poi le persone ordinate per importo assoluto, con chi è in pari in fondo e in grigio. Verde = ti deve, rosso = gli devi.<br><span class="ids">RF-N2 · RF-P1 · RF-P2</span></p>
+    </div>
+
+    <!-- 4b -->
+    <div class="shot">
+      <div class="phone" data-nav="share"><div class="scr">
+        <div class="mo-back"><span>‹ Persone</span><span class="more">⋯</span></div>
+        <div class="mo-hero">
+          <div class="who"><span class="av a2">MA</span>Marco</div>
+          <div class="lbl">Ti deve</div>
+          <div class="big pos">155,00 €</div>
+        </div>
+        <div class="mo-actions">
+          <button class="btn-primary">Registra rimborso</button>
+          <button class="btn-secondary">Ha pagato per me</button>
+          <button class="btn-secondary">Segna come saldato</button>
+        </div>
+        <h2>Storico</h2>
+        <div class="mo-list mo-tl">
+          <div class="mo-li"><span class="ico">🚤</span><div class="info"><div class="t">Noleggio gommone</div><div class="s">14 ago · pagato da te 524,00 · sua quota</div></div><div class="r pos">+131,00<span class="d">saldo 155,00</span></div></div>
+          <div class="mo-li"><span class="ico">🍽️</span><div class="info"><div class="t">Cena Porto Cervo</div><div class="s">12 ago · ha pagato lui · tua quota</div></div><div class="r neg">−35,00<span class="d">saldo 24,00</span></div></div>
+          <div class="mo-li"><span class="ico">✈️</span><div class="info"><div class="t">Supermercato Conad</div><div class="s">11 ago · pagato da te 96,00 · sua quota</div></div><div class="r pos">+24,00<span class="d">saldo 59,00</span></div></div>
+          <div class="mo-li"><span class="ico">↩︎</span><div class="info"><div class="t">Rimborso ricevuto</div><div class="s">20 mag · bonifico</div></div><div class="r neg">−90,00<span class="d">saldo 35,00</span></div></div>
+          <div class="mo-li"><span class="ico">⛴️</span><div class="info"><div class="t">Traghetto</div><div class="s">2 mag · pagato da te 500,00 · sua quota</div></div><div class="r pos">+125,00<span class="d">saldo 125,00</span></div></div>
+        </div>
+      </div></div>
+      <p class="cap"><b>4b · Scheda persona.</b> Saldo in evidenza, tre azioni, storico con il <i>saldo progressivo</i> (dal più recente). Toccando una voce si apre il movimento o il rimborso per modificarlo. Il menu ⋯ apre la gestione (4d).<br><span class="ids">RF-P3 · RF-P4 · RF-P5 · RF-P6 · RF-P8</span></p>
+    </div>
+
+    <!-- 4c -->
+    <div class="shot">
+      <div class="phone" data-nav="share"><div class="scr" style="opacity:.9">
+        <div class="mo-back"><span>‹ Persone</span></div>
+        <div class="mo-hero"><div class="who"><span class="av a2">MA</span>Marco</div><div class="big pos">155,00 €</div></div>
+      </div>
+        <div class="mo-dim"></div>
+        <div class="mo-sheet"><div class="handle"></div>
+          <h3>Registra rimborso</h3><div class="sub">Marco ti restituisce dei soldi. Non è un'entrata: cambia solo il saldo.</div>
+          <div class="mo-amount-sm"><div class="l">Importo</div><div class="v">200,00 €</div></div>
+          <div class="mo-quick"><span class="chip">Tutto · 155,00</span><span class="chip">Metà · 77,50</span></div>
+          <div class="mo-warn">Il rimborso supera il saldo: Marco risulterà <b>creditore di 45,00 €</b>.</div>
+          <div class="field-list" style="margin-top:12px">
+            <div class="field-row"><span>Data</span><span class="val on">12/08/2026</span></div>
+            <div class="field-row"><span>Nota</span><span class="val">es. bonifico, contanti</span></div>
+            <div class="field-row"><span>Evento</span><span class="val">nessuno <span class="chev">›</span></span></div>
+          </div>
+          <button class="btn-primary">Registra rimborso</button>
+        </div>
+      </div>
+      <p class="cap"><b>4c · Rimborso (anche parziale).</b> L'importo proposto è il saldo intero, e ci sono scorciatoie per tutto o metà. Se superi il saldo compare un avviso ma puoi salvare. Con saldo negativo il titolo diventa "Ho restituito".<br><span class="ids">RC-6 · RF-P4 · RF-P7</span></p>
+    </div>
+
+    <!-- 4d -->
+    <div class="shot">
+      <div class="phone" data-nav="share"><div class="scr" style="opacity:.9">
+        <div class="mo-back"><span>‹ Persone</span></div>
+        <div class="mo-hero"><div class="who"><span class="av a1">GI</span>Giuli</div><div class="big pos">12,00 €</div></div>
+      </div>
+        <div class="mo-dim"></div>
+        <div class="mo-dialog">
+          <h3>Unire "Giuli" in "Giulia"?</h3>
+          <div class="sub">Movimenti, rimborsi e partecipazioni agli eventi di Giuli passano a Giulia. Poi "Giuli" viene eliminata.</div>
+          <div class="mo-diff">
+            <div><span class="lbl">Giuli + Giulia</span><b>12,00 + 46,50</b></div>
+            <span class="arrow">→</span>
+            <div><span class="lbl">Giulia</span><b class="pos">58,50 €</b></div>
+          </div>
+          <div class="btns">
+            <button class="btn-primary">Unisci</button>
+            <button class="mo-link">Annulla</button>
+          </div>
+        </div>
+      </div>
+      <p class="cap"><b>4d · Gestione dal menu ⋯</b> (Rinomina · Unisci con… · Archivia). Esempio: conferma di un'unione, con il saldo che risulta. Archiviare è possibile solo con saldo 0. Una persona presente in qualche movimento non si può cancellare.<br><span class="ids">RF-P9 · RF-P10</span></p>
+    </div>
+
+    <!-- 4e -->
+    <div class="shot">
+      <div class="phone" data-nav="list"><div class="scr" style="opacity:.9">
+        <h1 class="page-title">Modifica spesa</h1>
+        <div class="amount-wrap"><div class="amount-label">Importo pagato</div><div style="font:800 44px/1 'Manrope';text-align:center">60,00 €</div></div>
+      </div>
+        <div class="mo-dim"></div>
+        <div class="mo-dialog">
+          <h3>Attenzione al saldo di Marco</h3>
+          <div class="sub">Marco ti aveva già rimborsato. Con questa modifica risulterai <b>tu debitore</b>.</div>
+          <div class="mo-diff">
+            <div><span class="lbl">Prima</span><b class="muted">0,00 €</b></div>
+            <span class="arrow">→</span>
+            <div><span class="lbl">Dopo</span><b class="neg">−20,00 €</b><span class="lbl" style="display:block;margin-top:5px">gli devi</span></div>
+          </div>
+          <div class="btns">
+            <button class="btn-primary">Salva comunque</button>
+            <button class="mo-link">Annulla</button>
+          </div>
+        </div>
+      </div>
+      <p class="cap"><b>4e · Modifica o cancellazione che cambia il segno di un saldo.</b> Puoi sempre salvare, ma prima compare questo controllo con il prima e il dopo.<br><span class="ids">RF-S1 · RF-S2</span></p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ 5. EVENTI ============ -->
+<section class="gal-sec">
+  <h2>5 · Condivise › Eventi</h2>
+  <div class="gal">
+
+    <!-- 5a -->
+    <div class="shot">
+      <div class="phone" data-nav="share"><div class="scr">
+        <h1 class="page-title">Condivise</h1>
+        <div class="mo-seg"><button>Persone</button><button class="on">Eventi</button></div>
+        <div class="mo-evt"><span class="em">✈️</span><div class="info"><div class="t">Sardegna agosto <span class="live">IN CORSO</span></div>
+          <div class="s">8 – 22 ago · 4 partecipanti</div>
+          <div class="avs"><span class="av s me">IO</span><span class="av s a2">MA</span><span class="av s a3">LU</span><span class="av s a1">GI</span></div></div>
+          <div class="r">612,00 €<small>tua quota</small></div></div>
+        <div class="mo-evt"><span class="em">🧺</span><div class="info"><div class="t">Picnic Valentino</div>
+          <div class="s">6 dic · 3 partecipanti</div>
+          <div class="avs"><span class="av s me">IO</span><span class="av s a1">GI</span><span class="av s a4">SA</span></div></div>
+          <div class="r">18,40 €<small>tua quota</small></div></div>
+        <button class="btn-primary">＋ Nuovo evento</button>
+        <div class="mo-collapse"><span>Archiviati · 3</span><span>›</span></div>
+      </div></div>
+      <p class="cap"><b>5a · Elenco degli eventi.</b> Gli eventi attivi possono essere più di uno. Il badge "IN CORSO" indica che oggi rientra nelle date (ed è quello che il wizard preseleziona). Gli archiviati sono in fondo, chiusi.<br><span class="ids">RF-E4 · RF-W2</span></p>
+    </div>
+
+    <!-- 5b -->
+    <div class="shot">
+      <div class="phone" data-nav="share"><div class="scr mo-form">
+        <div class="mo-back"><span>‹ Eventi</span></div>
+        <h1 class="page-title">Nuovo evento</h1>
+        <div class="section-label" style="margin-top:0">MODELLO</div>
+        <div class="mo-tpl">
+          <div class="cat-btn selected"><span>✈️</span>Vacanza</div>
+          <div class="cat-btn"><span>🧺</span>Picnic</div>
+          <div class="cat-btn"><span>🎉</span>Uscita</div>
+          <div class="cat-btn"><span>📌</span>Generico</div>
+        </div>
+        <div class="section-label">NOME</div>
+        <input type="text" placeholder="Vacanza agosto">
+        <div class="section-label">DATE (FACOLTATIVE)</div>
+        <div class="field-list">
+          <div class="field-row"><span>Dal</span><span class="val">gg/mm/aaaa</span></div>
+          <div class="field-row"><span>Al</span><span class="val">gg/mm/aaaa</span></div>
+        </div>
+        <div class="section-label">PARTECIPANTI</div>
+        <div class="mo-chips">
+          <span class="chip selected"><span class="av s a2">MA</span>Marco</span>
+          <span class="chip selected"><span class="av s a3">LU</span>Luca</span>
+          <span class="chip"><span class="av s a1">GI</span>Giulia</span>
+          <span class="chip add">＋ Aggiungi</span>
+        </div>
+        <div class="section-label">CATEGORIA PREDEFINITA</div>
+        <div class="field-list">
+          <div class="field-row"><span>Categoria</span><span class="val on">✈️ Vacanze <span class="chev">›</span></span></div>
+          <div class="field-row"><span>Sottocategoria</span><span class="val">nessuna <span class="chev">›</span></span></div>
+        </div>
+        <div class="chart-note">È solo un suggerimento: nell'evento puoi registrare spese di qualsiasi categoria.</div>
+        <button class="btn-primary">Crea evento</button>
+      </div></div>
+      <p class="cap"><b>5b · Nuovo evento.</b> Il modello imposta emoji e categoria predefinita. Il placeholder del nome è "Vacanza agosto". Date e categoria sono facoltative, e per un evento di un giorno basta "Dal".<br><span class="ids">RF-E1 · RF-E2 · RF-E3</span></p>
+    </div>
+
+    <!-- 5c -->
+    <div class="shot">
+      <div class="phone" data-nav="share"><div class="scr">
+        <div class="mo-back"><span>‹ Eventi</span><span class="more">⋯</span></div>
+        <div class="mo-hero">
+          <div class="who">✈️ Sardegna agosto</div>
+          <div class="lbl">Tua quota · 8 – 22 ago</div>
+          <div class="big sm">612,00 €</div>
+          <div class="mo-kpi">
+            <div><span class="lbl">Pagato da te</span><b>1.416,00</b></div>
+            <div><span class="lbl">Pagato da altri per te</span><b>35,00</b></div>
+            <div><span class="lbl">Spese</span><b>14</b></div>
+          </div>
+        </div>
+        <button class="btn-primary">＋ Spesa in questo evento</button>
+        <div class="card" style="margin-top:18px">
+          <h2>Per categoria</h2>
+          <div class="hbar-row"><span class="lbl">✈️ Vacanze</span><span class="track"><span class="fill" style="display:block;width:100%"></span></span><span class="val">448,00 €</span></div>
+          <div class="hbar-row"><span class="lbl">🍽️ Cibo e bevande</span><span class="track"><span class="fill" style="display:block;width:28%"></span></span><span class="val">124,00 €</span></div>
+          <div class="hbar-row"><span class="lbl">🚗 Automobile</span><span class="track"><span class="fill" style="display:block;width:9%"></span></span><span class="val">40,00 €</span></div>
+        </div>
+        <div class="card">
+          <h2>Saldi generati in questo evento</h2>
+          <div class="mo-li" style="padding:8px 0"><span class="av s a2">MA</span><div class="info"><div class="t">Marco</div></div><div class="r pos">+245,00</div><span class="chip" style="height:30px;margin-left:8px">Salda</span></div>
+          <div class="mo-li" style="padding:8px 0"><span class="av s a3">LU</span><div class="info"><div class="t">Luca</div></div><div class="r pos">+280,00</div><span class="chip" style="height:30px;margin-left:8px">Salda</span></div>
+          <div class="mo-li" style="padding:8px 0"><span class="av s a1">GI</span><div class="info"><div class="t">Giulia</div></div><div class="r pos">+280,00</div><span class="chip" style="height:30px;margin-left:8px">Salda</span></div>
+          <div class="chart-note">Solo informativo: il saldo vero è unico per persona e comprende anche gli altri movimenti.</div>
+        </div>
+        <h2>Spese</h2>
+        <div class="day-card">
+          <div class="exp-item"><span class="ico">🚤</span><div class="info"><div class="cat">Attività</div><div class="note">14 ago · Noleggio gommone</div></div><div class="amtcol"><span class="amt">131,00 €</span><small>pagati 524,00</small></div></div>
+          <div class="exp-item"><span class="ico">🍽️</span><div class="info"><div class="cat">Ristorante</div><div class="note">12 ago · pagato da Marco</div></div><div class="amtcol"><span class="amt">35,00 €</span><small>dal conto 0,00</small></div></div>
+        </div>
+      </div></div>
+      <p class="cap"><b>5c · Scheda evento.</b> Tua quota totale con i KPI di cassa, il pulsante che apre lo stesso wizard con l'evento selezionato, la ripartizione per categoria (con drill-down), i saldi generati (con "Salda" che porta alla scheda persona) e l'elenco delle spese. Il menu ⋯ contiene Modifica · Archivia · Elimina.<br><span class="ids">RF-E5 · RF-E6 · RF-E8 · RF-E9</span></p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ 6. ALTRO ============ -->
+<section class="gal-sec">
+  <h2>6 · Altro (menu) · import · aggiornamento</h2>
+  <div class="gal">
+
+    <!-- 6a -->
+    <div class="shot">
+      <div class="phone" data-nav="more"><div class="scr">
+        <h1 class="page-title">Altro</h1>
+        <div class="mo-list mo-menu">
+          <div class="mo-li"><span class="ico">🎯</span><div class="info"><div class="t">Budget</div><div class="s">budget mensili e obiettivo di risparmio</div></div><span class="chev">›</span></div>
+          <div class="mo-li"><span class="ico">🔁</span><div class="info"><div class="t">Spese ricorrenti</div><div class="s">6 attive</div></div><span class="chev">›</span></div>
+          <div class="mo-li"><span class="ico">☁️</span><div class="info"><div class="t">Backup Google Drive</div><div class="s">ultimo: 1 ago 2026</div></div><span class="chev">›</span></div>
+          <div class="mo-li"><span class="ico">🗂️</span><div class="info"><div class="t">Dati</div><div class="s">esporta, importa, cancella</div></div><span class="chev">›</span></div>
+        </div>
+        <div class="mo-back" style="margin-top:28px"><span>Dettaglio, esempio "Budget" ↓</span></div>
+        <div class="mo-back"><span>‹ Altro</span></div>
+        <h1 class="page-title" style="margin-top:0">Budget mensili</h1>
+        <div class="summary-card"><div class="head"><span>Agosto · totale budget</span><span class="pct">72%</span></div>
+          <div class="amt">1.080 € <span class="of">/ 1.500 €</span></div><div class="track"><div class="fill" style="width:72%"></div></div></div>
+        <div class="budget-row"><div class="head"><span>🍽️ Cibo e bevande</span><span class="sp">310 / 400 €</span></div><div class="track"><div class="fill" style="width:77%"></div></div></div>
+      </div></div>
+      <p class="cap"><b>6a · Altro come menu.</b> Ogni voce apre un dettaglio con "‹ Altro". Il dettaglio Budget è l'attuale schermata Budget, con lo stesso contenuto e l'obiettivo di risparmio. Al posto di Budget, nella barra, c'è Condivise.<br><span class="ids">RF-N1 · RF-N3</span></p>
+    </div>
+
+    <!-- 6b -->
+    <div class="shot">
+      <div class="phone" data-nav="more"><div class="scr" style="opacity:.9">
+        <div class="mo-back"><span>‹ Altro</span></div>
+        <h1 class="page-title">Dati</h1>
+      </div>
+        <div class="mo-dim"></div>
+        <div class="mo-sheet"><div class="handle"></div>
+          <h3>Importa backup</h3><div class="sub">spese-backup-2026-08-01.json · 1.284 movimenti · 5 persone · 2 eventi</div>
+          <div class="mo-radio on"><span class="dot"></span><div><div class="t">Sostituisci tutto <span class="rec">CONSIGLIATO</span></div>
+            <div class="s">I dati attuali vengono sostituiti da quelli del file. Prima salvo una copia sul dispositivo.</div></div></div>
+          <div class="mo-radio"><span class="dot"></span><div><div class="t">Aggiungi ai dati attuali</div>
+            <div class="s">Come oggi. Attenzione: importare due volte lo stesso file duplica le spese.</div></div></div>
+          <div class="mo-ok">💾 Prima di procedere salvo <b>spese-pre-import-2026-08-12.json</b> sul dispositivo.</div>
+          <button class="btn-primary">Importa</button>
+        </div>
+      </div>
+      <p class="cap"><b>6b · Import con scelta.</b> Prima mostra il riepilogo del file. Prima della sostituzione l'app salva sempre una copia sul dispositivo, e se l'import fallisce i dati restano com'erano.<br><span class="ids">RD-3 · RD-11</span></p>
+    </div>
+
+    <!-- 6c -->
+    <div class="shot">
+      <div class="phone" data-nav="add"><div class="scr" style="opacity:.9">
+        <div class="add-head"><h1 class="page-title">Nuova spesa</h1></div>
+        <div class="amount-wrap"><div class="amount-label">Importo</div><div style="font:800 44px/1 'Manrope';text-align:center;color:var(--faint)">0,00 €</div></div>
+      </div>
+        <div class="mo-dim"></div>
+        <div class="mo-dialog">
+          <h3>App aggiornata 🎉</h3>
+          <div class="sub">Ecco le novità di questa versione:</div>
+          <ul class="mo-news">
+            <li><span>👥</span><span><b>Spese divise</b>: nel wizard trovi "Diviso con" e "Pagato da". Nelle statistiche conta solo la tua quota.</span></li>
+            <li><span>💸</span><span><b>Condivise › Persone</b>: chi ti deve cosa, rimborsi e compensazioni.</span></li>
+            <li><span>✈️</span><span><b>Eventi</b>: raggruppa le spese di vacanze, picnic e uscite.</span></li>
+            <li><span>⋯</span><span><b>Altro</b> è diventato un menu, e dentro trovi Budget.</span></li>
+          </ul>
+          <div class="mo-ok">✅ I tuoi dati sono intatti. Backup salvato: <b>spese-pre-v3-2026-08-12.json</b> sul dispositivo e su Google Drive.</div>
+          <div class="btns"><button class="btn-primary">Scarica copia e continua</button></div>
+        </div>
+      </div>
+      <p class="cap"><b>6c · Primo avvio dopo l'aggiornamento.</b> Il backup è già stato fatto <i>prima</i> di aggiornare il database. Il popup compare una sola volta.<br><span class="ids">RD-1 · RD-12 · RD-13</span></p>
+    </div>
+
+  </div>
+</section>
+
+<div style="height:60px"></div>
+
+<script>
+  // Aggiunge la tab bar a ogni telefono e marca la tab attiva.
+  const tpl = document.getElementById('nav-tpl');
+  document.querySelectorAll('.phone').forEach(p => {
+    const nav = tpl.content.firstElementChild.cloneNode(true);
+    nav.querySelectorAll('button').forEach(b => b.classList.toggle('active', b.dataset.v === p.dataset.nav));
+    p.appendChild(nav);
+  });
+</script>
+</body>
+</html>

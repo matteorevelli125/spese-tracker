@@ -1,0 +1,9335 @@
+{
+ "version": 1,
+ "exported": "2026-11-25T00:00:00.000Z",
+ "expenses": [
+  {
+   "id": 1,
+   "date": "2024-10-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727740861000
+  },
+  {
+   "id": 2,
+   "date": "2024-10-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727740922000
+  },
+  {
+   "id": 3,
+   "date": "2024-10-02",
+   "amount": 17.12,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "",
+   "type": "expense",
+   "ts": 1727740983000
+  },
+  {
+   "id": 4,
+   "date": "2024-10-03",
+   "amount": 23.64,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "ts": 1727741044000
+  },
+  {
+   "id": 5,
+   "date": "2024-10-04",
+   "amount": 43.74,
+   "cat": "viaggi",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727741105000
+  },
+  {
+   "id": 6,
+   "date": "2024-10-04",
+   "amount": 9.76,
+   "cat": "salute",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727741166000
+  },
+  {
+   "id": 7,
+   "date": "2024-10-05",
+   "amount": 3.59,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "ts": 1727741227000
+  },
+  {
+   "id": 8,
+   "date": "2024-10-05",
+   "amount": 50.33,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "Esselunga",
+   "ts": 1727741288000
+  },
+  {
+   "id": 9,
+   "date": "2024-10-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727741349000
+  },
+  {
+   "id": 10,
+   "date": "2024-10-06",
+   "amount": 16.82,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "ts": 1727741410000
+  },
+  {
+   "id": 11,
+   "date": "2024-10-07",
+   "amount": 49.15,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727741471000
+  },
+  {
+   "id": 12,
+   "date": "2024-10-07",
+   "amount": 11.72,
+   "cat": "abbigliamento",
+   "sub": "Tintoria",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727741532000
+  },
+  {
+   "id": 13,
+   "date": "2024-10-08",
+   "amount": 16.34,
+   "cat": "cibo",
+   "sub": "Ristorante",
+   "note": "",
+   "type": "expense",
+   "ts": 1727741593000
+  },
+  {
+   "id": 14,
+   "date": "2024-10-09",
+   "amount": 44.18,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "ts": 1727741654000
+  },
+  {
+   "id": 15,
+   "date": "2024-10-09",
+   "amount": 68.88,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727741715000
+  },
+  {
+   "id": 16,
+   "date": "2024-10-10",
+   "amount": 3.21,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "",
+   "type": "expense",
+   "ts": 1727741776000
+  },
+  {
+   "id": 17,
+   "date": "2024-10-10",
+   "amount": 31.2,
+   "cat": "abbigliamento",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727741837000
+  },
+  {
+   "id": 18,
+   "date": "2024-10-11",
+   "amount": 59.58,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "ts": 1727741898000
+  },
+  {
+   "id": 19,
+   "date": "2024-10-11",
+   "amount": 64.85,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "ts": 1727741959000
+  },
+  {
+   "id": 20,
+   "date": "2024-10-14",
+   "amount": 4.81,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727742020000
+  },
+  {
+   "id": 21,
+   "date": "2024-10-15",
+   "amount": 13.7,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "pranzo",
+   "ts": 1727742081000
+  },
+  {
+   "id": 22,
+   "date": "2024-10-17",
+   "amount": 32.65,
+   "cat": "viaggi",
+   "sub": "Altro",
+   "note": "",
+   "ts": 1727742142000
+  },
+  {
+   "id": 23,
+   "date": "2024-10-17",
+   "amount": 3.88,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727742203000
+  },
+  {
+   "id": 24,
+   "date": "2024-10-19",
+   "amount": 68.28,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727742264000
+  },
+  {
+   "id": 25,
+   "date": "2024-10-19",
+   "amount": 19.69,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "",
+   "type": "expense",
+   "ts": 1727742325000
+  },
+  {
+   "id": 26,
+   "date": "2024-10-20",
+   "amount": 64.07,
+   "cat": "salute",
+   "sub": "Farmacia",
+   "note": "",
+   "type": "expense",
+   "ts": 1727742386000
+  },
+  {
+   "id": 27,
+   "date": "2024-10-21",
+   "amount": 65.21,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "con amici",
+   "ts": 1727742447000
+  },
+  {
+   "id": 28,
+   "date": "2024-10-21",
+   "amount": 19.01,
+   "cat": "casa",
+   "sub": "Altro",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727742508000
+  },
+  {
+   "id": 29,
+   "date": "2024-10-23",
+   "amount": 22.78,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "type": "expense",
+   "ts": 1727742569000
+  },
+  {
+   "id": 30,
+   "date": "2024-10-24",
+   "amount": 36.17,
+   "cat": "trasporti",
+   "sub": "Car sharing",
+   "note": "",
+   "type": "expense",
+   "ts": 1727742630000
+  },
+  {
+   "id": 31,
+   "date": "2024-10-25",
+   "amount": 33.34,
+   "cat": "svago",
+   "sub": "Hobby",
+   "note": "",
+   "ts": 1727742691000
+  },
+  {
+   "id": 32,
+   "date": "2024-10-25",
+   "amount": 49.03,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727742752000
+  },
+  {
+   "id": 33,
+   "date": "2024-10-26",
+   "amount": 22.53,
+   "cat": "svago",
+   "sub": "Libri e giochi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727742813000
+  },
+  {
+   "id": 34,
+   "date": "2024-10-26",
+   "amount": 2.95,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727742874000
+  },
+  {
+   "id": 35,
+   "date": "2024-10-27",
+   "amount": 32.05,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727742935000
+  },
+  {
+   "id": 36,
+   "date": "2024-10-27",
+   "amount": 23.06,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727742996000
+  },
+  {
+   "id": 37,
+   "date": "2024-10-27",
+   "amount": 2239,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727743057000
+  },
+  {
+   "id": 38,
+   "date": "2024-10-28",
+   "amount": 69.13,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727743118000
+  },
+  {
+   "id": 39,
+   "date": "2024-10-29",
+   "amount": 6.44,
+   "cat": "abbonamenti",
+   "sub": "Software e AI",
+   "note": "",
+   "type": "expense",
+   "ts": 1727743179000
+  },
+  {
+   "id": 40,
+   "date": "2024-10-29",
+   "amount": 50.81,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727743240000
+  },
+  {
+   "id": 41,
+   "date": "2024-10-30",
+   "amount": 54.37,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "ts": 1727743301000
+  },
+  {
+   "id": 42,
+   "date": "2024-10-31",
+   "amount": 29.4,
+   "cat": "salute",
+   "sub": "Farmacia",
+   "note": "",
+   "type": "expense",
+   "ts": 1727743362000
+  },
+  {
+   "id": 43,
+   "date": "2024-10-31",
+   "amount": 34.65,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "type": "expense",
+   "ts": 1727743423000
+  },
+  {
+   "id": 44,
+   "date": "2024-11-01",
+   "amount": 28.97,
+   "cat": "salute",
+   "sub": "Farmacia",
+   "note": "",
+   "ts": 1727743484000
+  },
+  {
+   "id": 45,
+   "date": "2024-11-01",
+   "amount": 18.53,
+   "cat": "salute",
+   "sub": "Farmacia",
+   "note": "",
+   "type": "expense",
+   "ts": 1727743545000
+  },
+  {
+   "id": 46,
+   "date": "2024-11-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727743606000
+  },
+  {
+   "id": 47,
+   "date": "2024-11-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727743667000
+  },
+  {
+   "id": 48,
+   "date": "2024-11-02",
+   "amount": 61.08,
+   "cat": "abbonamenti",
+   "sub": "Altro",
+   "note": "",
+   "ts": 1727743728000
+  },
+  {
+   "id": 49,
+   "date": "2024-11-03",
+   "amount": 50.86,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "type": "expense",
+   "ts": 1727743789000
+  },
+  {
+   "id": 50,
+   "date": "2024-11-05",
+   "amount": 50.31,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "",
+   "ts": 1727743850000
+  },
+  {
+   "id": 51,
+   "date": "2024-11-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727743911000
+  },
+  {
+   "id": 52,
+   "date": "2024-11-06",
+   "amount": 37.22,
+   "cat": "svago",
+   "sub": "Sport",
+   "note": "pranzo",
+   "ts": 1727743972000
+  },
+  {
+   "id": 53,
+   "date": "2024-11-07",
+   "amount": 56.18,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727744033000
+  },
+  {
+   "id": 54,
+   "date": "2024-11-07",
+   "amount": 67.56,
+   "cat": "viaggi",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727744094000
+  },
+  {
+   "id": 55,
+   "date": "2024-11-08",
+   "amount": 43.02,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727744155000
+  },
+  {
+   "id": 56,
+   "date": "2024-11-08",
+   "amount": 47.29,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727744216000
+  },
+  {
+   "id": 57,
+   "date": "2024-11-10",
+   "amount": 53.23,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "ts": 1727744277000
+  },
+  {
+   "id": 58,
+   "date": "2024-11-11",
+   "amount": 60.28,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727744338000
+  },
+  {
+   "id": 59,
+   "date": "2024-11-11",
+   "amount": 29.29,
+   "cat": "abbigliamento",
+   "sub": "Tintoria",
+   "note": "",
+   "type": "expense",
+   "ts": 1727744399000
+  },
+  {
+   "id": 60,
+   "date": "2024-11-12",
+   "amount": 13.6,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "pranzo",
+   "ts": 1727744460000
+  },
+  {
+   "id": 61,
+   "date": "2024-11-13",
+   "amount": 60.75,
+   "cat": "viaggi",
+   "sub": "Alloggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727744521000
+  },
+  {
+   "id": 62,
+   "date": "2024-11-13",
+   "amount": 27.86,
+   "cat": "trasporti",
+   "sub": "Taxi",
+   "note": "",
+   "ts": 1727744582000
+  },
+  {
+   "id": 63,
+   "date": "2024-11-16",
+   "amount": 31.5,
+   "cat": "abbigliamento",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727744643000
+  },
+  {
+   "id": 64,
+   "date": "2024-11-16",
+   "amount": 63.33,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "",
+   "type": "expense",
+   "ts": 1727744704000
+  },
+  {
+   "id": 65,
+   "date": "2024-11-17",
+   "amount": 48.97,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "pranzo",
+   "ts": 1727744765000
+  },
+  {
+   "id": 66,
+   "date": "2024-11-17",
+   "amount": 68.3,
+   "cat": "auto",
+   "sub": "Manutenzione",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727744826000
+  },
+  {
+   "id": 67,
+   "date": "2024-11-19",
+   "amount": 15.87,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "ts": 1727744887000
+  },
+  {
+   "id": 68,
+   "date": "2024-11-19",
+   "amount": 49.92,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727744948000
+  },
+  {
+   "id": 69,
+   "date": "2024-11-23",
+   "amount": 66.4,
+   "cat": "abbigliamento",
+   "sub": "Altro",
+   "note": "pranzo",
+   "ts": 1727745009000
+  },
+  {
+   "id": 70,
+   "date": "2024-11-25",
+   "amount": 60.92,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727745070000
+  },
+  {
+   "id": 71,
+   "date": "2024-11-27",
+   "amount": 2230,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727745131000
+  },
+  {
+   "id": 72,
+   "date": "2024-11-29",
+   "amount": 61.22,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "ts": 1727745192000
+  },
+  {
+   "id": 73,
+   "date": "2024-11-29",
+   "amount": 6.58,
+   "cat": "abbigliamento",
+   "sub": "Altro",
+   "note": "",
+   "ts": 1727745253000
+  },
+  {
+   "id": 74,
+   "date": "2024-11-30",
+   "amount": 30.32,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "",
+   "type": "expense",
+   "ts": 1727745314000
+  },
+  {
+   "id": 75,
+   "date": "2024-11-30",
+   "amount": 104.99,
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "",
+   "ts": 1727745375000
+  },
+  {
+   "id": 76,
+   "date": "2024-12-01",
+   "amount": 59.24,
+   "cat": "svago",
+   "sub": "Hobby",
+   "note": "",
+   "type": "expense",
+   "ts": 1727745436000
+  },
+  {
+   "id": 77,
+   "date": "2024-12-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727745497000
+  },
+  {
+   "id": 78,
+   "date": "2024-12-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727745558000
+  },
+  {
+   "id": 79,
+   "date": "2024-12-02",
+   "amount": 6.71,
+   "cat": "abbigliamento",
+   "sub": "Altro",
+   "note": "",
+   "ts": 1727745619000
+  },
+  {
+   "id": 80,
+   "date": "2024-12-03",
+   "amount": 9.21,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "",
+   "ts": 1727745680000
+  },
+  {
+   "id": 81,
+   "date": "2024-12-03",
+   "amount": 20.35,
+   "cat": "svago",
+   "sub": "Libri e giochi",
+   "note": "",
+   "ts": 1727745741000
+  },
+  {
+   "id": 82,
+   "date": "2024-12-04",
+   "amount": 22.35,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "ts": 1727745802000
+  },
+  {
+   "id": 83,
+   "date": "2024-12-04",
+   "amount": 27.74,
+   "cat": "trasporti",
+   "sub": "Bus e metro",
+   "note": "",
+   "ts": 1727745863000
+  },
+  {
+   "id": 84,
+   "date": "2024-12-05",
+   "amount": 45.17,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727745924000
+  },
+  {
+   "id": 85,
+   "date": "2024-12-05",
+   "amount": 41.87,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727745985000
+  },
+  {
+   "id": 86,
+   "date": "2024-12-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727746046000
+  },
+  {
+   "id": 87,
+   "date": "2024-12-06",
+   "amount": 47.08,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "",
+   "ts": 1727746107000
+  },
+  {
+   "id": 88,
+   "date": "2024-12-06",
+   "amount": 57.14,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "",
+   "type": "expense",
+   "ts": 1727746168000
+  },
+  {
+   "id": 89,
+   "date": "2024-12-07",
+   "amount": 11.87,
+   "cat": "abbonamenti",
+   "sub": "Software e AI",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727746229000
+  },
+  {
+   "id": 90,
+   "date": "2024-12-08",
+   "amount": 12.79,
+   "cat": "salute",
+   "sub": "Altro",
+   "note": "",
+   "ts": 1727746290000
+  },
+  {
+   "id": 91,
+   "date": "2024-12-08",
+   "amount": 58.13,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "ts": 1727746351000
+  },
+  {
+   "id": 92,
+   "date": "2024-12-09",
+   "amount": 64.67,
+   "cat": "salute",
+   "sub": "Farmacia",
+   "note": "",
+   "ts": 1727746412000
+  },
+  {
+   "id": 93,
+   "date": "2024-12-10",
+   "amount": 46.88,
+   "cat": "auto",
+   "sub": "Parcheggio",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727746473000
+  },
+  {
+   "id": 94,
+   "date": "2024-12-11",
+   "amount": 43.96,
+   "cat": "abbigliamento",
+   "sub": "Accessori",
+   "note": "pranzo",
+   "ts": 1727746534000
+  },
+  {
+   "id": 95,
+   "date": "2024-12-11",
+   "amount": 45.06,
+   "cat": "salute",
+   "sub": "Altro",
+   "note": "Esselunga",
+   "ts": 1727746595000
+  },
+  {
+   "id": 96,
+   "date": "2024-12-12",
+   "amount": 41.66,
+   "cat": "svago",
+   "sub": "Hobby",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727746656000
+  },
+  {
+   "id": 97,
+   "date": "2024-12-12",
+   "amount": 140.34,
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727746717000
+  },
+  {
+   "id": 98,
+   "date": "2024-12-13",
+   "amount": 33.53,
+   "cat": "auto",
+   "sub": "Finanziamento",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727746778000
+  },
+  {
+   "id": 99,
+   "date": "2024-12-14",
+   "amount": 35.52,
+   "cat": "svago",
+   "sub": "Cinema e eventi",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727746839000
+  },
+  {
+   "id": 100,
+   "date": "2024-12-14",
+   "amount": 29.5,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "Esselunga",
+   "ts": 1727746900000
+  },
+  {
+   "id": 101,
+   "date": "2024-12-17",
+   "amount": 53.81,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727746961000
+  },
+  {
+   "id": 102,
+   "date": "2024-12-18",
+   "amount": 33.12,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727747022000
+  },
+  {
+   "id": 103,
+   "date": "2024-12-20",
+   "amount": 58.98,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727747083000
+  },
+  {
+   "id": 104,
+   "date": "2024-12-21",
+   "amount": 13.7,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "ts": 1727747144000
+  },
+  {
+   "id": 105,
+   "date": "2024-12-21",
+   "amount": 61.37,
+   "cat": "auto",
+   "sub": "Assicurazione",
+   "note": "",
+   "ts": 1727747205000
+  },
+  {
+   "id": 106,
+   "date": "2024-12-22",
+   "amount": 38.62,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727747266000
+  },
+  {
+   "id": 107,
+   "date": "2024-12-23",
+   "amount": 12.76,
+   "cat": "trasporti",
+   "sub": "Car sharing",
+   "note": "",
+   "ts": 1727747327000
+  },
+  {
+   "id": 108,
+   "date": "2024-12-25",
+   "amount": 19.02,
+   "cat": "svago",
+   "sub": "Hobby",
+   "note": "",
+   "type": "expense",
+   "ts": 1727747388000
+  },
+  {
+   "id": 109,
+   "date": "2024-12-26",
+   "amount": 39.41,
+   "cat": "viaggi",
+   "sub": "Cibo",
+   "note": "",
+   "ts": 1727747449000
+  },
+  {
+   "id": 110,
+   "date": "2024-12-27",
+   "amount": 17.94,
+   "cat": "auto",
+   "sub": "Assicurazione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727747510000
+  },
+  {
+   "id": 111,
+   "date": "2024-12-27",
+   "amount": 2152,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727747571000
+  },
+  {
+   "id": 112,
+   "date": "2024-12-29",
+   "amount": 64.98,
+   "cat": "svago",
+   "sub": "Hobby",
+   "note": "",
+   "ts": 1727747632000
+  },
+  {
+   "id": 113,
+   "date": "2024-12-31",
+   "amount": 64.54,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "ts": 1727747693000
+  },
+  {
+   "id": 114,
+   "date": "2025-01-01",
+   "amount": 42.81,
+   "cat": "abbigliamento",
+   "sub": "Altro",
+   "note": "regalo",
+   "ts": 1727747754000
+  },
+  {
+   "id": 115,
+   "date": "2025-01-01",
+   "amount": 36.08,
+   "cat": "trasporti",
+   "sub": "Taxi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727747815000
+  },
+  {
+   "id": 116,
+   "date": "2025-01-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727747876000
+  },
+  {
+   "id": 117,
+   "date": "2025-01-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727747937000
+  },
+  {
+   "id": 118,
+   "date": "2025-01-02",
+   "amount": 21.95,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "ts": 1727747998000
+  },
+  {
+   "id": 119,
+   "date": "2025-01-02",
+   "amount": 66.58,
+   "cat": "abbigliamento",
+   "sub": "Vestiti",
+   "note": "",
+   "type": "expense",
+   "ts": 1727748059000
+  },
+  {
+   "id": 120,
+   "date": "2025-01-03",
+   "amount": 26.87,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "type": "expense",
+   "ts": 1727748120000
+  },
+  {
+   "id": 121,
+   "date": "2025-01-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727748181000
+  },
+  {
+   "id": 122,
+   "date": "2025-01-06",
+   "amount": 7.62,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "type": "expense",
+   "ts": 1727748242000
+  },
+  {
+   "id": 123,
+   "date": "2025-01-07",
+   "amount": 35.94,
+   "cat": "cibo",
+   "sub": "Take away",
+   "note": "",
+   "type": "expense",
+   "ts": 1727748303000
+  },
+  {
+   "id": 124,
+   "date": "2025-01-07",
+   "amount": 6.18,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727748364000
+  },
+  {
+   "id": 125,
+   "date": "2025-01-10",
+   "amount": 58.72,
+   "cat": "svago",
+   "sub": "Libri e giochi",
+   "note": "",
+   "ts": 1727748425000
+  },
+  {
+   "id": 126,
+   "date": "2025-01-10",
+   "amount": 40.82,
+   "cat": "auto",
+   "sub": "Assicurazione",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727748486000
+  },
+  {
+   "id": 127,
+   "date": "2025-01-16",
+   "amount": 40.33,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "ts": 1727748547000
+  },
+  {
+   "id": 128,
+   "date": "2025-01-16",
+   "amount": 54.7,
+   "cat": "auto",
+   "sub": "Bollo",
+   "note": "",
+   "ts": 1727748608000
+  },
+  {
+   "id": 129,
+   "date": "2025-01-18",
+   "amount": 58.6,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "",
+   "ts": 1727748669000
+  },
+  {
+   "id": 130,
+   "date": "2025-01-18",
+   "amount": 51.66,
+   "cat": "abbonamenti",
+   "sub": "Altro",
+   "note": "",
+   "ts": 1727748730000
+  },
+  {
+   "id": 131,
+   "date": "2025-01-23",
+   "amount": 118.72,
+   "cat": "casa",
+   "sub": "Altro",
+   "note": "",
+   "ts": 1727748791000
+  },
+  {
+   "id": 132,
+   "date": "2025-01-23",
+   "amount": 31.37,
+   "cat": "auto",
+   "sub": "Assicurazione",
+   "note": "Esselunga",
+   "ts": 1727748852000
+  },
+  {
+   "id": 133,
+   "date": "2025-01-25",
+   "amount": 9.65,
+   "cat": "cibo",
+   "sub": "Take away",
+   "note": "",
+   "type": "expense",
+   "ts": 1727748913000
+  },
+  {
+   "id": 134,
+   "date": "2025-01-25",
+   "amount": 46.98,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727748974000
+  },
+  {
+   "id": 135,
+   "date": "2025-01-26",
+   "amount": 40.43,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "ts": 1727749035000
+  },
+  {
+   "id": 136,
+   "date": "2025-01-27",
+   "amount": 13.42,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727749096000
+  },
+  {
+   "id": 137,
+   "date": "2025-01-27",
+   "amount": 2212,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727749157000
+  },
+  {
+   "id": 138,
+   "date": "2025-01-28",
+   "amount": 42.65,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727749218000
+  },
+  {
+   "id": 139,
+   "date": "2025-01-28",
+   "amount": 67.31,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "",
+   "type": "expense",
+   "ts": 1727749279000
+  },
+  {
+   "id": 140,
+   "date": "2025-01-29",
+   "amount": 38.86,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "",
+   "type": "expense",
+   "ts": 1727749340000
+  },
+  {
+   "id": 141,
+   "date": "2025-01-29",
+   "amount": 23.78,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "ts": 1727749401000
+  },
+  {
+   "id": 142,
+   "date": "2025-01-30",
+   "amount": 40.66,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727749462000
+  },
+  {
+   "id": 143,
+   "date": "2025-01-30",
+   "amount": 47.88,
+   "cat": "salute",
+   "sub": "Farmacia",
+   "note": "",
+   "type": "expense",
+   "ts": 1727749523000
+  },
+  {
+   "id": 144,
+   "date": "2025-02-01",
+   "amount": 55.44,
+   "cat": "cibo",
+   "sub": "Ristorante",
+   "note": "",
+   "ts": 1727749584000
+  },
+  {
+   "id": 145,
+   "date": "2025-02-01",
+   "amount": 36.99,
+   "cat": "svago",
+   "sub": "Hobby",
+   "note": "",
+   "ts": 1727749645000
+  },
+  {
+   "id": 146,
+   "date": "2025-02-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727749706000
+  },
+  {
+   "id": 147,
+   "date": "2025-02-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727749767000
+  },
+  {
+   "id": 148,
+   "date": "2025-02-04",
+   "amount": 68.02,
+   "cat": "salute",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727749828000
+  },
+  {
+   "id": 149,
+   "date": "2025-02-04",
+   "amount": 41.03,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727749889000
+  },
+  {
+   "id": 150,
+   "date": "2025-02-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727749950000
+  },
+  {
+   "id": 151,
+   "date": "2025-02-06",
+   "amount": 23.23,
+   "cat": "abbigliamento",
+   "sub": "Altro",
+   "note": "",
+   "ts": 1727750011000
+  },
+  {
+   "id": 152,
+   "date": "2025-02-07",
+   "amount": 98.15,
+   "cat": "casa",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727750072000
+  },
+  {
+   "id": 153,
+   "date": "2025-02-07",
+   "amount": 28.42,
+   "cat": "svago",
+   "sub": "Sport",
+   "note": "",
+   "ts": 1727750133000
+  },
+  {
+   "id": 154,
+   "date": "2025-02-08",
+   "amount": 25.83,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "",
+   "type": "expense",
+   "ts": 1727750194000
+  },
+  {
+   "id": 155,
+   "date": "2025-02-08",
+   "amount": 66.65,
+   "cat": "cibo",
+   "sub": "Take away",
+   "note": "pranzo",
+   "ts": 1727750255000
+  },
+  {
+   "id": 156,
+   "date": "2025-02-10",
+   "amount": 68.93,
+   "cat": "trasporti",
+   "sub": "Bus e metro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727750316000
+  },
+  {
+   "id": 157,
+   "date": "2025-02-10",
+   "amount": 20.61,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "",
+   "ts": 1727750377000
+  },
+  {
+   "id": 158,
+   "date": "2025-02-14",
+   "amount": 27.11,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "ts": 1727750438000
+  },
+  {
+   "id": 159,
+   "date": "2025-02-15",
+   "amount": 61.54,
+   "cat": "cibo",
+   "sub": "Take away",
+   "note": "",
+   "ts": 1727750499000
+  },
+  {
+   "id": 160,
+   "date": "2025-02-16",
+   "amount": 8.92,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727750560000
+  },
+  {
+   "id": 161,
+   "date": "2025-02-16",
+   "amount": 112.77,
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727750621000
+  },
+  {
+   "id": 162,
+   "date": "2025-02-17",
+   "amount": 48.34,
+   "cat": "abbigliamento",
+   "sub": "Accessori",
+   "note": "con amici",
+   "ts": 1727750682000
+  },
+  {
+   "id": 163,
+   "date": "2025-02-18",
+   "amount": 64.09,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727750743000
+  },
+  {
+   "id": 164,
+   "date": "2025-02-21",
+   "amount": 22.16,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727750804000
+  },
+  {
+   "id": 165,
+   "date": "2025-02-24",
+   "amount": 37.15,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "",
+   "ts": 1727750865000
+  },
+  {
+   "id": 166,
+   "date": "2025-02-26",
+   "amount": 25.99,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "ts": 1727750926000
+  },
+  {
+   "id": 167,
+   "date": "2025-02-27",
+   "amount": 57.59,
+   "cat": "salute",
+   "sub": "Altro",
+   "note": "regalo",
+   "ts": 1727750987000
+  },
+  {
+   "id": 168,
+   "date": "2025-02-27",
+   "amount": 10.21,
+   "cat": "trasporti",
+   "sub": "Car sharing",
+   "note": "",
+   "ts": 1727751048000
+  },
+  {
+   "id": 169,
+   "date": "2025-02-27",
+   "amount": 2158,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727751109000
+  },
+  {
+   "id": 170,
+   "date": "2025-02-28",
+   "amount": 45.11,
+   "cat": "salute",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727751170000
+  },
+  {
+   "id": 171,
+   "date": "2025-03-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727751231000
+  },
+  {
+   "id": 172,
+   "date": "2025-03-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727751292000
+  },
+  {
+   "id": 173,
+   "date": "2025-03-02",
+   "amount": 8.99,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "type": "expense",
+   "ts": 1727751353000
+  },
+  {
+   "id": 174,
+   "date": "2025-03-04",
+   "amount": 69.71,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "",
+   "type": "expense",
+   "ts": 1727751414000
+  },
+  {
+   "id": 175,
+   "date": "2025-03-05",
+   "amount": 42.75,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727751475000
+  },
+  {
+   "id": 176,
+   "date": "2025-03-05",
+   "amount": 152.06,
+   "cat": "casa",
+   "sub": "Bollette",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727751536000
+  },
+  {
+   "id": 177,
+   "date": "2025-03-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727751597000
+  },
+  {
+   "id": 178,
+   "date": "2025-03-06",
+   "amount": 40.37,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "",
+   "type": "expense",
+   "ts": 1727751658000
+  },
+  {
+   "id": 179,
+   "date": "2025-03-08",
+   "amount": 45.21,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727751719000
+  },
+  {
+   "id": 180,
+   "date": "2025-03-08",
+   "amount": 63.78,
+   "cat": "abbigliamento",
+   "sub": "Vestiti",
+   "note": "",
+   "type": "expense",
+   "ts": 1727751780000
+  },
+  {
+   "id": 181,
+   "date": "2025-03-09",
+   "amount": 25.38,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727751841000
+  },
+  {
+   "id": 182,
+   "date": "2025-03-09",
+   "amount": 25.45,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "type": "expense",
+   "ts": 1727751902000
+  },
+  {
+   "id": 183,
+   "date": "2025-03-10",
+   "amount": 23.81,
+   "cat": "viaggi",
+   "sub": "Alloggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727751963000
+  },
+  {
+   "id": 184,
+   "date": "2025-03-11",
+   "amount": 27.5,
+   "cat": "salute",
+   "sub": "Farmacia",
+   "note": "",
+   "type": "expense",
+   "ts": 1727752024000
+  },
+  {
+   "id": 185,
+   "date": "2025-03-11",
+   "amount": 35.43,
+   "cat": "viaggi",
+   "sub": "Cibo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727752085000
+  },
+  {
+   "id": 186,
+   "date": "2025-03-12",
+   "amount": 30.32,
+   "cat": "svago",
+   "sub": "Cinema e eventi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727752146000
+  },
+  {
+   "id": 187,
+   "date": "2025-03-13",
+   "amount": 34.35,
+   "cat": "auto",
+   "sub": "Assicurazione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727752207000
+  },
+  {
+   "id": 188,
+   "date": "2025-03-13",
+   "amount": 61.41,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "",
+   "type": "expense",
+   "ts": 1727752268000
+  },
+  {
+   "id": 189,
+   "date": "2025-03-14",
+   "amount": 23.72,
+   "cat": "viaggi",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727752329000
+  },
+  {
+   "id": 190,
+   "date": "2025-03-14",
+   "amount": 65.77,
+   "cat": "casa",
+   "sub": "Arredamento",
+   "note": "",
+   "type": "expense",
+   "ts": 1727752390000
+  },
+  {
+   "id": 191,
+   "date": "2025-03-17",
+   "amount": 20.57,
+   "cat": "auto",
+   "sub": "Bollo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727752451000
+  },
+  {
+   "id": 192,
+   "date": "2025-03-18",
+   "amount": 49.29,
+   "cat": "svago",
+   "sub": "Hobby",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727752512000
+  },
+  {
+   "id": 193,
+   "date": "2025-03-20",
+   "amount": 18.78,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727752573000
+  },
+  {
+   "id": 194,
+   "date": "2025-03-20",
+   "amount": 30.14,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727752634000
+  },
+  {
+   "id": 195,
+   "date": "2025-03-21",
+   "amount": 46.69,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "",
+   "type": "expense",
+   "ts": 1727752695000
+  },
+  {
+   "id": 196,
+   "date": "2025-03-21",
+   "amount": 23.06,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "",
+   "type": "expense",
+   "ts": 1727752756000
+  },
+  {
+   "id": 197,
+   "date": "2025-03-22",
+   "amount": 13.34,
+   "cat": "auto",
+   "sub": "Assicurazione",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727752817000
+  },
+  {
+   "id": 198,
+   "date": "2025-03-22",
+   "amount": 49.53,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727752878000
+  },
+  {
+   "id": 199,
+   "date": "2025-03-24",
+   "amount": 137.33,
+   "cat": "casa",
+   "sub": "Bollette",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727752939000
+  },
+  {
+   "id": 200,
+   "date": "2025-03-24",
+   "amount": 41.2,
+   "cat": "viaggi",
+   "sub": "Alloggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727753000000
+  },
+  {
+   "id": 201,
+   "date": "2025-03-25",
+   "amount": 52.91,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727753061000
+  },
+  {
+   "id": 202,
+   "date": "2025-03-25",
+   "amount": 5.98,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727753122000
+  },
+  {
+   "id": 203,
+   "date": "2025-03-27",
+   "amount": 32.81,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727753183000
+  },
+  {
+   "id": 204,
+   "date": "2025-03-27",
+   "amount": 2156,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727753244000
+  },
+  {
+   "id": 205,
+   "date": "2025-03-29",
+   "amount": 68.43,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727753305000
+  },
+  {
+   "id": 206,
+   "date": "2025-03-30",
+   "amount": 16.5,
+   "cat": "trasporti",
+   "sub": "Bus e metro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727753366000
+  },
+  {
+   "id": 207,
+   "date": "2025-04-01",
+   "amount": 8.69,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727753427000
+  },
+  {
+   "id": 208,
+   "date": "2025-04-01",
+   "amount": 39.82,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727753488000
+  },
+  {
+   "id": 209,
+   "date": "2025-04-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727753549000
+  },
+  {
+   "id": 210,
+   "date": "2025-04-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727753610000
+  },
+  {
+   "id": 211,
+   "date": "2025-04-02",
+   "amount": 66.79,
+   "cat": "casa",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727753671000
+  },
+  {
+   "id": 212,
+   "date": "2025-04-02",
+   "amount": 10.18,
+   "cat": "auto",
+   "sub": "Parcheggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727753732000
+  },
+  {
+   "id": 213,
+   "date": "2025-04-03",
+   "amount": 15.41,
+   "cat": "cibo",
+   "sub": "Take away",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727753793000
+  },
+  {
+   "id": 214,
+   "date": "2025-04-04",
+   "amount": 36.11,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727753854000
+  },
+  {
+   "id": 215,
+   "date": "2025-04-05",
+   "amount": 3.47,
+   "cat": "svago",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727753915000
+  },
+  {
+   "id": 216,
+   "date": "2025-04-05",
+   "amount": 59.7,
+   "cat": "svago",
+   "sub": "Hobby",
+   "note": "",
+   "type": "expense",
+   "ts": 1727753976000
+  },
+  {
+   "id": 217,
+   "date": "2025-04-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727754037000
+  },
+  {
+   "id": 218,
+   "date": "2025-04-06",
+   "amount": 5.12,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "type": "expense",
+   "ts": 1727754098000
+  },
+  {
+   "id": 219,
+   "date": "2025-04-06",
+   "amount": 50.9,
+   "cat": "auto",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727754159000
+  },
+  {
+   "id": 220,
+   "date": "2025-04-07",
+   "amount": 17.15,
+   "cat": "auto",
+   "sub": "Carburante",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727754220000
+  },
+  {
+   "id": 221,
+   "date": "2025-04-07",
+   "amount": 6.63,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727754281000
+  },
+  {
+   "id": 222,
+   "date": "2025-04-09",
+   "amount": 37.9,
+   "cat": "viaggi",
+   "sub": "Cibo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727754342000
+  },
+  {
+   "id": 223,
+   "date": "2025-04-09",
+   "amount": 50.59,
+   "cat": "svago",
+   "sub": "Libri e giochi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727754403000
+  },
+  {
+   "id": 224,
+   "date": "2025-04-10",
+   "amount": 31.8,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727754464000
+  },
+  {
+   "id": 225,
+   "date": "2025-04-11",
+   "amount": 26.44,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727754525000
+  },
+  {
+   "id": 226,
+   "date": "2025-04-11",
+   "amount": 58.92,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727754586000
+  },
+  {
+   "id": 227,
+   "date": "2025-04-12",
+   "amount": 26.85,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727754647000
+  },
+  {
+   "id": 228,
+   "date": "2025-04-13",
+   "amount": 12.39,
+   "cat": "abbigliamento",
+   "sub": "Vestiti",
+   "note": "",
+   "type": "expense",
+   "ts": 1727754708000
+  },
+  {
+   "id": 229,
+   "date": "2025-04-13",
+   "amount": 58.4,
+   "cat": "auto",
+   "sub": "Finanziamento",
+   "note": "",
+   "type": "expense",
+   "ts": 1727754769000
+  },
+  {
+   "id": 230,
+   "date": "2025-04-14",
+   "amount": 42.69,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "",
+   "type": "expense",
+   "ts": 1727754830000
+  },
+  {
+   "id": 231,
+   "date": "2025-04-14",
+   "amount": 66.79,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "type": "expense",
+   "ts": 1727754891000
+  },
+  {
+   "id": 232,
+   "date": "2025-04-15",
+   "amount": 46.04,
+   "cat": "abbonamenti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727754952000
+  },
+  {
+   "id": 233,
+   "date": "2025-04-15",
+   "amount": 32.44,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727755013000
+  },
+  {
+   "id": 234,
+   "date": "2025-04-16",
+   "amount": 4.62,
+   "cat": "viaggi",
+   "sub": "Altro",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727755074000
+  },
+  {
+   "id": 235,
+   "date": "2025-04-16",
+   "amount": 4.92,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727755135000
+  },
+  {
+   "id": 236,
+   "date": "2025-04-17",
+   "amount": 9.14,
+   "cat": "viaggi",
+   "sub": "Alloggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727755196000
+  },
+  {
+   "id": 237,
+   "date": "2025-04-17",
+   "amount": 38.39,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727755257000
+  },
+  {
+   "id": 238,
+   "date": "2025-04-19",
+   "amount": 36.22,
+   "cat": "trasporti",
+   "sub": "Taxi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727755318000
+  },
+  {
+   "id": 239,
+   "date": "2025-04-19",
+   "amount": 8.6,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727755379000
+  },
+  {
+   "id": 240,
+   "date": "2025-04-21",
+   "amount": 37.76,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727755440000
+  },
+  {
+   "id": 241,
+   "date": "2025-04-21",
+   "amount": 25.18,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "",
+   "type": "expense",
+   "ts": 1727755501000
+  },
+  {
+   "id": 242,
+   "date": "2025-04-22",
+   "amount": 69.69,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727755562000
+  },
+  {
+   "id": 243,
+   "date": "2025-04-22",
+   "amount": 49.02,
+   "cat": "cibo",
+   "sub": "Take away",
+   "note": "",
+   "type": "expense",
+   "ts": 1727755623000
+  },
+  {
+   "id": 244,
+   "date": "2025-04-24",
+   "amount": 16.7,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727755684000
+  },
+  {
+   "id": 245,
+   "date": "2025-04-25",
+   "amount": 34.77,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727755745000
+  },
+  {
+   "id": 246,
+   "date": "2025-04-25",
+   "amount": 69.14,
+   "cat": "svago",
+   "sub": "Hobby",
+   "note": "",
+   "type": "expense",
+   "ts": 1727755806000
+  },
+  {
+   "id": 247,
+   "date": "2025-04-26",
+   "amount": 46.02,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727755867000
+  },
+  {
+   "id": 248,
+   "date": "2025-04-26",
+   "amount": 46.8,
+   "cat": "svago",
+   "sub": "Sport",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727755928000
+  },
+  {
+   "id": 249,
+   "date": "2025-04-27",
+   "amount": 52.46,
+   "cat": "auto",
+   "sub": "Finanziamento",
+   "note": "",
+   "type": "expense",
+   "ts": 1727755989000
+  },
+  {
+   "id": 250,
+   "date": "2025-04-27",
+   "amount": 30.22,
+   "cat": "abbonamenti",
+   "sub": "Software e AI",
+   "note": "",
+   "type": "expense",
+   "ts": 1727756050000
+  },
+  {
+   "id": 251,
+   "date": "2025-04-27",
+   "amount": 2188,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727756111000
+  },
+  {
+   "id": 252,
+   "date": "2025-04-29",
+   "amount": 62.98,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727756172000
+  },
+  {
+   "id": 253,
+   "date": "2025-04-29",
+   "amount": 12.83,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727756233000
+  },
+  {
+   "id": 254,
+   "date": "2025-04-30",
+   "amount": 55.34,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "type": "expense",
+   "ts": 1727756294000
+  },
+  {
+   "id": 255,
+   "date": "2025-04-30",
+   "amount": 69.7,
+   "cat": "cibo",
+   "sub": "Ristorante",
+   "note": "",
+   "type": "expense",
+   "ts": 1727756355000
+  },
+  {
+   "id": 256,
+   "date": "2025-05-01",
+   "amount": 15.23,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727756416000
+  },
+  {
+   "id": 257,
+   "date": "2025-05-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727756477000
+  },
+  {
+   "id": 258,
+   "date": "2025-05-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727756538000
+  },
+  {
+   "id": 259,
+   "date": "2025-05-02",
+   "amount": 57.81,
+   "cat": "viaggi",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727756599000
+  },
+  {
+   "id": 260,
+   "date": "2025-05-02",
+   "amount": 39.67,
+   "cat": "abbigliamento",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727756660000
+  },
+  {
+   "id": 261,
+   "date": "2025-05-03",
+   "amount": 68.36,
+   "cat": "abbonamenti",
+   "sub": "Software e AI",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727756721000
+  },
+  {
+   "id": 262,
+   "date": "2025-05-04",
+   "amount": 49.31,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "type": "expense",
+   "ts": 1727756782000
+  },
+  {
+   "id": 263,
+   "date": "2025-05-04",
+   "amount": 17.7,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727756843000
+  },
+  {
+   "id": 264,
+   "date": "2025-05-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727756904000
+  },
+  {
+   "id": 265,
+   "date": "2025-05-07",
+   "amount": 24.15,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "type": "expense",
+   "ts": 1727756965000
+  },
+  {
+   "id": 266,
+   "date": "2025-05-07",
+   "amount": 9.61,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "type": "expense",
+   "ts": 1727757026000
+  },
+  {
+   "id": 267,
+   "date": "2025-05-09",
+   "amount": 27.81,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727757087000
+  },
+  {
+   "id": 268,
+   "date": "2025-05-09",
+   "amount": 23.19,
+   "cat": "auto",
+   "sub": "Bollo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727757148000
+  },
+  {
+   "id": 269,
+   "date": "2025-05-10",
+   "amount": 40.51,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "type": "expense",
+   "ts": 1727757209000
+  },
+  {
+   "id": 270,
+   "date": "2025-05-10",
+   "amount": 49.49,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727757270000
+  },
+  {
+   "id": 271,
+   "date": "2025-05-11",
+   "amount": 35.77,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "",
+   "type": "expense",
+   "ts": 1727757331000
+  },
+  {
+   "id": 272,
+   "date": "2025-05-11",
+   "amount": 51.8,
+   "cat": "casa",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727757392000
+  },
+  {
+   "id": 273,
+   "date": "2025-05-12",
+   "amount": 57.59,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727757453000
+  },
+  {
+   "id": 274,
+   "date": "2025-05-12",
+   "amount": 55.03,
+   "cat": "trasporti",
+   "sub": "Car sharing",
+   "note": "",
+   "type": "expense",
+   "ts": 1727757514000
+  },
+  {
+   "id": 275,
+   "date": "2025-05-13",
+   "amount": 23.19,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727757575000
+  },
+  {
+   "id": 276,
+   "date": "2025-05-14",
+   "amount": 8.88,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "type": "expense",
+   "ts": 1727757636000
+  },
+  {
+   "id": 277,
+   "date": "2025-05-16",
+   "amount": 14.89,
+   "cat": "abbigliamento",
+   "sub": "Accessori",
+   "note": "",
+   "type": "expense",
+   "ts": 1727757697000
+  },
+  {
+   "id": 278,
+   "date": "2025-05-16",
+   "amount": 53.51,
+   "cat": "salute",
+   "sub": "Farmacia",
+   "note": "",
+   "type": "expense",
+   "ts": 1727757758000
+  },
+  {
+   "id": 279,
+   "date": "2025-05-17",
+   "amount": 77.52,
+   "cat": "casa",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727757819000
+  },
+  {
+   "id": 280,
+   "date": "2025-05-18",
+   "amount": 40.48,
+   "cat": "auto",
+   "sub": "Carburante",
+   "note": "",
+   "type": "expense",
+   "ts": 1727757880000
+  },
+  {
+   "id": 281,
+   "date": "2025-05-19",
+   "amount": 39.16,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727757941000
+  },
+  {
+   "id": 282,
+   "date": "2025-05-21",
+   "amount": 34.85,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727758002000
+  },
+  {
+   "id": 283,
+   "date": "2025-05-22",
+   "amount": 11.85,
+   "cat": "viaggi",
+   "sub": "Attività",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727758063000
+  },
+  {
+   "id": 284,
+   "date": "2025-05-26",
+   "amount": 2.38,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727758124000
+  },
+  {
+   "id": 285,
+   "date": "2025-05-27",
+   "amount": 28.47,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727758185000
+  },
+  {
+   "id": 286,
+   "date": "2025-05-27",
+   "amount": 69.72,
+   "cat": "abbigliamento",
+   "sub": "Tintoria",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727758246000
+  },
+  {
+   "id": 287,
+   "date": "2025-05-27",
+   "amount": 2234,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727758307000
+  },
+  {
+   "id": 288,
+   "date": "2025-05-28",
+   "amount": 7.57,
+   "cat": "viaggi",
+   "sub": "Alloggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727758368000
+  },
+  {
+   "id": 289,
+   "date": "2025-05-28",
+   "amount": 10.02,
+   "cat": "viaggi",
+   "sub": "Cibo",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727758429000
+  },
+  {
+   "id": 290,
+   "date": "2025-05-30",
+   "amount": 3.67,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "",
+   "type": "expense",
+   "ts": 1727758490000
+  },
+  {
+   "id": 291,
+   "date": "2025-05-31",
+   "amount": 15.93,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "",
+   "type": "expense",
+   "ts": 1727758551000
+  },
+  {
+   "id": 292,
+   "date": "2025-05-31",
+   "amount": 58.48,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727758612000
+  },
+  {
+   "id": 293,
+   "date": "2025-06-01",
+   "amount": 41.8,
+   "cat": "viaggi",
+   "sub": "Attività",
+   "note": "",
+   "type": "expense",
+   "ts": 1727758673000
+  },
+  {
+   "id": 294,
+   "date": "2025-06-01",
+   "amount": 41.26,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727758734000
+  },
+  {
+   "id": 295,
+   "date": "2025-06-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727758795000
+  },
+  {
+   "id": 296,
+   "date": "2025-06-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727758856000
+  },
+  {
+   "id": 297,
+   "date": "2025-06-02",
+   "amount": 43.35,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727758917000
+  },
+  {
+   "id": 298,
+   "date": "2025-06-02",
+   "amount": 10.77,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727758978000
+  },
+  {
+   "id": 299,
+   "date": "2025-06-04",
+   "amount": 49.45,
+   "cat": "abbigliamento",
+   "sub": "Altro",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727759039000
+  },
+  {
+   "id": 300,
+   "date": "2025-06-05",
+   "amount": 2.72,
+   "cat": "abbigliamento",
+   "sub": "Tintoria",
+   "note": "",
+   "type": "expense",
+   "ts": 1727759100000
+  },
+  {
+   "id": 301,
+   "date": "2025-06-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727759161000
+  },
+  {
+   "id": 302,
+   "date": "2025-06-08",
+   "amount": 14.95,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "",
+   "type": "expense",
+   "ts": 1727759222000
+  },
+  {
+   "id": 303,
+   "date": "2025-06-08",
+   "amount": 22.1,
+   "cat": "auto",
+   "sub": "Finanziamento",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727759283000
+  },
+  {
+   "id": 304,
+   "date": "2025-06-11",
+   "amount": 72.99,
+   "cat": "casa",
+   "sub": "Arredamento",
+   "note": "",
+   "type": "expense",
+   "ts": 1727759344000
+  },
+  {
+   "id": 305,
+   "date": "2025-06-12",
+   "amount": 12.79,
+   "cat": "svago",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727759405000
+  },
+  {
+   "id": 306,
+   "date": "2025-06-12",
+   "amount": 26.23,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727759466000
+  },
+  {
+   "id": 307,
+   "date": "2025-06-13",
+   "amount": 49.29,
+   "cat": "viaggi",
+   "sub": "Cibo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727759527000
+  },
+  {
+   "id": 308,
+   "date": "2025-06-17",
+   "amount": 85.66,
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727759588000
+  },
+  {
+   "id": 309,
+   "date": "2025-06-17",
+   "amount": 16.02,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727759649000
+  },
+  {
+   "id": 310,
+   "date": "2025-06-18",
+   "amount": 21.83,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727759710000
+  },
+  {
+   "id": 311,
+   "date": "2025-06-19",
+   "amount": 42.97,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727759771000
+  },
+  {
+   "id": 312,
+   "date": "2025-06-19",
+   "amount": 16.1,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727759832000
+  },
+  {
+   "id": 313,
+   "date": "2025-06-20",
+   "amount": 170.31,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727759893000
+  },
+  {
+   "id": 314,
+   "date": "2025-06-21",
+   "amount": 48.59,
+   "cat": "svago",
+   "sub": "Sport",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727759954000
+  },
+  {
+   "id": 315,
+   "date": "2025-06-21",
+   "amount": 42.99,
+   "cat": "auto",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727760015000
+  },
+  {
+   "id": 316,
+   "date": "2025-06-23",
+   "amount": 132.03,
+   "cat": "casa",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727760076000
+  },
+  {
+   "id": 317,
+   "date": "2025-06-23",
+   "amount": 30.17,
+   "cat": "viaggi",
+   "sub": "Alloggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727760137000
+  },
+  {
+   "id": 318,
+   "date": "2025-06-24",
+   "amount": 10.45,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "type": "expense",
+   "ts": 1727760198000
+  },
+  {
+   "id": 319,
+   "date": "2025-06-24",
+   "amount": 13.58,
+   "cat": "casa",
+   "sub": "Arredamento",
+   "note": "",
+   "type": "expense",
+   "ts": 1727760259000
+  },
+  {
+   "id": 320,
+   "date": "2025-06-25",
+   "amount": 14.3,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727760320000
+  },
+  {
+   "id": 321,
+   "date": "2025-06-27",
+   "amount": 3.33,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727760381000
+  },
+  {
+   "id": 322,
+   "date": "2025-06-27",
+   "amount": 2231,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727760442000
+  },
+  {
+   "id": 323,
+   "date": "2025-06-30",
+   "amount": 32.86,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727760503000
+  },
+  {
+   "id": 324,
+   "date": "2025-07-01",
+   "amount": 53.13,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "",
+   "type": "expense",
+   "ts": 1727760564000
+  },
+  {
+   "id": 325,
+   "date": "2025-07-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727760625000
+  },
+  {
+   "id": 326,
+   "date": "2025-07-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727760686000
+  },
+  {
+   "id": 327,
+   "date": "2025-07-02",
+   "amount": 37.45,
+   "cat": "svago",
+   "sub": "Libri e giochi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727760747000
+  },
+  {
+   "id": 328,
+   "date": "2025-07-02",
+   "amount": 63.32,
+   "cat": "auto",
+   "sub": "Finanziamento",
+   "note": "",
+   "type": "expense",
+   "ts": 1727760808000
+  },
+  {
+   "id": 329,
+   "date": "2025-07-04",
+   "amount": 60.44,
+   "cat": "auto",
+   "sub": "Bollo",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727760869000
+  },
+  {
+   "id": 330,
+   "date": "2025-07-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727760930000
+  },
+  {
+   "id": 331,
+   "date": "2025-07-06",
+   "amount": 63.18,
+   "cat": "svago",
+   "sub": "Libri e giochi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727760991000
+  },
+  {
+   "id": 332,
+   "date": "2025-07-07",
+   "amount": 57.76,
+   "cat": "salute",
+   "sub": "Farmacia",
+   "note": "",
+   "type": "expense",
+   "ts": 1727761052000
+  },
+  {
+   "id": 333,
+   "date": "2025-07-07",
+   "amount": 43.22,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "type": "expense",
+   "ts": 1727761113000
+  },
+  {
+   "id": 334,
+   "date": "2025-07-08",
+   "amount": 24.6,
+   "cat": "abbonamenti",
+   "sub": "Altro",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727761174000
+  },
+  {
+   "id": 335,
+   "date": "2025-07-09",
+   "amount": 48.54,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727761235000
+  },
+  {
+   "id": 336,
+   "date": "2025-07-09",
+   "amount": 33.46,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727761296000
+  },
+  {
+   "id": 337,
+   "date": "2025-07-11",
+   "amount": 49.49,
+   "cat": "salute",
+   "sub": "Farmacia",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727761357000
+  },
+  {
+   "id": 338,
+   "date": "2025-07-11",
+   "amount": 62.73,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727761418000
+  },
+  {
+   "id": 339,
+   "date": "2025-07-13",
+   "amount": 14.38,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "",
+   "type": "expense",
+   "ts": 1727761479000
+  },
+  {
+   "id": 340,
+   "date": "2025-07-13",
+   "amount": 11.48,
+   "cat": "svago",
+   "sub": "Sport",
+   "note": "",
+   "type": "expense",
+   "ts": 1727761540000
+  },
+  {
+   "id": 341,
+   "date": "2025-07-14",
+   "amount": 13.21,
+   "cat": "svago",
+   "sub": "Cinema e eventi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727761601000
+  },
+  {
+   "id": 342,
+   "date": "2025-07-15",
+   "amount": 1800,
+   "type": "income",
+   "cat": "bonus",
+   "sub": "Bonus",
+   "note": "Premio",
+   "ts": 1727761662000
+  },
+  {
+   "id": 343,
+   "date": "2025-07-17",
+   "amount": 30,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "type": "expense",
+   "ts": 1727761723000
+  },
+  {
+   "id": 344,
+   "date": "2025-07-17",
+   "amount": 33.81,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727761784000
+  },
+  {
+   "id": 345,
+   "date": "2025-07-18",
+   "amount": 34.25,
+   "cat": "salute",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727761845000
+  },
+  {
+   "id": 346,
+   "date": "2025-07-18",
+   "amount": 68.9,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727761906000
+  },
+  {
+   "id": 347,
+   "date": "2025-07-20",
+   "amount": 37.51,
+   "cat": "svago",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727761967000
+  },
+  {
+   "id": 348,
+   "date": "2025-07-20",
+   "amount": 61.26,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "",
+   "type": "expense",
+   "ts": 1727762028000
+  },
+  {
+   "id": 349,
+   "date": "2025-07-21",
+   "amount": 55.81,
+   "cat": "viaggi",
+   "sub": "Alloggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727762089000
+  },
+  {
+   "id": 350,
+   "date": "2025-07-21",
+   "amount": 61.39,
+   "cat": "trasporti",
+   "sub": "Taxi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727762150000
+  },
+  {
+   "id": 351,
+   "date": "2025-07-23",
+   "amount": 63.07,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727762211000
+  },
+  {
+   "id": 352,
+   "date": "2025-07-23",
+   "amount": 37.5,
+   "cat": "auto",
+   "sub": "Pedaggi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727762272000
+  },
+  {
+   "id": 353,
+   "date": "2025-07-24",
+   "amount": 69.64,
+   "cat": "cibo",
+   "sub": "Ristorante",
+   "note": "",
+   "type": "expense",
+   "ts": 1727762333000
+  },
+  {
+   "id": 354,
+   "date": "2025-07-25",
+   "amount": 53.08,
+   "cat": "salute",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727762394000
+  },
+  {
+   "id": 355,
+   "date": "2025-07-25",
+   "amount": 51.58,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727762455000
+  },
+  {
+   "id": 356,
+   "date": "2025-07-27",
+   "amount": 53.35,
+   "cat": "abbonamenti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727762516000
+  },
+  {
+   "id": 357,
+   "date": "2025-07-27",
+   "amount": 2218,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727762577000
+  },
+  {
+   "id": 358,
+   "date": "2025-07-28",
+   "amount": 32.34,
+   "cat": "cibo",
+   "sub": "Ristorante",
+   "note": "",
+   "type": "expense",
+   "ts": 1727762638000
+  },
+  {
+   "id": 359,
+   "date": "2025-07-28",
+   "amount": 37.6,
+   "cat": "svago",
+   "sub": "Cinema e eventi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727762699000
+  },
+  {
+   "id": 360,
+   "date": "2025-07-29",
+   "amount": 20.62,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727762760000
+  },
+  {
+   "id": 361,
+   "date": "2025-07-30",
+   "amount": 16.19,
+   "cat": "abbonamenti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727762821000
+  },
+  {
+   "id": 362,
+   "date": "2025-07-30",
+   "amount": 24.72,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727762882000
+  },
+  {
+   "id": 363,
+   "date": "2025-07-31",
+   "amount": 54.5,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727762943000
+  },
+  {
+   "id": 364,
+   "date": "2025-08-01",
+   "amount": 55.62,
+   "cat": "abbigliamento",
+   "sub": "Vestiti",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727763004000
+  },
+  {
+   "id": 365,
+   "date": "2025-08-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727763065000
+  },
+  {
+   "id": 366,
+   "date": "2025-08-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727763126000
+  },
+  {
+   "id": 367,
+   "date": "2025-08-02",
+   "amount": 22.63,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "type": "expense",
+   "ts": 1727763187000
+  },
+  {
+   "id": 368,
+   "date": "2025-08-02",
+   "amount": 33.34,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "",
+   "type": "expense",
+   "ts": 1727763248000
+  },
+  {
+   "id": 369,
+   "date": "2025-08-03",
+   "amount": 9.6,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727763309000
+  },
+  {
+   "id": 370,
+   "date": "2025-08-03",
+   "amount": 5.77,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727763370000
+  },
+  {
+   "id": 371,
+   "date": "2025-08-05",
+   "amount": 53,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727763431000
+  },
+  {
+   "id": 372,
+   "date": "2025-08-05",
+   "amount": 68.31,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727763492000
+  },
+  {
+   "id": 373,
+   "date": "2025-08-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727763553000
+  },
+  {
+   "id": 374,
+   "date": "2025-08-09",
+   "amount": 48.06,
+   "cat": "abbigliamento",
+   "sub": "Accessori",
+   "note": "",
+   "type": "expense",
+   "ts": 1727763614000
+  },
+  {
+   "id": 375,
+   "date": "2025-08-09",
+   "amount": 44.51,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727763675000
+  },
+  {
+   "id": 376,
+   "date": "2025-08-10",
+   "amount": 40.27,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727763736000
+  },
+  {
+   "id": 377,
+   "date": "2025-08-10",
+   "amount": 35.98,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727763797000
+  },
+  {
+   "id": 378,
+   "date": "2025-08-13",
+   "amount": 33.92,
+   "cat": "cibo",
+   "sub": "Ristorante",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727763858000
+  },
+  {
+   "id": 379,
+   "date": "2025-08-13",
+   "amount": 33.26,
+   "cat": "svago",
+   "sub": "Sport",
+   "note": "",
+   "type": "expense",
+   "ts": 1727763919000
+  },
+  {
+   "id": 380,
+   "date": "2025-08-14",
+   "amount": 58.39,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727763980000
+  },
+  {
+   "id": 381,
+   "date": "2025-08-15",
+   "amount": 60.93,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727764041000
+  },
+  {
+   "id": 382,
+   "date": "2025-08-15",
+   "amount": 57.76,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "type": "expense",
+   "ts": 1727764102000
+  },
+  {
+   "id": 383,
+   "date": "2025-08-18",
+   "amount": 8.34,
+   "cat": "auto",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727764163000
+  },
+  {
+   "id": 384,
+   "date": "2025-08-21",
+   "amount": 9.66,
+   "cat": "auto",
+   "sub": "Carburante",
+   "note": "",
+   "type": "expense",
+   "ts": 1727764224000
+  },
+  {
+   "id": 385,
+   "date": "2025-08-22",
+   "amount": 17.82,
+   "cat": "trasporti",
+   "sub": "Taxi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727764285000
+  },
+  {
+   "id": 386,
+   "date": "2025-08-25",
+   "amount": 34.87,
+   "cat": "abbigliamento",
+   "sub": "Vestiti",
+   "note": "",
+   "type": "expense",
+   "ts": 1727764346000
+  },
+  {
+   "id": 387,
+   "date": "2025-08-25",
+   "amount": 20.55,
+   "cat": "viaggi",
+   "sub": "Cibo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727764407000
+  },
+  {
+   "id": 388,
+   "date": "2025-08-26",
+   "amount": 30.39,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727764468000
+  },
+  {
+   "id": 389,
+   "date": "2025-08-27",
+   "amount": 68.46,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727764529000
+  },
+  {
+   "id": 390,
+   "date": "2025-08-27",
+   "amount": 28.37,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727764590000
+  },
+  {
+   "id": 391,
+   "date": "2025-08-27",
+   "amount": 2209,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727764651000
+  },
+  {
+   "id": 392,
+   "date": "2025-08-29",
+   "amount": 50.09,
+   "cat": "trasporti",
+   "sub": "Bus e metro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727764712000
+  },
+  {
+   "id": 393,
+   "date": "2025-08-29",
+   "amount": 63.77,
+   "cat": "trasporti",
+   "sub": "Taxi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727764773000
+  },
+  {
+   "id": 394,
+   "date": "2025-08-30",
+   "amount": 27.9,
+   "cat": "casa",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727764834000
+  },
+  {
+   "id": 395,
+   "date": "2025-08-31",
+   "amount": 62.46,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "type": "expense",
+   "ts": 1727764895000
+  },
+  {
+   "id": 396,
+   "date": "2025-09-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727764956000
+  },
+  {
+   "id": 397,
+   "date": "2025-09-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727765017000
+  },
+  {
+   "id": 398,
+   "date": "2025-09-02",
+   "amount": 50.04,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "type": "expense",
+   "ts": 1727765078000
+  },
+  {
+   "id": 399,
+   "date": "2025-09-02",
+   "amount": 48.59,
+   "cat": "cibo",
+   "sub": "Ristorante",
+   "note": "",
+   "type": "expense",
+   "ts": 1727765139000
+  },
+  {
+   "id": 400,
+   "date": "2025-09-04",
+   "amount": 63.06,
+   "cat": "abbonamenti",
+   "sub": "Software e AI",
+   "note": "",
+   "type": "expense",
+   "ts": 1727765200000
+  },
+  {
+   "id": 401,
+   "date": "2025-09-05",
+   "amount": 51.34,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727765261000
+  },
+  {
+   "id": 402,
+   "date": "2025-09-05",
+   "amount": 7.26,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727765322000
+  },
+  {
+   "id": 403,
+   "date": "2025-09-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727765383000
+  },
+  {
+   "id": 404,
+   "date": "2025-09-06",
+   "amount": 44.94,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727765444000
+  },
+  {
+   "id": 405,
+   "date": "2025-09-07",
+   "amount": 65.11,
+   "cat": "abbonamenti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727765505000
+  },
+  {
+   "id": 406,
+   "date": "2025-09-07",
+   "amount": 12.78,
+   "cat": "cibo",
+   "sub": "Take away",
+   "note": "",
+   "type": "expense",
+   "ts": 1727765566000
+  },
+  {
+   "id": 407,
+   "date": "2025-09-10",
+   "amount": 65.95,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "type": "expense",
+   "ts": 1727765627000
+  },
+  {
+   "id": 408,
+   "date": "2025-09-10",
+   "amount": 5.11,
+   "cat": "trasporti",
+   "sub": "Car sharing",
+   "note": "",
+   "type": "expense",
+   "ts": 1727765688000
+  },
+  {
+   "id": 409,
+   "date": "2025-09-11",
+   "amount": 18.56,
+   "cat": "abbigliamento",
+   "sub": "Accessori",
+   "note": "",
+   "type": "expense",
+   "ts": 1727765749000
+  },
+  {
+   "id": 410,
+   "date": "2025-09-15",
+   "amount": 56.32,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "",
+   "type": "expense",
+   "ts": 1727765810000
+  },
+  {
+   "id": 411,
+   "date": "2025-09-15",
+   "amount": 114.88,
+   "cat": "casa",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727765871000
+  },
+  {
+   "id": 412,
+   "date": "2025-09-16",
+   "amount": 57.71,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727765932000
+  },
+  {
+   "id": 413,
+   "date": "2025-09-16",
+   "amount": 18.77,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "type": "expense",
+   "ts": 1727765993000
+  },
+  {
+   "id": 414,
+   "date": "2025-09-17",
+   "amount": 50.81,
+   "cat": "abbonamenti",
+   "sub": "Altro",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727766054000
+  },
+  {
+   "id": 415,
+   "date": "2025-09-17",
+   "amount": 48.82,
+   "cat": "abbigliamento",
+   "sub": "Tintoria",
+   "note": "",
+   "type": "expense",
+   "ts": 1727766115000
+  },
+  {
+   "id": 416,
+   "date": "2025-09-18",
+   "amount": 28.17,
+   "cat": "trasporti",
+   "sub": "Car sharing",
+   "note": "",
+   "type": "expense",
+   "ts": 1727766176000
+  },
+  {
+   "id": 417,
+   "date": "2025-09-19",
+   "amount": 8.09,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "",
+   "type": "expense",
+   "ts": 1727766237000
+  },
+  {
+   "id": 418,
+   "date": "2025-09-20",
+   "amount": 65.88,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727766298000
+  },
+  {
+   "id": 419,
+   "date": "2025-09-21",
+   "amount": 106.15,
+   "cat": "casa",
+   "sub": "Bollette",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727766359000
+  },
+  {
+   "id": 420,
+   "date": "2025-09-22",
+   "amount": 118.51,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727766420000
+  },
+  {
+   "id": 421,
+   "date": "2025-09-23",
+   "amount": 33.56,
+   "cat": "svago",
+   "sub": "Hobby",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727766481000
+  },
+  {
+   "id": 422,
+   "date": "2025-09-23",
+   "amount": 17.53,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "type": "expense",
+   "ts": 1727766542000
+  },
+  {
+   "id": 423,
+   "date": "2025-09-24",
+   "amount": 69.57,
+   "cat": "abbonamenti",
+   "sub": "Software e AI",
+   "note": "",
+   "type": "expense",
+   "ts": 1727766603000
+  },
+  {
+   "id": 424,
+   "date": "2025-09-24",
+   "amount": 52.86,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727766664000
+  },
+  {
+   "id": 425,
+   "date": "2025-09-25",
+   "amount": 44.02,
+   "cat": "salute",
+   "sub": "Farmacia",
+   "note": "",
+   "type": "expense",
+   "ts": 1727766725000
+  },
+  {
+   "id": 426,
+   "date": "2025-09-26",
+   "amount": 63.68,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727766786000
+  },
+  {
+   "id": 427,
+   "date": "2025-09-26",
+   "amount": 52.31,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727766847000
+  },
+  {
+   "id": 428,
+   "date": "2025-09-27",
+   "amount": 2244,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727766908000
+  },
+  {
+   "id": 429,
+   "date": "2025-09-29",
+   "amount": 58.53,
+   "cat": "auto",
+   "sub": "Carburante",
+   "note": "",
+   "type": "expense",
+   "ts": 1727766969000
+  },
+  {
+   "id": 430,
+   "date": "2025-09-30",
+   "amount": 64.91,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "type": "expense",
+   "ts": 1727767030000
+  },
+  {
+   "id": 431,
+   "date": "2025-09-30",
+   "amount": 49.19,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727767091000
+  },
+  {
+   "id": 432,
+   "date": "2025-10-01",
+   "amount": 8.99,
+   "cat": "auto",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727767152000
+  },
+  {
+   "id": 433,
+   "date": "2025-10-01",
+   "amount": 7.71,
+   "cat": "abbigliamento",
+   "sub": "Tintoria",
+   "note": "",
+   "type": "expense",
+   "ts": 1727767213000
+  },
+  {
+   "id": 434,
+   "date": "2025-10-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727767274000
+  },
+  {
+   "id": 435,
+   "date": "2025-10-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727767335000
+  },
+  {
+   "id": 436,
+   "date": "2025-10-04",
+   "amount": 62.12,
+   "cat": "auto",
+   "sub": "Pedaggi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727767396000
+  },
+  {
+   "id": 437,
+   "date": "2025-10-05",
+   "amount": 57.98,
+   "cat": "svago",
+   "sub": "Libri e giochi",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727767457000
+  },
+  {
+   "id": 438,
+   "date": "2025-10-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727767518000
+  },
+  {
+   "id": 439,
+   "date": "2025-10-06",
+   "amount": 19.51,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727767579000
+  },
+  {
+   "id": 440,
+   "date": "2025-10-07",
+   "amount": 27.48,
+   "cat": "abbonamenti",
+   "sub": "Software e AI",
+   "note": "",
+   "type": "expense",
+   "ts": 1727767640000
+  },
+  {
+   "id": 441,
+   "date": "2025-10-08",
+   "amount": 49.28,
+   "cat": "abbigliamento",
+   "sub": "Tintoria",
+   "note": "",
+   "type": "expense",
+   "ts": 1727767701000
+  },
+  {
+   "id": 442,
+   "date": "2025-10-08",
+   "amount": 4.38,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727767762000
+  },
+  {
+   "id": 443,
+   "date": "2025-10-09",
+   "amount": 4.23,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727767823000
+  },
+  {
+   "id": 444,
+   "date": "2025-10-10",
+   "amount": 3.29,
+   "cat": "cibo",
+   "sub": "Take away",
+   "note": "",
+   "type": "expense",
+   "ts": 1727767884000
+  },
+  {
+   "id": 445,
+   "date": "2025-10-10",
+   "amount": 39.65,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727767945000
+  },
+  {
+   "id": 446,
+   "date": "2025-10-11",
+   "amount": 51.31,
+   "cat": "trasporti",
+   "sub": "Taxi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727768006000
+  },
+  {
+   "id": 447,
+   "date": "2025-10-11",
+   "amount": 67.13,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "type": "expense",
+   "ts": 1727768067000
+  },
+  {
+   "id": 448,
+   "date": "2025-10-12",
+   "amount": 100.61,
+   "cat": "casa",
+   "sub": "Arredamento",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727768128000
+  },
+  {
+   "id": 449,
+   "date": "2025-10-12",
+   "amount": 14.38,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "",
+   "type": "expense",
+   "ts": 1727768189000
+  },
+  {
+   "id": 450,
+   "date": "2025-10-14",
+   "amount": 63.94,
+   "cat": "auto",
+   "sub": "Pedaggi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727768250000
+  },
+  {
+   "id": 451,
+   "date": "2025-10-14",
+   "amount": 34.67,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727768311000
+  },
+  {
+   "id": 452,
+   "date": "2025-10-15",
+   "amount": 30.58,
+   "cat": "svago",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727768372000
+  },
+  {
+   "id": 453,
+   "date": "2025-10-15",
+   "amount": 121.75,
+   "cat": "casa",
+   "sub": "Manutenzione",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727768433000
+  },
+  {
+   "id": 454,
+   "date": "2025-10-16",
+   "amount": 24.36,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727768494000
+  },
+  {
+   "id": 455,
+   "date": "2025-10-17",
+   "amount": 33.23,
+   "cat": "svago",
+   "sub": "Cinema e eventi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727768555000
+  },
+  {
+   "id": 456,
+   "date": "2025-10-18",
+   "amount": 7.19,
+   "cat": "trasporti",
+   "sub": "Bus e metro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727768616000
+  },
+  {
+   "id": 457,
+   "date": "2025-10-19",
+   "amount": 67.26,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727768677000
+  },
+  {
+   "id": 458,
+   "date": "2025-10-19",
+   "amount": 38.96,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727768738000
+  },
+  {
+   "id": 459,
+   "date": "2025-10-20",
+   "amount": 23.96,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727768799000
+  },
+  {
+   "id": 460,
+   "date": "2025-10-21",
+   "amount": 42.18,
+   "cat": "abbigliamento",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727768860000
+  },
+  {
+   "id": 461,
+   "date": "2025-10-24",
+   "amount": 29.61,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "",
+   "type": "expense",
+   "ts": 1727768921000
+  },
+  {
+   "id": 462,
+   "date": "2025-10-25",
+   "amount": 14.58,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "type": "expense",
+   "ts": 1727768982000
+  },
+  {
+   "id": 463,
+   "date": "2025-10-27",
+   "amount": 29.17,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "",
+   "type": "expense",
+   "ts": 1727769043000
+  },
+  {
+   "id": 464,
+   "date": "2025-10-27",
+   "amount": 2247,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727769104000
+  },
+  {
+   "id": 465,
+   "date": "2025-10-28",
+   "amount": 40.46,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727769165000
+  },
+  {
+   "id": 466,
+   "date": "2025-10-29",
+   "amount": 50.09,
+   "cat": "viaggi",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727769226000
+  },
+  {
+   "id": 467,
+   "date": "2025-10-30",
+   "amount": 57.21,
+   "cat": "viaggi",
+   "sub": "Altro",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727769287000
+  },
+  {
+   "id": 468,
+   "date": "2025-10-30",
+   "amount": 27.58,
+   "cat": "trasporti",
+   "sub": "Car sharing",
+   "note": "",
+   "type": "expense",
+   "ts": 1727769348000
+  },
+  {
+   "id": 469,
+   "date": "2025-10-31",
+   "amount": 50.88,
+   "cat": "cibo",
+   "sub": "Ristorante",
+   "note": "",
+   "type": "expense",
+   "ts": 1727769409000
+  },
+  {
+   "id": 470,
+   "date": "2025-10-31",
+   "amount": 132.49,
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727769470000
+  },
+  {
+   "id": 471,
+   "date": "2025-11-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727769531000
+  },
+  {
+   "id": 472,
+   "date": "2025-11-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727769592000
+  },
+  {
+   "id": 473,
+   "date": "2025-11-02",
+   "amount": 6.66,
+   "cat": "auto",
+   "sub": "Assicurazione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727769653000
+  },
+  {
+   "id": 474,
+   "date": "2025-11-02",
+   "amount": 40.47,
+   "cat": "abbigliamento",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727769714000
+  },
+  {
+   "id": 475,
+   "date": "2025-11-03",
+   "amount": 32.02,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727769775000
+  },
+  {
+   "id": 476,
+   "date": "2025-11-03",
+   "amount": 89.42,
+   "cat": "casa",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727769836000
+  },
+  {
+   "id": 477,
+   "date": "2025-11-04",
+   "amount": 170.93,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727769897000
+  },
+  {
+   "id": 478,
+   "date": "2025-11-05",
+   "amount": 27.83,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "",
+   "type": "expense",
+   "ts": 1727769958000
+  },
+  {
+   "id": 479,
+   "date": "2025-11-05",
+   "amount": 14.27,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727770019000
+  },
+  {
+   "id": 480,
+   "date": "2025-11-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727770080000
+  },
+  {
+   "id": 481,
+   "date": "2025-11-06",
+   "amount": 16.72,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "",
+   "type": "expense",
+   "ts": 1727770141000
+  },
+  {
+   "id": 482,
+   "date": "2025-11-07",
+   "amount": 3.57,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727770202000
+  },
+  {
+   "id": 483,
+   "date": "2025-11-07",
+   "amount": 54.92,
+   "cat": "trasporti",
+   "sub": "Car sharing",
+   "note": "",
+   "type": "expense",
+   "ts": 1727770263000
+  },
+  {
+   "id": 484,
+   "date": "2025-11-08",
+   "amount": 10.3,
+   "cat": "viaggi",
+   "sub": "Alloggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727770324000
+  },
+  {
+   "id": 485,
+   "date": "2025-11-09",
+   "amount": 54.45,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727770385000
+  },
+  {
+   "id": 486,
+   "date": "2025-11-10",
+   "amount": 30.91,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727770446000
+  },
+  {
+   "id": 487,
+   "date": "2025-11-10",
+   "amount": 68.24,
+   "cat": "abbigliamento",
+   "sub": "Vestiti",
+   "note": "",
+   "type": "expense",
+   "ts": 1727770507000
+  },
+  {
+   "id": 488,
+   "date": "2025-11-11",
+   "amount": 43.08,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727770568000
+  },
+  {
+   "id": 489,
+   "date": "2025-11-11",
+   "amount": 34.34,
+   "cat": "svago",
+   "sub": "Cinema e eventi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727770629000
+  },
+  {
+   "id": 490,
+   "date": "2025-11-13",
+   "amount": 86.09,
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727770690000
+  },
+  {
+   "id": 491,
+   "date": "2025-11-15",
+   "amount": 50.81,
+   "cat": "salute",
+   "sub": "Farmacia",
+   "note": "",
+   "type": "expense",
+   "ts": 1727770751000
+  },
+  {
+   "id": 492,
+   "date": "2025-11-16",
+   "amount": 16.12,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727770812000
+  },
+  {
+   "id": 493,
+   "date": "2025-11-16",
+   "amount": 68.38,
+   "cat": "abbigliamento",
+   "sub": "Accessori",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727770873000
+  },
+  {
+   "id": 494,
+   "date": "2025-11-18",
+   "amount": 67.73,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "",
+   "type": "expense",
+   "ts": 1727770934000
+  },
+  {
+   "id": 495,
+   "date": "2025-11-20",
+   "amount": 119.79,
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727770995000
+  },
+  {
+   "id": 496,
+   "date": "2025-11-20",
+   "amount": 9.06,
+   "cat": "cibo",
+   "sub": "Ristorante",
+   "note": "",
+   "type": "expense",
+   "ts": 1727771056000
+  },
+  {
+   "id": 497,
+   "date": "2025-11-21",
+   "amount": 29.06,
+   "cat": "auto",
+   "sub": "Assicurazione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727771117000
+  },
+  {
+   "id": 498,
+   "date": "2025-11-21",
+   "amount": 58.28,
+   "cat": "viaggi",
+   "sub": "Alloggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727771178000
+  },
+  {
+   "id": 499,
+   "date": "2025-11-24",
+   "amount": 51.27,
+   "cat": "abbonamenti",
+   "sub": "Altro",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727771239000
+  },
+  {
+   "id": 500,
+   "date": "2025-11-24",
+   "amount": 55.53,
+   "cat": "abbonamenti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727771300000
+  },
+  {
+   "id": 501,
+   "date": "2025-11-26",
+   "amount": 21.64,
+   "cat": "svago",
+   "sub": "Cinema e eventi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727771361000
+  },
+  {
+   "id": 502,
+   "date": "2025-11-26",
+   "amount": 16.34,
+   "cat": "trasporti",
+   "sub": "Bus e metro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727771422000
+  },
+  {
+   "id": 503,
+   "date": "2025-11-27",
+   "amount": 10.73,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "type": "expense",
+   "ts": 1727771483000
+  },
+  {
+   "id": 504,
+   "date": "2025-11-27",
+   "amount": 43.45,
+   "cat": "viaggi",
+   "sub": "Attività",
+   "note": "",
+   "type": "expense",
+   "ts": 1727771544000
+  },
+  {
+   "id": 505,
+   "date": "2025-11-27",
+   "amount": 2164,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727771605000
+  },
+  {
+   "id": 506,
+   "date": "2025-11-28",
+   "amount": 55.69,
+   "cat": "abbigliamento",
+   "sub": "Accessori",
+   "note": "",
+   "type": "expense",
+   "ts": 1727771666000
+  },
+  {
+   "id": 507,
+   "date": "2025-11-29",
+   "amount": 31.15,
+   "cat": "svago",
+   "sub": "Sport",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727771727000
+  },
+  {
+   "id": 508,
+   "date": "2025-11-30",
+   "amount": 61.09,
+   "cat": "svago",
+   "sub": "Cinema e eventi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727771788000
+  },
+  {
+   "id": 509,
+   "date": "2025-11-30",
+   "amount": 69.21,
+   "cat": "abbonamenti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727771849000
+  },
+  {
+   "id": 510,
+   "date": "2025-12-01",
+   "amount": 43.52,
+   "cat": "abbonamenti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727771910000
+  },
+  {
+   "id": 511,
+   "date": "2025-12-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727771971000
+  },
+  {
+   "id": 512,
+   "date": "2025-12-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727772032000
+  },
+  {
+   "id": 513,
+   "date": "2025-12-03",
+   "amount": 14.95,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "",
+   "type": "expense",
+   "ts": 1727772093000
+  },
+  {
+   "id": 514,
+   "date": "2025-12-03",
+   "amount": 38.03,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727772154000
+  },
+  {
+   "id": 515,
+   "date": "2025-12-05",
+   "amount": 59.81,
+   "cat": "viaggi",
+   "sub": "Attività",
+   "note": "",
+   "type": "expense",
+   "ts": 1727772215000
+  },
+  {
+   "id": 516,
+   "date": "2025-12-05",
+   "amount": 86.2,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727772276000
+  },
+  {
+   "id": 517,
+   "date": "2025-12-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727772337000
+  },
+  {
+   "id": 518,
+   "date": "2025-12-06",
+   "amount": 141.33,
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727772398000
+  },
+  {
+   "id": 519,
+   "date": "2025-12-06",
+   "amount": 10.74,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "",
+   "type": "expense",
+   "ts": 1727772459000
+  },
+  {
+   "id": 520,
+   "date": "2025-12-08",
+   "amount": 26.4,
+   "cat": "abbigliamento",
+   "sub": "Accessori",
+   "note": "",
+   "type": "expense",
+   "ts": 1727772520000
+  },
+  {
+   "id": 521,
+   "date": "2025-12-09",
+   "amount": 38.77,
+   "cat": "viaggi",
+   "sub": "Attività",
+   "note": "",
+   "type": "expense",
+   "ts": 1727772581000
+  },
+  {
+   "id": 522,
+   "date": "2025-12-10",
+   "amount": 48.78,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "type": "expense",
+   "ts": 1727772642000
+  },
+  {
+   "id": 523,
+   "date": "2025-12-10",
+   "amount": 24.42,
+   "cat": "abbigliamento",
+   "sub": "Tintoria",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727772703000
+  },
+  {
+   "id": 524,
+   "date": "2025-12-11",
+   "amount": 43.14,
+   "cat": "abbigliamento",
+   "sub": "Vestiti",
+   "note": "",
+   "type": "expense",
+   "ts": 1727772764000
+  },
+  {
+   "id": 525,
+   "date": "2025-12-11",
+   "amount": 51.83,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727772825000
+  },
+  {
+   "id": 526,
+   "date": "2025-12-12",
+   "amount": 57.95,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "type": "expense",
+   "ts": 1727772886000
+  },
+  {
+   "id": 527,
+   "date": "2025-12-13",
+   "amount": 113.22,
+   "cat": "casa",
+   "sub": "Altro",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727772947000
+  },
+  {
+   "id": 528,
+   "date": "2025-12-13",
+   "amount": 95.24,
+   "cat": "casa",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727773008000
+  },
+  {
+   "id": 529,
+   "date": "2025-12-14",
+   "amount": 47.9,
+   "cat": "abbigliamento",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727773069000
+  },
+  {
+   "id": 530,
+   "date": "2025-12-16",
+   "amount": 28.58,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727773130000
+  },
+  {
+   "id": 531,
+   "date": "2025-12-16",
+   "amount": 128.47,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727773191000
+  },
+  {
+   "id": 532,
+   "date": "2025-12-17",
+   "amount": 15.5,
+   "cat": "trasporti",
+   "sub": "Taxi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727773252000
+  },
+  {
+   "id": 533,
+   "date": "2025-12-17",
+   "amount": 58.26,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "",
+   "type": "expense",
+   "ts": 1727773313000
+  },
+  {
+   "id": 534,
+   "date": "2025-12-18",
+   "amount": 124.45,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727773374000
+  },
+  {
+   "id": 535,
+   "date": "2025-12-18",
+   "amount": 15.22,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727773435000
+  },
+  {
+   "id": 536,
+   "date": "2025-12-19",
+   "amount": 9.55,
+   "cat": "abbigliamento",
+   "sub": "Accessori",
+   "note": "",
+   "type": "expense",
+   "ts": 1727773496000
+  },
+  {
+   "id": 537,
+   "date": "2025-12-20",
+   "amount": 56.28,
+   "cat": "svago",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727773557000
+  },
+  {
+   "id": 538,
+   "date": "2025-12-22",
+   "amount": 25.39,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727773618000
+  },
+  {
+   "id": 539,
+   "date": "2025-12-22",
+   "amount": 36.92,
+   "cat": "auto",
+   "sub": "Bollo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727773679000
+  },
+  {
+   "id": 540,
+   "date": "2025-12-23",
+   "amount": 38.23,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727773740000
+  },
+  {
+   "id": 541,
+   "date": "2025-12-25",
+   "amount": 31.08,
+   "cat": "casa",
+   "sub": "Arredamento",
+   "note": "",
+   "type": "expense",
+   "ts": 1727773801000
+  },
+  {
+   "id": 542,
+   "date": "2025-12-27",
+   "amount": 154.21,
+   "cat": "casa",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727773862000
+  },
+  {
+   "id": 543,
+   "date": "2025-12-27",
+   "amount": 9.32,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727773923000
+  },
+  {
+   "id": 544,
+   "date": "2025-12-27",
+   "amount": 2179,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727773984000
+  },
+  {
+   "id": 545,
+   "date": "2025-12-28",
+   "amount": 16.62,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727774045000
+  },
+  {
+   "id": 546,
+   "date": "2025-12-28",
+   "amount": 7.72,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "type": "expense",
+   "ts": 1727774106000
+  },
+  {
+   "id": 547,
+   "date": "2025-12-29",
+   "amount": 39.88,
+   "cat": "abbigliamento",
+   "sub": "Vestiti",
+   "note": "",
+   "type": "expense",
+   "ts": 1727774167000
+  },
+  {
+   "id": 548,
+   "date": "2025-12-31",
+   "amount": 36.21,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727774228000
+  },
+  {
+   "id": 549,
+   "date": "2026-01-01",
+   "amount": 19.44,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "",
+   "type": "expense",
+   "ts": 1727774289000
+  },
+  {
+   "id": 550,
+   "date": "2026-01-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727774350000
+  },
+  {
+   "id": 551,
+   "date": "2026-01-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727774411000
+  },
+  {
+   "id": 552,
+   "date": "2026-01-02",
+   "amount": 17.95,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "",
+   "type": "expense",
+   "ts": 1727774472000
+  },
+  {
+   "id": 553,
+   "date": "2026-01-02",
+   "amount": 55.69,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727774533000
+  },
+  {
+   "id": 554,
+   "date": "2026-01-03",
+   "amount": 52.77,
+   "cat": "auto",
+   "sub": "Assicurazione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727774594000
+  },
+  {
+   "id": 555,
+   "date": "2026-01-04",
+   "amount": 36.02,
+   "cat": "svago",
+   "sub": "Sport",
+   "note": "",
+   "type": "expense",
+   "ts": 1727774655000
+  },
+  {
+   "id": 556,
+   "date": "2026-01-04",
+   "amount": 56.89,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727774716000
+  },
+  {
+   "id": 557,
+   "date": "2026-01-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727774777000
+  },
+  {
+   "id": 558,
+   "date": "2026-01-06",
+   "amount": 49.66,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "",
+   "type": "expense",
+   "ts": 1727774838000
+  },
+  {
+   "id": 559,
+   "date": "2026-01-08",
+   "amount": 62.39,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727774899000
+  },
+  {
+   "id": 560,
+   "date": "2026-01-08",
+   "amount": 48.73,
+   "cat": "cibo",
+   "sub": "Ristorante",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727774960000
+  },
+  {
+   "id": 561,
+   "date": "2026-01-09",
+   "amount": 7.73,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "",
+   "type": "expense",
+   "ts": 1727775021000
+  },
+  {
+   "id": 562,
+   "date": "2026-01-11",
+   "amount": 115.73,
+   "cat": "casa",
+   "sub": "Manutenzione",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727775082000
+  },
+  {
+   "id": 563,
+   "date": "2026-01-13",
+   "amount": 31.2,
+   "cat": "abbigliamento",
+   "sub": "Vestiti",
+   "note": "",
+   "type": "expense",
+   "ts": 1727775143000
+  },
+  {
+   "id": 564,
+   "date": "2026-01-14",
+   "amount": 58.87,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727775204000
+  },
+  {
+   "id": 565,
+   "date": "2026-01-15",
+   "amount": 16.53,
+   "cat": "viaggi",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727775265000
+  },
+  {
+   "id": 566,
+   "date": "2026-01-17",
+   "amount": 3.25,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727775326000
+  },
+  {
+   "id": 567,
+   "date": "2026-01-17",
+   "amount": 49.34,
+   "cat": "salute",
+   "sub": "Farmacia",
+   "note": "",
+   "type": "expense",
+   "ts": 1727775387000
+  },
+  {
+   "id": 568,
+   "date": "2026-01-18",
+   "amount": 46.84,
+   "cat": "trasporti",
+   "sub": "Bus e metro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727775448000
+  },
+  {
+   "id": 569,
+   "date": "2026-01-18",
+   "amount": 61.71,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727775509000
+  },
+  {
+   "id": 570,
+   "date": "2026-01-19",
+   "amount": 40.11,
+   "cat": "svago",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727775570000
+  },
+  {
+   "id": 571,
+   "date": "2026-01-21",
+   "amount": 54.48,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727775631000
+  },
+  {
+   "id": 572,
+   "date": "2026-01-22",
+   "amount": 54.45,
+   "cat": "salute",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727775692000
+  },
+  {
+   "id": 573,
+   "date": "2026-01-22",
+   "amount": 53.22,
+   "cat": "svago",
+   "sub": "Sport",
+   "note": "",
+   "type": "expense",
+   "ts": 1727775753000
+  },
+  {
+   "id": 574,
+   "date": "2026-01-23",
+   "amount": 23.81,
+   "cat": "cibo",
+   "sub": "Ristorante",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727775814000
+  },
+  {
+   "id": 575,
+   "date": "2026-01-24",
+   "amount": 61.52,
+   "cat": "abbigliamento",
+   "sub": "Accessori",
+   "note": "",
+   "type": "expense",
+   "ts": 1727775875000
+  },
+  {
+   "id": 576,
+   "date": "2026-01-24",
+   "amount": 42.63,
+   "cat": "auto",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727775936000
+  },
+  {
+   "id": 577,
+   "date": "2026-01-26",
+   "amount": 69.79,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727775997000
+  },
+  {
+   "id": 578,
+   "date": "2026-01-26",
+   "amount": 23.24,
+   "cat": "auto",
+   "sub": "Carburante",
+   "note": "",
+   "type": "expense",
+   "ts": 1727776058000
+  },
+  {
+   "id": 579,
+   "date": "2026-01-27",
+   "amount": 69.66,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "type": "expense",
+   "ts": 1727776119000
+  },
+  {
+   "id": 580,
+   "date": "2026-01-27",
+   "amount": 2241,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727776180000
+  },
+  {
+   "id": 581,
+   "date": "2026-01-28",
+   "amount": 27.05,
+   "cat": "auto",
+   "sub": "Pedaggi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727776241000
+  },
+  {
+   "id": 582,
+   "date": "2026-01-29",
+   "amount": 14.81,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727776302000
+  },
+  {
+   "id": 583,
+   "date": "2026-01-30",
+   "amount": 50.31,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727776363000
+  },
+  {
+   "id": 584,
+   "date": "2026-01-30",
+   "amount": 39.49,
+   "cat": "trasporti",
+   "sub": "Car sharing",
+   "note": "",
+   "type": "expense",
+   "ts": 1727776424000
+  },
+  {
+   "id": 585,
+   "date": "2026-01-31",
+   "amount": 13.9,
+   "cat": "svago",
+   "sub": "Libri e giochi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727776485000
+  },
+  {
+   "id": 586,
+   "date": "2026-02-01",
+   "amount": 35.64,
+   "cat": "viaggi",
+   "sub": "Attività",
+   "note": "",
+   "type": "expense",
+   "ts": 1727776546000
+  },
+  {
+   "id": 587,
+   "date": "2026-02-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727776607000
+  },
+  {
+   "id": 588,
+   "date": "2026-02-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727776668000
+  },
+  {
+   "id": 589,
+   "date": "2026-02-03",
+   "amount": 91.83,
+   "cat": "casa",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727776729000
+  },
+  {
+   "id": 590,
+   "date": "2026-02-03",
+   "amount": 41.83,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "",
+   "type": "expense",
+   "ts": 1727776790000
+  },
+  {
+   "id": 591,
+   "date": "2026-02-04",
+   "amount": 46.37,
+   "cat": "svago",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727776851000
+  },
+  {
+   "id": 592,
+   "date": "2026-02-04",
+   "amount": 52.43,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727776912000
+  },
+  {
+   "id": 593,
+   "date": "2026-02-05",
+   "amount": 58.92,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727776973000
+  },
+  {
+   "id": 594,
+   "date": "2026-02-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727777034000
+  },
+  {
+   "id": 595,
+   "date": "2026-02-06",
+   "amount": 29.65,
+   "cat": "auto",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727777095000
+  },
+  {
+   "id": 596,
+   "date": "2026-02-07",
+   "amount": 26.98,
+   "cat": "trasporti",
+   "sub": "Taxi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727777156000
+  },
+  {
+   "id": 597,
+   "date": "2026-02-07",
+   "amount": 16.61,
+   "cat": "viaggi",
+   "sub": "Attività",
+   "note": "",
+   "type": "expense",
+   "ts": 1727777217000
+  },
+  {
+   "id": 598,
+   "date": "2026-02-08",
+   "amount": 57.58,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "",
+   "type": "expense",
+   "ts": 1727777278000
+  },
+  {
+   "id": 599,
+   "date": "2026-02-09",
+   "amount": 2.08,
+   "cat": "viaggi",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727777339000
+  },
+  {
+   "id": 600,
+   "date": "2026-02-09",
+   "amount": 29.37,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "",
+   "type": "expense",
+   "ts": 1727777400000
+  },
+  {
+   "id": 601,
+   "date": "2026-02-10",
+   "amount": 78.96,
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727777461000
+  },
+  {
+   "id": 602,
+   "date": "2026-02-11",
+   "amount": 60.29,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727777522000
+  },
+  {
+   "id": 603,
+   "date": "2026-02-12",
+   "amount": 58.45,
+   "cat": "viaggi",
+   "sub": "Alloggio",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727777583000
+  },
+  {
+   "id": 604,
+   "date": "2026-02-18",
+   "amount": 104.14,
+   "cat": "casa",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727777644000
+  },
+  {
+   "id": 605,
+   "date": "2026-02-18",
+   "amount": 38.35,
+   "cat": "casa",
+   "sub": "Arredamento",
+   "note": "",
+   "type": "expense",
+   "ts": 1727777705000
+  },
+  {
+   "id": 606,
+   "date": "2026-02-19",
+   "amount": 48.08,
+   "cat": "abbigliamento",
+   "sub": "Vestiti",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727777766000
+  },
+  {
+   "id": 607,
+   "date": "2026-02-21",
+   "amount": 12.35,
+   "cat": "trasporti",
+   "sub": "Taxi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727777827000
+  },
+  {
+   "id": 608,
+   "date": "2026-02-21",
+   "amount": 55.64,
+   "cat": "auto",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727777888000
+  },
+  {
+   "id": 609,
+   "date": "2026-02-23",
+   "amount": 15.29,
+   "cat": "auto",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727777949000
+  },
+  {
+   "id": 610,
+   "date": "2026-02-24",
+   "amount": 57.41,
+   "cat": "viaggi",
+   "sub": "Cibo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727778010000
+  },
+  {
+   "id": 611,
+   "date": "2026-02-24",
+   "amount": 24.02,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "type": "expense",
+   "ts": 1727778071000
+  },
+  {
+   "id": 612,
+   "date": "2026-02-25",
+   "amount": 4.36,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "type": "expense",
+   "ts": 1727778132000
+  },
+  {
+   "id": 613,
+   "date": "2026-02-26",
+   "amount": 64.61,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727778193000
+  },
+  {
+   "id": 614,
+   "date": "2026-02-27",
+   "amount": 2164,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727778254000
+  },
+  {
+   "id": 615,
+   "date": "2026-02-28",
+   "amount": 67.1,
+   "cat": "abbigliamento",
+   "sub": "Vestiti",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727778315000
+  },
+  {
+   "id": 616,
+   "date": "2026-03-01",
+   "amount": 18.94,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727778376000
+  },
+  {
+   "id": 617,
+   "date": "2026-03-01",
+   "amount": 36.58,
+   "cat": "abbigliamento",
+   "sub": "Vestiti",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727778437000
+  },
+  {
+   "id": 618,
+   "date": "2026-03-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727778498000
+  },
+  {
+   "id": 619,
+   "date": "2026-03-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727778559000
+  },
+  {
+   "id": 620,
+   "date": "2026-03-02",
+   "amount": 51.96,
+   "cat": "svago",
+   "sub": "Libri e giochi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727778620000
+  },
+  {
+   "id": 621,
+   "date": "2026-03-03",
+   "amount": 32.13,
+   "cat": "auto",
+   "sub": "Pedaggi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727778681000
+  },
+  {
+   "id": 622,
+   "date": "2026-03-04",
+   "amount": 52.51,
+   "cat": "abbonamenti",
+   "sub": "Altro",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727778742000
+  },
+  {
+   "id": 623,
+   "date": "2026-03-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727778803000
+  },
+  {
+   "id": 624,
+   "date": "2026-03-10",
+   "amount": 166.11,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727778864000
+  },
+  {
+   "id": 625,
+   "date": "2026-03-10",
+   "amount": 63.48,
+   "cat": "svago",
+   "sub": "Cinema e eventi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727778925000
+  },
+  {
+   "id": 626,
+   "date": "2026-03-11",
+   "amount": 42.15,
+   "cat": "abbonamenti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727778986000
+  },
+  {
+   "id": 627,
+   "date": "2026-03-12",
+   "amount": 42.82,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "",
+   "type": "expense",
+   "ts": 1727779047000
+  },
+  {
+   "id": 628,
+   "date": "2026-03-12",
+   "amount": 41.68,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727779108000
+  },
+  {
+   "id": 629,
+   "date": "2026-03-13",
+   "amount": 20.37,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727779169000
+  },
+  {
+   "id": 630,
+   "date": "2026-03-13",
+   "amount": 28.57,
+   "cat": "abbigliamento",
+   "sub": "Tintoria",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727779230000
+  },
+  {
+   "id": 631,
+   "date": "2026-03-14",
+   "amount": 62.03,
+   "cat": "abbigliamento",
+   "sub": "Tintoria",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727779291000
+  },
+  {
+   "id": 632,
+   "date": "2026-03-15",
+   "amount": 56.25,
+   "cat": "abbonamenti",
+   "sub": "Software e AI",
+   "note": "",
+   "type": "expense",
+   "ts": 1727779352000
+  },
+  {
+   "id": 633,
+   "date": "2026-03-16",
+   "amount": 27.88,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727779413000
+  },
+  {
+   "id": 634,
+   "date": "2026-03-17",
+   "amount": 47.37,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727779474000
+  },
+  {
+   "id": 635,
+   "date": "2026-03-17",
+   "amount": 22.56,
+   "cat": "trasporti",
+   "sub": "Bus e metro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727779535000
+  },
+  {
+   "id": 636,
+   "date": "2026-03-18",
+   "amount": 2.93,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727779596000
+  },
+  {
+   "id": 637,
+   "date": "2026-03-18",
+   "amount": 51.31,
+   "cat": "svago",
+   "sub": "Hobby",
+   "note": "",
+   "type": "expense",
+   "ts": 1727779657000
+  },
+  {
+   "id": 638,
+   "date": "2026-03-19",
+   "amount": 63.94,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "",
+   "type": "expense",
+   "ts": 1727779718000
+  },
+  {
+   "id": 639,
+   "date": "2026-03-20",
+   "amount": 42.24,
+   "cat": "viaggi",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727779779000
+  },
+  {
+   "id": 640,
+   "date": "2026-03-21",
+   "amount": 32.03,
+   "cat": "auto",
+   "sub": "Pedaggi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727779840000
+  },
+  {
+   "id": 641,
+   "date": "2026-03-21",
+   "amount": 21.85,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727779901000
+  },
+  {
+   "id": 642,
+   "date": "2026-03-22",
+   "amount": 47.03,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727779962000
+  },
+  {
+   "id": 643,
+   "date": "2026-03-22",
+   "amount": 54.78,
+   "cat": "auto",
+   "sub": "Pedaggi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727780023000
+  },
+  {
+   "id": 644,
+   "date": "2026-03-23",
+   "amount": 34.71,
+   "cat": "svago",
+   "sub": "Hobby",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727780084000
+  },
+  {
+   "id": 645,
+   "date": "2026-03-23",
+   "amount": 26.86,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727780145000
+  },
+  {
+   "id": 646,
+   "date": "2026-03-25",
+   "amount": 53.64,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "",
+   "type": "expense",
+   "ts": 1727780206000
+  },
+  {
+   "id": 647,
+   "date": "2026-03-25",
+   "amount": 44.56,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727780267000
+  },
+  {
+   "id": 648,
+   "date": "2026-03-27",
+   "amount": 49.06,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727780328000
+  },
+  {
+   "id": 649,
+   "date": "2026-03-27",
+   "amount": 2240,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727780389000
+  },
+  {
+   "id": 650,
+   "date": "2026-03-28",
+   "amount": 18.15,
+   "cat": "auto",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727780450000
+  },
+  {
+   "id": 651,
+   "date": "2026-03-28",
+   "amount": 24.28,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727780511000
+  },
+  {
+   "id": 652,
+   "date": "2026-03-29",
+   "amount": 21.75,
+   "cat": "abbigliamento",
+   "sub": "Altro",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727780572000
+  },
+  {
+   "id": 653,
+   "date": "2026-03-31",
+   "amount": 33.36,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "",
+   "type": "expense",
+   "ts": 1727780633000
+  },
+  {
+   "id": 654,
+   "date": "2026-04-01",
+   "amount": 55.61,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727780694000
+  },
+  {
+   "id": 655,
+   "date": "2026-04-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727780755000
+  },
+  {
+   "id": 656,
+   "date": "2026-04-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727780816000
+  },
+  {
+   "id": 657,
+   "date": "2026-04-02",
+   "amount": 37.75,
+   "cat": "salute",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727780877000
+  },
+  {
+   "id": 658,
+   "date": "2026-04-02",
+   "amount": 64.87,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727780938000
+  },
+  {
+   "id": 659,
+   "date": "2026-04-04",
+   "amount": 35.27,
+   "cat": "trasporti",
+   "sub": "Taxi",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727780999000
+  },
+  {
+   "id": 660,
+   "date": "2026-04-04",
+   "amount": 5.96,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727781060000
+  },
+  {
+   "id": 661,
+   "date": "2026-04-05",
+   "amount": 43.62,
+   "cat": "abbigliamento",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727781121000
+  },
+  {
+   "id": 662,
+   "date": "2026-04-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727781182000
+  },
+  {
+   "id": 663,
+   "date": "2026-04-07",
+   "amount": 42.78,
+   "cat": "viaggi",
+   "sub": "Cibo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727781243000
+  },
+  {
+   "id": 664,
+   "date": "2026-04-07",
+   "amount": 56.98,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "",
+   "type": "expense",
+   "ts": 1727781304000
+  },
+  {
+   "id": 665,
+   "date": "2026-04-08",
+   "amount": 13.76,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727781365000
+  },
+  {
+   "id": 666,
+   "date": "2026-04-08",
+   "amount": 59.61,
+   "cat": "auto",
+   "sub": "Carburante",
+   "note": "",
+   "type": "expense",
+   "ts": 1727781426000
+  },
+  {
+   "id": 667,
+   "date": "2026-04-09",
+   "amount": 33.36,
+   "cat": "auto",
+   "sub": "Parcheggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727781487000
+  },
+  {
+   "id": 668,
+   "date": "2026-04-09",
+   "amount": 64.83,
+   "cat": "auto",
+   "sub": "Parcheggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727781548000
+  },
+  {
+   "id": 669,
+   "date": "2026-04-10",
+   "amount": 62.32,
+   "cat": "casa",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727781609000
+  },
+  {
+   "id": 670,
+   "date": "2026-04-11",
+   "amount": 63.44,
+   "cat": "viaggi",
+   "sub": "Cibo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727781670000
+  },
+  {
+   "id": 671,
+   "date": "2026-04-11",
+   "amount": 66.32,
+   "cat": "auto",
+   "sub": "Carburante",
+   "note": "",
+   "type": "expense",
+   "ts": 1727781731000
+  },
+  {
+   "id": 672,
+   "date": "2026-04-12",
+   "amount": 11,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727781792000
+  },
+  {
+   "id": 673,
+   "date": "2026-04-12",
+   "amount": 16.27,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727781853000
+  },
+  {
+   "id": 674,
+   "date": "2026-04-13",
+   "amount": 31.48,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727781914000
+  },
+  {
+   "id": 675,
+   "date": "2026-04-14",
+   "amount": 64.42,
+   "cat": "viaggi",
+   "sub": "Alloggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727781975000
+  },
+  {
+   "id": 676,
+   "date": "2026-04-15",
+   "amount": 87.91,
+   "cat": "casa",
+   "sub": "Arredamento",
+   "note": "",
+   "type": "expense",
+   "ts": 1727782036000
+  },
+  {
+   "id": 677,
+   "date": "2026-04-16",
+   "amount": 8.79,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727782097000
+  },
+  {
+   "id": 678,
+   "date": "2026-04-18",
+   "amount": 47.76,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "type": "expense",
+   "ts": 1727782158000
+  },
+  {
+   "id": 679,
+   "date": "2026-04-21",
+   "amount": 46.28,
+   "cat": "auto",
+   "sub": "Pedaggi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727782219000
+  },
+  {
+   "id": 680,
+   "date": "2026-04-21",
+   "amount": 26.06,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "",
+   "type": "expense",
+   "ts": 1727782280000
+  },
+  {
+   "id": 681,
+   "date": "2026-04-22",
+   "amount": 34.5,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727782341000
+  },
+  {
+   "id": 682,
+   "date": "2026-04-22",
+   "amount": 54.45,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727782402000
+  },
+  {
+   "id": 683,
+   "date": "2026-04-25",
+   "amount": 38.83,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "",
+   "type": "expense",
+   "ts": 1727782463000
+  },
+  {
+   "id": 684,
+   "date": "2026-04-26",
+   "amount": 48.91,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727782524000
+  },
+  {
+   "id": 685,
+   "date": "2026-04-27",
+   "amount": 51.86,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "",
+   "type": "expense",
+   "ts": 1727782585000
+  },
+  {
+   "id": 686,
+   "date": "2026-04-27",
+   "amount": 145,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727782646000
+  },
+  {
+   "id": 687,
+   "date": "2026-04-27",
+   "amount": 2166,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727782707000
+  },
+  {
+   "id": 688,
+   "date": "2026-04-28",
+   "amount": 24.62,
+   "cat": "cibo",
+   "sub": "Ristorante",
+   "note": "",
+   "type": "expense",
+   "ts": 1727782768000
+  },
+  {
+   "id": 689,
+   "date": "2026-04-28",
+   "amount": 26,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727782829000
+  },
+  {
+   "id": 690,
+   "date": "2026-04-29",
+   "amount": 137.54,
+   "cat": "casa",
+   "sub": "Bollette",
+   "note": "",
+   "type": "expense",
+   "ts": 1727782890000
+  },
+  {
+   "id": 691,
+   "date": "2026-04-29",
+   "amount": 2.3,
+   "cat": "abbigliamento",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727782951000
+  },
+  {
+   "id": 692,
+   "date": "2026-05-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727783012000
+  },
+  {
+   "id": 693,
+   "date": "2026-05-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727783073000
+  },
+  {
+   "id": 694,
+   "date": "2026-05-02",
+   "amount": 50.59,
+   "cat": "abbigliamento",
+   "sub": "Tintoria",
+   "note": "",
+   "type": "expense",
+   "ts": 1727783134000
+  },
+  {
+   "id": 695,
+   "date": "2026-05-02",
+   "amount": 43.27,
+   "cat": "viaggi",
+   "sub": "Attività",
+   "note": "",
+   "type": "expense",
+   "ts": 1727783195000
+  },
+  {
+   "id": 696,
+   "date": "2026-05-03",
+   "amount": 65.33,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "type": "expense",
+   "ts": 1727783256000
+  },
+  {
+   "id": 697,
+   "date": "2026-05-04",
+   "amount": 29.73,
+   "cat": "svago",
+   "sub": "Libri e giochi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727783317000
+  },
+  {
+   "id": 698,
+   "date": "2026-05-04",
+   "amount": 14.74,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "",
+   "type": "expense",
+   "ts": 1727783378000
+  },
+  {
+   "id": 699,
+   "date": "2026-05-05",
+   "amount": 31.1,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727783439000
+  },
+  {
+   "id": 700,
+   "date": "2026-05-05",
+   "amount": 18.74,
+   "cat": "svago",
+   "sub": "Libri e giochi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727783500000
+  },
+  {
+   "id": 701,
+   "date": "2026-05-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727783561000
+  },
+  {
+   "id": 702,
+   "date": "2026-05-07",
+   "amount": 61.95,
+   "cat": "trasporti",
+   "sub": "Bus e metro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727783622000
+  },
+  {
+   "id": 703,
+   "date": "2026-05-07",
+   "amount": 53.21,
+   "cat": "auto",
+   "sub": "Bollo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727783683000
+  },
+  {
+   "id": 704,
+   "date": "2026-05-08",
+   "amount": 19.13,
+   "cat": "abbonamenti",
+   "sub": "Software e AI",
+   "note": "",
+   "type": "expense",
+   "ts": 1727783744000
+  },
+  {
+   "id": 705,
+   "date": "2026-05-08",
+   "amount": 46.56,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "type": "expense",
+   "ts": 1727783805000
+  },
+  {
+   "id": 706,
+   "date": "2026-05-09",
+   "amount": 48.78,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "",
+   "type": "expense",
+   "ts": 1727783866000
+  },
+  {
+   "id": 707,
+   "date": "2026-05-09",
+   "amount": 33.39,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727783927000
+  },
+  {
+   "id": 708,
+   "date": "2026-05-11",
+   "amount": 65.94,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727783988000
+  },
+  {
+   "id": 709,
+   "date": "2026-05-11",
+   "amount": 34.83,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727784049000
+  },
+  {
+   "id": 710,
+   "date": "2026-05-12",
+   "amount": 40.42,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727784110000
+  },
+  {
+   "id": 711,
+   "date": "2026-05-12",
+   "amount": 39.3,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727784171000
+  },
+  {
+   "id": 712,
+   "date": "2026-05-14",
+   "amount": 29.86,
+   "cat": "svago",
+   "sub": "Hobby",
+   "note": "",
+   "type": "expense",
+   "ts": 1727784232000
+  },
+  {
+   "id": 713,
+   "date": "2026-05-15",
+   "amount": 7.87,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727784293000
+  },
+  {
+   "id": 714,
+   "date": "2026-05-18",
+   "amount": 35.48,
+   "cat": "viaggi",
+   "sub": "Altro",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727784354000
+  },
+  {
+   "id": 715,
+   "date": "2026-05-21",
+   "amount": 48.74,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "",
+   "type": "expense",
+   "ts": 1727784415000
+  },
+  {
+   "id": 716,
+   "date": "2026-05-21",
+   "amount": 17.17,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727784476000
+  },
+  {
+   "id": 717,
+   "date": "2026-05-23",
+   "amount": 34.25,
+   "cat": "auto",
+   "sub": "Parcheggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727784537000
+  },
+  {
+   "id": 718,
+   "date": "2026-05-24",
+   "amount": 13.96,
+   "cat": "viaggi",
+   "sub": "Alloggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727784598000
+  },
+  {
+   "id": 719,
+   "date": "2026-05-25",
+   "amount": 55.6,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "type": "expense",
+   "ts": 1727784659000
+  },
+  {
+   "id": 720,
+   "date": "2026-05-25",
+   "amount": 66.55,
+   "cat": "auto",
+   "sub": "Parcheggio",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727784720000
+  },
+  {
+   "id": 721,
+   "date": "2026-05-27",
+   "amount": 21.47,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727784781000
+  },
+  {
+   "id": 722,
+   "date": "2026-05-27",
+   "amount": 2184,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727784842000
+  },
+  {
+   "id": 723,
+   "date": "2026-05-28",
+   "amount": 40.86,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727784903000
+  },
+  {
+   "id": 724,
+   "date": "2026-05-28",
+   "amount": 34.21,
+   "cat": "auto",
+   "sub": "Bollo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727784964000
+  },
+  {
+   "id": 725,
+   "date": "2026-05-31",
+   "amount": 62.32,
+   "cat": "abbigliamento",
+   "sub": "Accessori",
+   "note": "",
+   "type": "expense",
+   "ts": 1727785025000
+  },
+  {
+   "id": 726,
+   "date": "2026-05-31",
+   "amount": 9.01,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727785086000
+  },
+  {
+   "id": 727,
+   "date": "2026-06-01",
+   "amount": 4.27,
+   "cat": "abbigliamento",
+   "sub": "Tintoria",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727785147000
+  },
+  {
+   "id": 728,
+   "date": "2026-06-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727785208000
+  },
+  {
+   "id": 729,
+   "date": "2026-06-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727785269000
+  },
+  {
+   "id": 730,
+   "date": "2026-06-02",
+   "amount": 19.27,
+   "cat": "viaggi",
+   "sub": "Alloggio",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727785330000
+  },
+  {
+   "id": 731,
+   "date": "2026-06-03",
+   "amount": 61.76,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727785391000
+  },
+  {
+   "id": 732,
+   "date": "2026-06-05",
+   "amount": 43.11,
+   "cat": "abbigliamento",
+   "sub": "Tintoria",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727785452000
+  },
+  {
+   "id": 733,
+   "date": "2026-06-05",
+   "amount": 11.12,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727785513000
+  },
+  {
+   "id": 734,
+   "date": "2026-06-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727785574000
+  },
+  {
+   "id": 735,
+   "date": "2026-06-06",
+   "amount": 29.79,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "type": "expense",
+   "ts": 1727785635000
+  },
+  {
+   "id": 736,
+   "date": "2026-06-07",
+   "amount": 62.69,
+   "cat": "abbigliamento",
+   "sub": "Accessori",
+   "note": "",
+   "type": "expense",
+   "ts": 1727785696000
+  },
+  {
+   "id": 737,
+   "date": "2026-06-08",
+   "amount": 50.68,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727785757000
+  },
+  {
+   "id": 738,
+   "date": "2026-06-08",
+   "amount": 2.09,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "type": "expense",
+   "ts": 1727785818000
+  },
+  {
+   "id": 739,
+   "date": "2026-06-10",
+   "amount": 10.91,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727785879000
+  },
+  {
+   "id": 740,
+   "date": "2026-06-10",
+   "amount": 20.69,
+   "cat": "auto",
+   "sub": "Parcheggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727785940000
+  },
+  {
+   "id": 741,
+   "date": "2026-06-11",
+   "amount": 44.54,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727786001000
+  },
+  {
+   "id": 742,
+   "date": "2026-06-11",
+   "amount": 161.26,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727786062000
+  },
+  {
+   "id": 743,
+   "date": "2026-06-14",
+   "amount": 50.48,
+   "cat": "abbonamenti",
+   "sub": "Software e AI",
+   "note": "",
+   "type": "expense",
+   "ts": 1727786123000
+  },
+  {
+   "id": 744,
+   "date": "2026-06-14",
+   "amount": 37.85,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727786184000
+  },
+  {
+   "id": 745,
+   "date": "2026-06-15",
+   "amount": 28.59,
+   "cat": "auto",
+   "sub": "Parcheggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727786245000
+  },
+  {
+   "id": 746,
+   "date": "2026-06-15",
+   "amount": 27.43,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727786306000
+  },
+  {
+   "id": 747,
+   "date": "2026-06-17",
+   "amount": 31.08,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727786367000
+  },
+  {
+   "id": 748,
+   "date": "2026-06-19",
+   "amount": 17.59,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727786428000
+  },
+  {
+   "id": 749,
+   "date": "2026-06-19",
+   "amount": 39.27,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727786489000
+  },
+  {
+   "id": 750,
+   "date": "2026-06-20",
+   "amount": 48.38,
+   "cat": "salute",
+   "sub": "Altro",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727786550000
+  },
+  {
+   "id": 751,
+   "date": "2026-06-20",
+   "amount": 18.81,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727786611000
+  },
+  {
+   "id": 752,
+   "date": "2026-06-21",
+   "amount": 43.25,
+   "cat": "abbigliamento",
+   "sub": "Vestiti",
+   "note": "",
+   "type": "expense",
+   "ts": 1727786672000
+  },
+  {
+   "id": 753,
+   "date": "2026-06-22",
+   "amount": 19,
+   "cat": "svago",
+   "sub": "Cinema e eventi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727786733000
+  },
+  {
+   "id": 754,
+   "date": "2026-06-24",
+   "amount": 81.09,
+   "cat": "casa",
+   "sub": "Arredamento",
+   "note": "",
+   "type": "expense",
+   "ts": 1727786794000
+  },
+  {
+   "id": 755,
+   "date": "2026-06-24",
+   "amount": 95.1,
+   "cat": "casa",
+   "sub": "Arredamento",
+   "note": "",
+   "type": "expense",
+   "ts": 1727786855000
+  },
+  {
+   "id": 756,
+   "date": "2026-06-25",
+   "amount": 23.82,
+   "cat": "auto",
+   "sub": "Bollo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727786916000
+  },
+  {
+   "id": 757,
+   "date": "2026-06-25",
+   "amount": 14.96,
+   "cat": "casa",
+   "sub": "Bollette",
+   "note": "",
+   "type": "expense",
+   "ts": 1727786977000
+  },
+  {
+   "id": 758,
+   "date": "2026-06-26",
+   "amount": 61.12,
+   "cat": "cibo",
+   "sub": "Ristorante",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727787038000
+  },
+  {
+   "id": 759,
+   "date": "2026-06-26",
+   "amount": 69.76,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727787099000
+  },
+  {
+   "id": 760,
+   "date": "2026-06-27",
+   "amount": 45.54,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727787160000
+  },
+  {
+   "id": 761,
+   "date": "2026-06-27",
+   "amount": 2172,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727787221000
+  },
+  {
+   "id": 762,
+   "date": "2026-06-28",
+   "amount": 34.5,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727787282000
+  },
+  {
+   "id": 763,
+   "date": "2026-06-30",
+   "amount": 62.97,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727787343000
+  },
+  {
+   "id": 764,
+   "date": "2026-06-30",
+   "amount": 69.11,
+   "cat": "trasporti",
+   "sub": "Bus e metro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727787404000
+  },
+  {
+   "id": 765,
+   "date": "2026-07-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727787465000
+  },
+  {
+   "id": 766,
+   "date": "2026-07-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727787526000
+  },
+  {
+   "id": 767,
+   "date": "2026-07-02",
+   "amount": 103.6,
+   "cat": "casa",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727787587000
+  },
+  {
+   "id": 768,
+   "date": "2026-07-02",
+   "amount": 18.85,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727787648000
+  },
+  {
+   "id": 769,
+   "date": "2026-07-03",
+   "amount": 75.71,
+   "cat": "casa",
+   "sub": "Altro",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727787709000
+  },
+  {
+   "id": 770,
+   "date": "2026-07-03",
+   "amount": 46.36,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727787770000
+  },
+  {
+   "id": 771,
+   "date": "2026-07-05",
+   "amount": 24.13,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727787831000
+  },
+  {
+   "id": 772,
+   "date": "2026-07-05",
+   "amount": 22.83,
+   "cat": "abbigliamento",
+   "sub": "Accessori",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727787892000
+  },
+  {
+   "id": 773,
+   "date": "2026-07-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727787953000
+  },
+  {
+   "id": 774,
+   "date": "2026-07-06",
+   "amount": 26.76,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727788014000
+  },
+  {
+   "id": 775,
+   "date": "2026-07-06",
+   "amount": 51.17,
+   "cat": "abbigliamento",
+   "sub": "Vestiti",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727788075000
+  },
+  {
+   "id": 776,
+   "date": "2026-07-08",
+   "amount": 67.9,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727788136000
+  },
+  {
+   "id": 777,
+   "date": "2026-07-08",
+   "amount": 173.21,
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727788197000
+  },
+  {
+   "id": 778,
+   "date": "2026-07-09",
+   "amount": 58.03,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727788258000
+  },
+  {
+   "id": 779,
+   "date": "2026-07-09",
+   "amount": 33.24,
+   "cat": "cibo",
+   "sub": "Take away",
+   "note": "",
+   "type": "expense",
+   "ts": 1727788319000
+  },
+  {
+   "id": 780,
+   "date": "2026-07-13",
+   "amount": 112.5,
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727788380000
+  },
+  {
+   "id": 781,
+   "date": "2026-07-14",
+   "amount": 68.23,
+   "cat": "trasporti",
+   "sub": "Car sharing",
+   "note": "",
+   "type": "expense",
+   "ts": 1727788441000
+  },
+  {
+   "id": 782,
+   "date": "2026-07-15",
+   "amount": 1800,
+   "type": "income",
+   "cat": "bonus",
+   "sub": "Bonus",
+   "note": "Premio",
+   "ts": 1727788502000
+  },
+  {
+   "id": 783,
+   "date": "2026-07-19",
+   "amount": 61.45,
+   "cat": "svago",
+   "sub": "Libri e giochi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727788563000
+  },
+  {
+   "id": 784,
+   "date": "2026-07-19",
+   "amount": 40.65,
+   "cat": "viaggi",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727788624000
+  },
+  {
+   "id": 785,
+   "date": "2026-07-20",
+   "amount": 17.78,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727788685000
+  },
+  {
+   "id": 786,
+   "date": "2026-07-20",
+   "amount": 34.74,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727788746000
+  },
+  {
+   "id": 787,
+   "date": "2026-07-21",
+   "amount": 57.36,
+   "cat": "trasporti",
+   "sub": "Car sharing",
+   "note": "",
+   "type": "expense",
+   "ts": 1727788807000
+  },
+  {
+   "id": 788,
+   "date": "2026-07-22",
+   "amount": 38.16,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727788868000
+  },
+  {
+   "id": 789,
+   "date": "2026-07-22",
+   "amount": 9.92,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727788929000
+  },
+  {
+   "id": 790,
+   "date": "2026-07-24",
+   "amount": 67.7,
+   "cat": "salute",
+   "sub": "Altro",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727788990000
+  },
+  {
+   "id": 791,
+   "date": "2026-07-25",
+   "amount": 115.56,
+   "cat": "casa",
+   "sub": "Altro",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727789051000
+  },
+  {
+   "id": 792,
+   "date": "2026-07-25",
+   "amount": 55.35,
+   "cat": "abbigliamento",
+   "sub": "Vestiti",
+   "note": "",
+   "type": "expense",
+   "ts": 1727789112000
+  },
+  {
+   "id": 793,
+   "date": "2026-07-26",
+   "amount": 36.92,
+   "cat": "svago",
+   "sub": "Altro",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727789173000
+  },
+  {
+   "id": 794,
+   "date": "2026-07-26",
+   "amount": 17.14,
+   "cat": "abbigliamento",
+   "sub": "Tintoria",
+   "note": "",
+   "type": "expense",
+   "ts": 1727789234000
+  },
+  {
+   "id": 795,
+   "date": "2026-07-27",
+   "amount": 2156,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727789295000
+  },
+  {
+   "id": 796,
+   "date": "2026-07-29",
+   "amount": 42.14,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727789356000
+  },
+  {
+   "id": 797,
+   "date": "2026-07-29",
+   "amount": 46.78,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727789417000
+  },
+  {
+   "id": 798,
+   "date": "2026-07-30",
+   "amount": 2.42,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "",
+   "type": "expense",
+   "ts": 1727789478000
+  },
+  {
+   "id": 799,
+   "date": "2026-07-30",
+   "amount": 110.19,
+   "cat": "casa",
+   "sub": "Bollette",
+   "note": "",
+   "type": "expense",
+   "ts": 1727789539000
+  },
+  {
+   "id": 800,
+   "date": "2026-07-31",
+   "amount": 45.89,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "",
+   "type": "expense",
+   "ts": 1727789600000
+  },
+  {
+   "id": 801,
+   "date": "2026-08-01",
+   "amount": 54.88,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727789661000
+  },
+  {
+   "id": 802,
+   "date": "2026-08-01",
+   "amount": 54.52,
+   "cat": "trasporti",
+   "sub": "Car sharing",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727789722000
+  },
+  {
+   "id": 803,
+   "date": "2026-08-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727789783000
+  },
+  {
+   "id": 804,
+   "date": "2026-08-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727789844000
+  },
+  {
+   "id": 805,
+   "date": "2026-08-02",
+   "amount": 51.08,
+   "cat": "svago",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727789905000
+  },
+  {
+   "id": 806,
+   "date": "2026-08-03",
+   "amount": 54.02,
+   "cat": "viaggi",
+   "sub": "Cibo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727789966000
+  },
+  {
+   "id": 807,
+   "date": "2026-08-04",
+   "amount": 21.78,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "",
+   "type": "expense",
+   "ts": 1727790027000
+  },
+  {
+   "id": 808,
+   "date": "2026-08-04",
+   "amount": 2.12,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727790088000
+  },
+  {
+   "id": 809,
+   "date": "2026-08-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727790149000
+  },
+  {
+   "id": 810,
+   "date": "2026-08-06",
+   "amount": 65.29,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "",
+   "type": "expense",
+   "ts": 1727790210000
+  },
+  {
+   "id": 811,
+   "date": "2026-08-06",
+   "amount": 35.44,
+   "cat": "viaggi",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727790271000
+  },
+  {
+   "id": 812,
+   "date": "2026-08-07",
+   "amount": 66.71,
+   "cat": "abbonamenti",
+   "sub": "Software e AI",
+   "note": "",
+   "type": "expense",
+   "ts": 1727790332000
+  },
+  {
+   "id": 813,
+   "date": "2026-08-08",
+   "amount": 10.33,
+   "cat": "salute",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727790393000
+  },
+  {
+   "id": 814,
+   "date": "2026-08-09",
+   "amount": 7.32,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727790454000
+  },
+  {
+   "id": 815,
+   "date": "2026-08-09",
+   "amount": 27.99,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727790515000
+  },
+  {
+   "id": 816,
+   "date": "2026-08-10",
+   "amount": 66.66,
+   "cat": "abbigliamento",
+   "sub": "Accessori",
+   "note": "",
+   "type": "expense",
+   "ts": 1727790576000
+  },
+  {
+   "id": 817,
+   "date": "2026-08-10",
+   "amount": 10.04,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727790637000
+  },
+  {
+   "id": 818,
+   "date": "2026-08-12",
+   "amount": 33.35,
+   "cat": "auto",
+   "sub": "Pedaggi",
+   "note": "",
+   "type": "expense",
+   "ts": 1727790698000
+  },
+  {
+   "id": 819,
+   "date": "2026-08-13",
+   "amount": 11.3,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727790759000
+  },
+  {
+   "id": 820,
+   "date": "2026-08-13",
+   "amount": 60.55,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727790820000
+  },
+  {
+   "id": 821,
+   "date": "2026-08-14",
+   "amount": 66.8,
+   "cat": "casa",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727790881000
+  },
+  {
+   "id": 822,
+   "date": "2026-08-15",
+   "amount": 50.45,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727790942000
+  },
+  {
+   "id": 823,
+   "date": "2026-08-15",
+   "amount": 54.62,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "",
+   "type": "expense",
+   "ts": 1727791003000
+  },
+  {
+   "id": 824,
+   "date": "2026-08-16",
+   "amount": 10.81,
+   "cat": "auto",
+   "sub": "Carburante",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727791064000
+  },
+  {
+   "id": 825,
+   "date": "2026-08-16",
+   "amount": 32.74,
+   "cat": "svago",
+   "sub": "Hobby",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727791125000
+  },
+  {
+   "id": 826,
+   "date": "2026-08-17",
+   "amount": 52.53,
+   "cat": "svago",
+   "sub": "Cinema e eventi",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727791186000
+  },
+  {
+   "id": 827,
+   "date": "2026-08-19",
+   "amount": 12.47,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "type": "expense",
+   "ts": 1727791247000
+  },
+  {
+   "id": 828,
+   "date": "2026-08-20",
+   "amount": 28.52,
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727791308000
+  },
+  {
+   "id": 829,
+   "date": "2026-08-20",
+   "amount": 169.73,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727791369000
+  },
+  {
+   "id": 830,
+   "date": "2026-08-21",
+   "amount": 56.32,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727791430000
+  },
+  {
+   "id": 831,
+   "date": "2026-08-22",
+   "amount": 65.26,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "",
+   "type": "expense",
+   "ts": 1727791491000
+  },
+  {
+   "id": 832,
+   "date": "2026-08-22",
+   "amount": 57.55,
+   "cat": "auto",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727791552000
+  },
+  {
+   "id": 833,
+   "date": "2026-08-23",
+   "amount": 51.6,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727791613000
+  },
+  {
+   "id": 834,
+   "date": "2026-08-23",
+   "amount": 113.48,
+   "cat": "casa",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727791674000
+  },
+  {
+   "id": 835,
+   "date": "2026-08-24",
+   "amount": 50.67,
+   "cat": "abbonamenti",
+   "sub": "Software e AI",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727791735000
+  },
+  {
+   "id": 836,
+   "date": "2026-08-25",
+   "amount": 35.82,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "type": "expense",
+   "ts": 1727791796000
+  },
+  {
+   "id": 837,
+   "date": "2026-08-27",
+   "amount": 2168,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727791857000
+  },
+  {
+   "id": 838,
+   "date": "2026-08-28",
+   "amount": 61.47,
+   "cat": "salute",
+   "sub": "Visite mediche",
+   "note": "",
+   "type": "expense",
+   "ts": 1727791918000
+  },
+  {
+   "id": 839,
+   "date": "2026-08-30",
+   "amount": 150.48,
+   "cat": "casa",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727791979000
+  },
+  {
+   "id": 840,
+   "date": "2026-08-30",
+   "amount": 29.21,
+   "cat": "svago",
+   "sub": "Altro",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727792040000
+  },
+  {
+   "id": 841,
+   "date": "2026-08-31",
+   "amount": 151.5,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727792101000
+  },
+  {
+   "id": 842,
+   "date": "2026-08-31",
+   "amount": 65.74,
+   "cat": "abbigliamento",
+   "sub": "Accessori",
+   "note": "",
+   "type": "expense",
+   "ts": 1727792162000
+  },
+  {
+   "id": 843,
+   "date": "2026-09-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727792223000
+  },
+  {
+   "id": 844,
+   "date": "2026-09-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727792284000
+  },
+  {
+   "id": 845,
+   "date": "2026-09-02",
+   "amount": 58.85,
+   "cat": "auto",
+   "sub": "Finanziamento",
+   "note": "",
+   "type": "expense",
+   "ts": 1727792345000
+  },
+  {
+   "id": 846,
+   "date": "2026-09-04",
+   "amount": 17.85,
+   "cat": "salute",
+   "sub": "Farmacia",
+   "note": "",
+   "type": "expense",
+   "ts": 1727792406000
+  },
+  {
+   "id": 847,
+   "date": "2026-09-04",
+   "amount": 28.79,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727792467000
+  },
+  {
+   "id": 848,
+   "date": "2026-09-05",
+   "amount": 8.89,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727792528000
+  },
+  {
+   "id": 849,
+   "date": "2026-09-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727792589000
+  },
+  {
+   "id": 850,
+   "date": "2026-09-06",
+   "amount": 45.73,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727792650000
+  },
+  {
+   "id": 851,
+   "date": "2026-09-07",
+   "amount": 28.46,
+   "cat": "abbonamenti",
+   "sub": "Software e AI",
+   "note": "",
+   "type": "expense",
+   "ts": 1727792711000
+  },
+  {
+   "id": 852,
+   "date": "2026-09-09",
+   "amount": 34.32,
+   "cat": "auto",
+   "sub": "Parcheggio",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727792772000
+  },
+  {
+   "id": 853,
+   "date": "2026-09-11",
+   "amount": 12.87,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727792833000
+  },
+  {
+   "id": 854,
+   "date": "2026-09-11",
+   "amount": 36.93,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727792894000
+  },
+  {
+   "id": 855,
+   "date": "2026-09-14",
+   "amount": 19.67,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727792955000
+  },
+  {
+   "id": 856,
+   "date": "2026-09-14",
+   "amount": 2.52,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727793016000
+  },
+  {
+   "id": 857,
+   "date": "2026-09-16",
+   "amount": 47.85,
+   "cat": "salute",
+   "sub": "Farmacia",
+   "note": "",
+   "type": "expense",
+   "ts": 1727793077000
+  },
+  {
+   "id": 858,
+   "date": "2026-09-16",
+   "amount": 40.53,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727793138000
+  },
+  {
+   "id": 859,
+   "date": "2026-09-17",
+   "amount": 59.42,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727793199000
+  },
+  {
+   "id": 860,
+   "date": "2026-09-18",
+   "amount": 13.79,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727793260000
+  },
+  {
+   "id": 861,
+   "date": "2026-09-19",
+   "amount": 12.9,
+   "cat": "abbigliamento",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727793321000
+  },
+  {
+   "id": 862,
+   "date": "2026-09-19",
+   "amount": 40.93,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727793382000
+  },
+  {
+   "id": 863,
+   "date": "2026-09-20",
+   "amount": 58.83,
+   "cat": "viaggi",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727793443000
+  },
+  {
+   "id": 864,
+   "date": "2026-09-22",
+   "amount": 66.71,
+   "cat": "svago",
+   "sub": "Hobby",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727793504000
+  },
+  {
+   "id": 865,
+   "date": "2026-09-26",
+   "amount": 89.86,
+   "cat": "casa",
+   "sub": "Manutenzione",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727793565000
+  },
+  {
+   "id": 866,
+   "date": "2026-09-27",
+   "amount": 2231,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727793626000
+  },
+  {
+   "id": 867,
+   "date": "2026-09-30",
+   "amount": 48.68,
+   "cat": "viaggi",
+   "sub": "Cibo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727793687000
+  },
+  {
+   "id": 868,
+   "date": "2026-09-30",
+   "amount": 10.98,
+   "cat": "abbonamenti",
+   "sub": "Software e AI",
+   "note": "",
+   "type": "expense",
+   "ts": 1727793748000
+  },
+  {
+   "id": 869,
+   "date": "2026-10-01",
+   "amount": 174.12,
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727793809000
+  },
+  {
+   "id": 870,
+   "date": "2026-10-01",
+   "amount": 57.64,
+   "cat": "trasporti",
+   "sub": "Car sharing",
+   "note": "",
+   "type": "expense",
+   "ts": 1727793870000
+  },
+  {
+   "id": 871,
+   "date": "2026-10-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727793931000
+  },
+  {
+   "id": 872,
+   "date": "2026-10-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727793992000
+  },
+  {
+   "id": 873,
+   "date": "2026-10-02",
+   "amount": 40.86,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727794053000
+  },
+  {
+   "id": 874,
+   "date": "2026-10-03",
+   "amount": 62.82,
+   "cat": "abbonamenti",
+   "sub": "Software e AI",
+   "note": "",
+   "type": "expense",
+   "ts": 1727794114000
+  },
+  {
+   "id": 875,
+   "date": "2026-10-03",
+   "amount": 35.62,
+   "cat": "auto",
+   "sub": "Assicurazione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727794175000
+  },
+  {
+   "id": 876,
+   "date": "2026-10-04",
+   "amount": 5.47,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727794236000
+  },
+  {
+   "id": 877,
+   "date": "2026-10-04",
+   "amount": 2.02,
+   "cat": "auto",
+   "sub": "Pedaggi",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727794297000
+  },
+  {
+   "id": 878,
+   "date": "2026-10-05",
+   "amount": 149.9,
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727794358000
+  },
+  {
+   "id": 879,
+   "date": "2026-10-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727794419000
+  },
+  {
+   "id": 880,
+   "date": "2026-10-06",
+   "amount": 67.05,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727794480000
+  },
+  {
+   "id": 881,
+   "date": "2026-10-07",
+   "amount": 34.75,
+   "cat": "altro",
+   "sub": "Tasse",
+   "note": "",
+   "type": "expense",
+   "ts": 1727794541000
+  },
+  {
+   "id": 882,
+   "date": "2026-10-08",
+   "amount": 33.06,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "",
+   "type": "expense",
+   "ts": 1727794602000
+  },
+  {
+   "id": 883,
+   "date": "2026-10-08",
+   "amount": 34.97,
+   "cat": "abbigliamento",
+   "sub": "Tintoria",
+   "note": "",
+   "type": "expense",
+   "ts": 1727794663000
+  },
+  {
+   "id": 884,
+   "date": "2026-10-09",
+   "amount": 50.07,
+   "cat": "cibo",
+   "sub": "Ristorante",
+   "note": "",
+   "type": "expense",
+   "ts": 1727794724000
+  },
+  {
+   "id": 885,
+   "date": "2026-10-11",
+   "amount": 165.89,
+   "cat": "casa",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727794785000
+  },
+  {
+   "id": 886,
+   "date": "2026-10-11",
+   "amount": 143.71,
+   "cat": "casa",
+   "sub": "Arredamento",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727794846000
+  },
+  {
+   "id": 887,
+   "date": "2026-10-12",
+   "amount": 32.63,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "type": "expense",
+   "ts": 1727794907000
+  },
+  {
+   "id": 888,
+   "date": "2026-10-12",
+   "amount": 4.33,
+   "cat": "salute",
+   "sub": "Cura personale",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727794968000
+  },
+  {
+   "id": 889,
+   "date": "2026-10-13",
+   "amount": 135.82,
+   "cat": "casa",
+   "sub": "Arredamento",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727795029000
+  },
+  {
+   "id": 890,
+   "date": "2026-10-13",
+   "amount": 50.06,
+   "cat": "abbonamenti",
+   "sub": "Telefonia e internet",
+   "note": "",
+   "type": "expense",
+   "ts": 1727795090000
+  },
+  {
+   "id": 891,
+   "date": "2026-10-14",
+   "amount": 40.61,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "",
+   "type": "expense",
+   "ts": 1727795151000
+  },
+  {
+   "id": 892,
+   "date": "2026-10-14",
+   "amount": 44.2,
+   "cat": "trasporti",
+   "sub": "Car sharing",
+   "note": "",
+   "type": "expense",
+   "ts": 1727795212000
+  },
+  {
+   "id": 893,
+   "date": "2026-10-15",
+   "amount": 56.6,
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "",
+   "type": "expense",
+   "ts": 1727795273000
+  },
+  {
+   "id": 894,
+   "date": "2026-10-15",
+   "amount": 23,
+   "cat": "svago",
+   "sub": "Libri e giochi",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727795334000
+  },
+  {
+   "id": 895,
+   "date": "2026-10-17",
+   "amount": 5.82,
+   "cat": "cibo",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727795395000
+  },
+  {
+   "id": 896,
+   "date": "2026-10-18",
+   "amount": 69.87,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "type": "expense",
+   "ts": 1727795456000
+  },
+  {
+   "id": 897,
+   "date": "2026-10-18",
+   "amount": 65.59,
+   "cat": "trasporti",
+   "sub": "Car sharing",
+   "note": "",
+   "type": "expense",
+   "ts": 1727795517000
+  },
+  {
+   "id": 898,
+   "date": "2026-10-19",
+   "amount": 10.54,
+   "cat": "trasporti",
+   "sub": "Car sharing",
+   "note": "",
+   "type": "expense",
+   "ts": 1727795578000
+  },
+  {
+   "id": 899,
+   "date": "2026-10-20",
+   "amount": 62.36,
+   "cat": "cibo",
+   "sub": "Bar e caffè",
+   "note": "",
+   "type": "expense",
+   "ts": 1727795639000
+  },
+  {
+   "id": 900,
+   "date": "2026-10-21",
+   "amount": 42.25,
+   "cat": "abbigliamento",
+   "sub": "Scarpe",
+   "note": "",
+   "type": "expense",
+   "ts": 1727795700000
+  },
+  {
+   "id": 901,
+   "date": "2026-10-22",
+   "amount": 5.83,
+   "cat": "cibo",
+   "sub": "Spesa",
+   "note": "",
+   "type": "expense",
+   "ts": 1727795761000
+  },
+  {
+   "id": 902,
+   "date": "2026-10-25",
+   "amount": 47.21,
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727795822000
+  },
+  {
+   "id": 903,
+   "date": "2026-10-25",
+   "amount": 6.14,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727795883000
+  },
+  {
+   "id": 904,
+   "date": "2026-10-26",
+   "amount": 135.73,
+   "cat": "casa",
+   "sub": "Condominio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727795944000
+  },
+  {
+   "id": 905,
+   "date": "2026-10-26",
+   "amount": 51.41,
+   "cat": "svago",
+   "sub": "Elettronica",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727796005000
+  },
+  {
+   "id": 906,
+   "date": "2026-10-27",
+   "amount": 2185,
+   "type": "income",
+   "cat": "stipendio",
+   "sub": "Stipendio",
+   "note": "",
+   "ts": 1727796066000
+  },
+  {
+   "id": 907,
+   "date": "2026-10-29",
+   "amount": 8.17,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727796127000
+  },
+  {
+   "id": 908,
+   "date": "2026-10-29",
+   "amount": 21.88,
+   "cat": "casa",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727796188000
+  },
+  {
+   "id": 909,
+   "date": "2026-10-30",
+   "amount": 56.71,
+   "cat": "auto",
+   "sub": "Manutenzione",
+   "note": "",
+   "type": "expense",
+   "ts": 1727796249000
+  },
+  {
+   "id": 910,
+   "date": "2026-10-31",
+   "amount": 33.26,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727796310000
+  },
+  {
+   "id": 911,
+   "date": "2026-11-01",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "note": "Ricorrente: Affitto",
+   "ts": 1727796371000
+  },
+  {
+   "id": 912,
+   "date": "2026-11-01",
+   "amount": 12.99,
+   "type": "expense",
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "Ricorrente: Netflix",
+   "ts": 1727796432000
+  },
+  {
+   "id": 913,
+   "date": "2026-11-02",
+   "amount": 36.12,
+   "cat": "trasporti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727796493000
+  },
+  {
+   "id": 914,
+   "date": "2026-11-02",
+   "amount": 31.08,
+   "cat": "auto",
+   "sub": "Carburante",
+   "note": "",
+   "type": "expense",
+   "ts": 1727796554000
+  },
+  {
+   "id": 915,
+   "date": "2026-11-04",
+   "amount": 37.62,
+   "cat": "trasporti",
+   "sub": "Bus e metro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727796615000
+  },
+  {
+   "id": 916,
+   "date": "2026-11-05",
+   "amount": 160,
+   "type": "income",
+   "cat": "buoni-pasto",
+   "sub": "Buoni pasto",
+   "note": "",
+   "ts": 1727796676000
+  },
+  {
+   "id": 917,
+   "date": "2026-11-06",
+   "amount": 60.35,
+   "cat": "regali",
+   "sub": "Regali",
+   "note": "",
+   "type": "expense",
+   "ts": 1727796737000
+  },
+  {
+   "id": 918,
+   "date": "2026-11-07",
+   "amount": 46.84,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727796798000
+  },
+  {
+   "id": 919,
+   "date": "2026-11-08",
+   "amount": 42.98,
+   "cat": "abbonamenti",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727796859000
+  },
+  {
+   "id": 920,
+   "date": "2026-11-10",
+   "amount": 15.19,
+   "cat": "regali",
+   "sub": "Donazioni",
+   "note": "",
+   "type": "expense",
+   "ts": 1727796920000
+  },
+  {
+   "id": 921,
+   "date": "2026-11-10",
+   "amount": 34.59,
+   "cat": "viaggi",
+   "sub": "Attività",
+   "note": "",
+   "type": "expense",
+   "ts": 1727796981000
+  },
+  {
+   "id": 922,
+   "date": "2026-11-11",
+   "amount": 7.96,
+   "cat": "altro",
+   "sub": "Varie",
+   "note": "",
+   "type": "expense",
+   "ts": 1727797042000
+  },
+  {
+   "id": 923,
+   "date": "2026-11-12",
+   "amount": 16.48,
+   "cat": "svago",
+   "sub": "Cinema e eventi",
+   "note": "pranzo",
+   "type": "expense",
+   "ts": 1727797103000
+  },
+  {
+   "id": 924,
+   "date": "2026-11-12",
+   "amount": 25.39,
+   "cat": "regali",
+   "sub": "Altro",
+   "note": "",
+   "type": "expense",
+   "ts": 1727797164000
+  },
+  {
+   "id": 925,
+   "date": "2026-11-14",
+   "amount": 20.69,
+   "cat": "trasporti",
+   "sub": "Taxi",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727797225000
+  },
+  {
+   "id": 926,
+   "date": "2026-11-16",
+   "amount": 48.55,
+   "cat": "trasporti",
+   "sub": "Treno",
+   "note": "",
+   "type": "expense",
+   "ts": 1727797286000
+  },
+  {
+   "id": 927,
+   "date": "2026-11-19",
+   "amount": 26.95,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "con amici",
+   "type": "expense",
+   "ts": 1727797347000
+  },
+  {
+   "id": 928,
+   "date": "2026-11-21",
+   "amount": 58.18,
+   "cat": "viaggi",
+   "sub": "Trasporto",
+   "note": "Esselunga",
+   "type": "expense",
+   "ts": 1727797408000
+  },
+  {
+   "id": 929,
+   "date": "2026-11-22",
+   "amount": 19.66,
+   "cat": "abbonamenti",
+   "sub": "Software e AI",
+   "note": "",
+   "type": "expense",
+   "ts": 1727797469000
+  },
+  {
+   "id": 930,
+   "date": "2026-11-22",
+   "amount": 17.7,
+   "cat": "auto",
+   "sub": "Parcheggio",
+   "note": "",
+   "type": "expense",
+   "ts": 1727797530000
+  },
+  {
+   "id": 931,
+   "date": "2026-11-23",
+   "amount": 17.07,
+   "cat": "abbonamenti",
+   "sub": "Streaming",
+   "note": "regalo",
+   "type": "expense",
+   "ts": 1727797591000
+  },
+  {
+   "id": 932,
+   "date": "2026-11-03",
+   "amount": 0.01,
+   "type": "expense",
+   "cat": "altro",
+   "sub": "Commissioni bancarie",
+   "note": "",
+   "ts": 1727797652000
+  },
+  {
+   "id": 933,
+   "date": "2026-11-03",
+   "amount": 1234.56,
+   "type": "expense",
+   "cat": "viaggi",
+   "sub": "Alloggio",
+   "note": "Hotel",
+   "ts": 1727797713000
+  },
+  {
+   "id": 934,
+   "date": "2026-02-28",
+   "amount": 33.33,
+   "type": "expense",
+   "cat": "cibo",
+   "sub": "Ristorante",
+   "note": "",
+   "ts": 1727797774000
+  }
+ ],
+ "budgets": [
+  {
+   "cat": "cibo",
+   "amount": 400
+  },
+  {
+   "cat": "svago",
+   "amount": 150
+  },
+  {
+   "cat": "trasporti",
+   "amount": 80
+  },
+  {
+   "cat": "abbigliamento",
+   "amount": 100
+  }
+ ],
+ "recurring": [
+  {
+   "id": 1,
+   "name": "Affitto",
+   "amount": 950,
+   "type": "expense",
+   "cat": "casa",
+   "sub": "Affitto / Mutuo",
+   "freq": "monthly",
+   "nextDue": "2026-12-01"
+  },
+  {
+   "id": 2,
+   "name": "Palestra",
+   "amount": 39,
+   "type": "expense",
+   "cat": "svago",
+   "sub": "Sport",
+   "freq": "monthly",
+   "nextDue": "2026-11-20"
+  },
+  {
+   "id": 3,
+   "name": "Assicurazione",
+   "amount": 420,
+   "type": "expense",
+   "cat": "auto",
+   "sub": "Assicurazione",
+   "freq": "yearly",
+   "nextDue": "2027-03-10"
+  }
+ ],
+ "meta": {
+  "savingsGoal": {
+   "label": "Fondo emergenze",
+   "amount": 10000
+  }
+ }
+}

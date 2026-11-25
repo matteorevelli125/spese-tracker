@@ -40,7 +40,8 @@ const CEL_MESSAGES = {
 function celebrate(kind, rec) {
   const el = $('#celebrate');
   const income = kind === 'godiment';
-  const where = income ? incomeCatById(rec.cat).name : `${catById(rec.cat).name} · ${rec.sub}`;
+  const extra = !income && typeof Split !== 'undefined' ? Split.note(rec) : '';
+  const where = (income ? incomeCatById(rec.cat).name : `${catById(rec.cat).name} · ${rec.sub}`) + (extra ? ` · ${extra}` : '');
   el.innerHTML = `<div class="cel-card ${kind}" role="alertdialog" aria-label="${income ? 'Entrata' : 'Spesa'} salvata">
     <div class="cel-head"><span>${income ? 'ENTRATA' : 'SPESA'} SALVATA</span><span class="cel-amount">${fmt(rec.amount)}</span></div>
     <div class="cel-msg">${CEL_MESSAGES[kind]()}</div>
@@ -66,16 +67,50 @@ document.querySelectorAll('nav button').forEach(btn => {
   });
 });
 function showView(name) {
+  const view = $(`#view-${name}`);
+  // Le pagine di Altro (budget, ricorrenti, Drive, dati) tengono attiva la tab Altro.
+  const tab = view.dataset.parent || name;
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b.dataset.view === name));
-  $(`#view-${name}`).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b.dataset.view === tab));
+  view.classList.add('active');
   const scroller = document.querySelector('.app-scroll');
   if (scroller) scroller.scrollTop = 0;
   if (name === 'list') renderList();
   if (name === 'stats') renderStats();
   if (name === 'budget') renderBudget();
-  if (name === 'settings') { renderRecurring(); renderDrive(); }
+  if (name === 'recurring') renderRecurring();
+  if (name === 'drive') renderDrive();
+  if (name === 'settings') renderMoreMenu();
+  if (name === 'data') renderSnapshots();
+  if (name === 'share' && typeof PeopleUI !== 'undefined') { PeopleUI.renderList(); EventsUI.renderList(); }
 }
+
+/* ---------- Altro: menu di voci (RF-N3) ---------- */
+document.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', () => showView(b.dataset.open)));
+document.querySelectorAll('[data-back]').forEach(b => b.addEventListener('click', () => showView(b.dataset.back)));
+
+// Sottotitoli del menu con lo stato attuale di ogni voce.
+async function renderMoreMenu() {
+  const [budgets, rec, goal, last, granted] = await Promise.all([
+    DB.allBudgets(), DB.allRecurring(), DB.getMeta('savingsGoal'), lastBackupTime(), Drive.isGranted()]);
+  const parts = [];
+  if (budgets.length) parts.push(`${budgets.length} budget ${budgets.length === 1 ? 'mensile' : 'mensili'}`);
+  if (goal && goal.amount) parts.push(`obiettivo ${goal.label || 'di risparmio'}`);
+  $('#menuBudgetSub').textContent = parts.join(' · ') || 'budget mensili e obiettivo di risparmio';
+  $('#menuRecSub').textContent = rec.length ? `${rec.length} ${rec.length === 1 ? 'attiva' : 'attive'}` : 'nessuna: mensili e annuali, inserite in automatico';
+  const lastTxt = last ? `ultimo backup ${new Date(last).toLocaleDateString('it-IT', { day: 'numeric', month: 'short', year: 'numeric' })}` : 'nessun backup ancora';
+  $('#menuDriveSub').textContent = granted ? lastTxt : `non collegato · ${lastTxt}`;
+}
+
+/* ---------- Condivise: Persone | Eventi (contenuto in F3–F5) ---------- */
+document.querySelectorAll('#shareSeg button').forEach(btn => btn.addEventListener('click', () => {
+  document.querySelectorAll('#shareSeg button').forEach(b => {
+    const on = b === btn;
+    b.classList.toggle('on', on);
+    b.setAttribute('aria-selected', String(on));
+  });
+  document.querySelectorAll('.share-pane').forEach(p => { p.hidden = p.dataset.pane !== btn.dataset.pane; });
+}));
 
 /* ---------- Inserimento ---------- */
 // I record hanno type 'expense' | 'income'; i record storici senza campo sono uscite.
@@ -103,6 +138,8 @@ document.querySelectorAll('#typeToggle button').forEach(btn => {
     selCat = null; selSub = null;
     refreshAddTitles();
     renderCatGrid(); renderSubList(); updateSaveState();
+    Split.reset(); // RC-9: niente split né evento sulle entrate
+    EventsUI.reset(); // tornando alle uscite: evento e partecipanti di nuovo
   });
 });
 
@@ -116,6 +153,8 @@ function resetAddForm() {
   $('#dateInput').value = todayStr();
   refreshAddTitles();
   renderCatGrid(); renderSubList(); updateSaveState();
+  if (typeof Split !== 'undefined') Split.reset();
+  if (typeof EventsUI !== 'undefined') EventsUI.reset(); // evento scelto in questa sessione o in corso oggi
 }
 
 // Apre il movimento in modifica nella schermata Aggiungi.
@@ -124,10 +163,12 @@ function startEdit(e) {
   setType(isIncome(e) ? 'income' : 'expense');
   selCat = e.cat;
   selSub = isIncome(e) ? null : e.sub;
-  $('#amountInput').value = String(e.amount).replace('.', ',');
   $('#noteInput').value = e.note || '';
   $('#dateInput').value = e.date;
   showView('add');
+  // Con uno split l'importo del wizard è il pagato; con un altro pagatore è la mia quota (RF-W11).
+  $('#amountInput').value = String(Split.load(e)).replace('.', ',');
+  EventsUI.load(e);
   refreshAddTitles();
   renderCatGrid(); renderSubList(); updateSaveState();
 }
@@ -290,14 +331,19 @@ function parseAmount(str) {
   return isFinite(v) && v > 0 ? Math.round(v * 100) / 100 : null;
 }
 function updateSaveState() {
-  const ok = parseAmount($('#amountInput').value) && selCat && (selType === 'income' || selSub);
+  const ok = parseAmount($('#amountInput').value) && selCat && (selType === 'income' || selSub) &&
+    (typeof Split === 'undefined' || Split.isValid());
   $('#saveBtn').disabled = !ok;
 }
 $('#amountInput').addEventListener('input', updateSaveState);
 
 $('#saveBtn').addEventListener('click', async () => {
-  const amount = parseAmount($('#amountInput').value);
   const income = selType === 'income';
+  // Importo, pagato, pagatore e quote dal wizard (Ledger.planSplit). Senza split il
+  // record è identico a prima: { date, amount, type, cat, sub, note, ts }.
+  const plan = Split.plan();
+  if (plan.error) { toast('Controlla la divisione della spesa'); return; }
+  const { amount, ...shared } = plan.fields;
   const record = {
     date: $('#dateInput').value || todayStr(),
     amount,
@@ -306,30 +352,44 @@ $('#saveBtn').addEventListener('click', async () => {
     sub: income ? incomeCatById(selCat).name : selSub,
     note: $('#noteInput').value.trim(),
     ts: Date.now(),
+    ...shared,
   };
+  // Evento (solo uscite, RC-9)
+  const eventId = income ? null : EventsUI.currentId();
+  if (eventId) record.eventId = eventId;
+  if (Ledger.validate(record).length) { toast('Spesa non coerente: controlla gli importi'); return; }
   buzz();
+  const used = Split.usedPeople();
   if (editingId !== null) {
+    // RF-S2: se un saldo cambia segno chiedo conferma mostrando prima e dopo.
+    if (!(await Split.confirmBalanceChange(editingId, { ...record, id: editingId }))) return;
     await DB.putExpense({ ...record, id: editingId });
+    await People.touch(used);
     toast('Movimento aggiornato');
     resetAddForm();
     showView('list');
     return;
   }
   await DB.addExpense(record);
+  await People.touch(used);
+  const extra = Split.note(record);
   if (income) celebrate('godiment', record);
   else if (amount > 30) celebrate(pickAffanno(), record);
-  else toast(`Salvato: ${fmt(amount)} — ${selSub}`);
+  else toast(`Salvato: ${fmt(amount)} — ${selSub}${extra ? ` (${extra})` : ''}`);
   $('#amountInput').value = '';
   $('#noteInput').value = '';
   selSub = null;
   if (income) { selCat = null; renderCatGrid(); }
   renderSubList();
+  Split.reset(); // RF-W9: senza evento split e pagatore si azzerano…
+  EventsUI.afterSave(); // …con un evento restano evento, partecipanti e categoria predefinita
   updateSaveState();
 });
 
 $('#deleteBtn').addEventListener('click', async () => {
   if (editingId === null) return;
   if (confirm('Eliminare questo movimento?')) {
+    if (!(await Split.confirmBalanceChange(editingId, null))) return; // RF-S2
     await DB.deleteExpense(editingId);
     toast('Movimento eliminato');
     resetAddForm();
@@ -341,19 +401,23 @@ $('#deleteBtn').addEventListener('click', async () => {
 $('#searchInput').addEventListener('input', () => renderList());
 
 // Match semplice: sottocategoria, categoria, nota o importo contengono la query.
-function matchesQuery(e, q) {
+function matchesQuery(e, q, people = new Map(), events = new Map()) {
   if (!q) return true;
   const c = isIncome(e) ? incomeCatById(e.cat) : catById(e.cat);
   // includo l'importo sia "grezzo" (18,9) sia a 2 decimali (18,90) per cercare in entrambi i modi
   const amt = `${String(e.amount).replace('.', ',')} ${e.amount.toFixed(2).replace('.', ',')}`;
-  const hay = `${e.sub} ${c.name} ${e.note || ''} ${amt}`.toLowerCase();
+  const who = [e.payer, ...(e.splits || []).map(s => s.personId)].filter(Boolean).map(id => (people.get(id) || {}).name || '').join(' ');
+  const ev = e.eventId ? (events.get(e.eventId) || {}).name || '' : '';
+  const hay = `${e.sub} ${c.name} ${e.note || ''} ${amt} ${who} ${ev}`.toLowerCase();
   return hay.includes(q);
 }
 
 async function renderList() {
   const q = ($('#searchInput').value || '').trim().toLowerCase();
+  const [people, evList] = await Promise.all([People.map(), DB.all('events')]);
+  const events = new Map(evList.map(ev => [ev.id, ev]));
   const all = (await DB.allExpenses())
-    .filter(e => matchesQuery(e, q))
+    .filter(e => matchesQuery(e, q, people, events))
     .sort((a, b) => b.date.localeCompare(a.date) || b.ts - a.ts);
   const wrap = $('#expList');
   wrap.innerHTML = '';
@@ -378,9 +442,18 @@ async function renderList() {
     const c = income ? incomeCatById(e.cat) : catById(e.cat);
     const item = document.createElement('div');
     item.className = 'exp-item' + (income ? ' income' : '');
+    // Spese condivise (RF-M1): importo = mia quota, sotto il pagato e i badge.
+    // I movimenti normali restano identici a prima.
+    const shared = !income && (e.payer || (e.splits && e.splits.length));
+    const ev = !income && e.eventId ? events.get(e.eventId) : null;
+    const tags = !shared && !ev ? '' : `<div class="meta">${ev ? `<span class="tag evt">${esc(ev.emoji)} ${esc(ev.name)}</span>` : ''}${!shared ? '' : e.payer
+      ? `<span class="tag">pagato da ${esc((people.get(e.payer) || { name: 'Persona sconosciuta' }).name)}</span>`
+      : `<span class="tag">${e.amount === 0 ? 'non partecipo · ' : ''}👥 ${e.splits.length}</span>`}</div>`;
+    const amt = !shared ? `<span class="amt">${income ? '+' : ''}${fmt(e.amount)}</span>`
+      : `<span class="amtcol"><span class="amt${e.amount === 0 ? ' zero' : ''}">${fmt(e.amount)}</span><small>${e.payer ? 'dal conto 0,00 €' : `pagati ${fmt(e.paid)}`}</small></span>`;
     item.innerHTML = `<span class="ico">${c.icon}</span>
-      <div class="info"><div class="cat">${esc(e.sub)}</div><div class="note">${esc(c.name)}${e.note ? ' · ' + esc(e.note) : ''}</div></div>
-      <span class="amt">${income ? '+' : ''}${fmt(e.amount)}</span>`;
+      <div class="info"><div class="cat">${esc(e.sub)}</div><div class="note">${esc(c.name)}${e.note ? ' · ' + esc(e.note) : ''}</div>${tags}</div>
+      ${amt}`;
     item.addEventListener('click', () => startEdit(e)); // tap = modifica (elimina dentro il form)
     dayCard.appendChild(item);
   });
@@ -1206,18 +1279,27 @@ async function applyRecurring() {
 
 /* ---------- Export / Import ---------- */
 async function exportData(format) {
-  const [expenses, budgets, recurring] = await Promise.all([DB.allExpenses(), DB.allBudgets(), DB.allRecurring()]);
   let blob, filename;
   if (format === 'json') {
-    blob = new Blob([JSON.stringify({ version: 1, exported: new Date().toISOString(), expenses, budgets, recurring }, null, 2)], { type: 'application/json' });
+    blob = new Blob([JSON.stringify(await buildBackup(), null, 2)], { type: 'application/json' });
     filename = `spese-backup-${todayStr()}.json`;
     await DB.setMeta('lastExportAt', new Date().toISOString()); // per il promemoria backup
   } else {
+    const [expenses, people, events] = await Promise.all([DB.allExpenses(), People.map(), DB.all('events')]);
+    const evName = new Map(events.map(ev => [ev.id, ev.name]));
+    const who = id => (people.get(id) || { name: 'Persona sconosciuta' }).name;
+    const num = n => String(n).replace('.', ',');
     const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
-    const rows = [['data', 'tipo', 'importo', 'categoria', 'sottocategoria', 'nota']];
+    // `importo` resta la mia quota (coerente con le metriche); `tua quota` la ripete per chiarezza.
+    const rows = [['data', 'tipo', 'importo', 'categoria', 'sottocategoria', 'nota', 'pagato', 'tua quota', 'pagato da', 'diviso con', 'evento']];
     expenses.sort((a, b) => a.date.localeCompare(b.date))
-      .forEach(e => rows.push([e.date, isIncome(e) ? 'entrata' : 'uscita', String(e.amount).replace('.', ','),
-        (isIncome(e) ? incomeCatById(e.cat) : catById(e.cat)).name, e.sub, e.note]));
+      .forEach(e => {
+        const n = Ledger.normalize(e);
+        rows.push([e.date, isIncome(e) ? 'entrata' : 'uscita', num(e.amount),
+          (isIncome(e) ? incomeCatById(e.cat) : catById(e.cat)).name, e.sub, e.note,
+          num(n.paid), num(e.amount), e.payer ? who(e.payer) : 'io',
+          n.splits.map(s => `${who(s.personId)} ${num(s.amount)}`).join(' | '), e.eventId ? (evName.get(e.eventId) || '') : '']);
+      });
     blob = new Blob(['﻿' + rows.map(r => r.map(esc).join(';')).join('\r\n')], { type: 'text/csv' });
     filename = `spese-${todayStr()}.csv`;
   }
@@ -1234,59 +1316,81 @@ async function exportData(format) {
 $('#exportJsonBtn').addEventListener('click', () => exportData('json'));
 $('#exportCsvBtn').addEventListener('click', () => exportData('csv'));
 
-// Validazione/sanificazione dei record importati: si accettano solo campi
-// attesi con i tipi corretti. Le stringhe vengono limitate in lunghezza per
-// evitare payload abnormi; i record non validi vengono scartati.
-const isDateStr = s => typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s);
-const cleanStr = (s, max = 200) => (typeof s === 'string' ? s : '').slice(0, max);
-const cleanAmount = a => {
-  const n = typeof a === 'number' ? a : parseFloat(a);
-  return isFinite(n) && n > 0 ? Math.round(n * 100) / 100 : null;
-};
-function sanitizeExpense(e) {
-  if (!e || typeof e !== 'object') return null;
-  const amount = cleanAmount(e.amount);
-  if (!isDateStr(e.date) || amount === null) return null;
-  return { date: e.date, amount, type: e.type === 'income' ? 'income' : 'expense',
-    cat: cleanStr(e.cat, 40), sub: cleanStr(e.sub, 60), note: cleanStr(e.note, 200), ts: Number.isFinite(e.ts) ? e.ts : Date.now() };
-}
-function sanitizeRecurring(r) {
-  if (!r || typeof r !== 'object') return null;
-  const amount = cleanAmount(r.amount);
-  if (!amount || !isDateStr(r.nextDue)) return null;
-  return { name: cleanStr(r.name, 80), amount, type: r.type === 'income' ? 'income' : 'expense',
-    cat: cleanStr(r.cat, 40), sub: cleanStr(r.sub, 60),
-    freq: r.freq === 'yearly' ? 'yearly' : 'monthly', nextDue: r.nextDue };
-}
-
+/* ---------- Import con scelta (RD-11) ---------- */
+// La sanificazione (v1 e v2, segnaposto per i riferimenti mancanti) è in sanitize.js.
 $('#importBtn').addEventListener('click', () => $('#importFile').click());
 $('#importFile').addEventListener('change', async ev => {
   const f = ev.target.files[0];
+  ev.target.value = '';
   if (!f) return;
   try {
     if (f.size > 20 * 1024 * 1024) throw new Error('file troppo grande');
-    const data = JSON.parse(await f.text());
-    if (!data || !Array.isArray(data.expenses)) throw new Error('formato non valido');
-    let ok = 0, skipped = 0;
-    for (const raw of data.expenses) {
-      const e = sanitizeExpense(raw);
-      if (e) { await DB.addExpense(e); ok++; } else skipped++;
-    }
-    for (const b of Array.isArray(data.budgets) ? data.budgets : []) {
-      const amount = cleanAmount(b && b.amount);
-      const cat = cleanStr(b && b.cat, 40);
-      if (cat && amount) await DB.setBudget(cat, amount);
-    }
-    for (const raw of Array.isArray(data.recurring) ? data.recurring : []) {
-      const r = sanitizeRecurring(raw);
-      if (r) await DB.addRecurring(r);
-    }
-    toast(`Importate ${ok} spese${skipped ? ` (${skipped} scartate)` : ''}`);
+    const clean = Sanitize.backup(JSON.parse(await f.text()), { keepId: true });
+    // Copia dei dati attuali preparata ORA: al tocco di "Importa" il download parte
+    // subito, dentro il gesto dell'utente (decisione D1).
+    const current = JSON.stringify(await buildBackup({ source: 'pre-import' }), null, 2);
+    openImportSheet(f.name, clean, { filename: `spese-pre-import-${todayStr()}.json`, json: current });
   } catch (err) {
     toast('Import fallito: ' + err.message);
   }
-  ev.target.value = '';
 });
+
+function openImportSheet(fileName, clean, safety) {
+  const n = clean.expenses.length, st = clean.stats;
+  const plural = (k, one, many) => `${k} ${k === 1 ? one : many}`;
+  const parts = [plural(n, 'movimento', 'movimenti')];
+  if (clean.people.length) parts.push(plural(clean.people.length, 'persona', 'persone'));
+  if (clean.events.length) parts.push(plural(clean.events.length, 'evento', 'eventi'));
+  const notes = [];
+  if (st.skipped) notes.push(st.skipped === 1 ? '1 record non valido verrà scartato' : `${st.skipped} record non validi verranno scartati`);
+  if (st.repaired) notes.push(`${plural(st.repaired, 'movimento corretto', 'movimenti corretti')} (dati incoerenti)`);
+  if (st.placeholders) notes.push(`${plural(st.placeholders, 'riferimento mancante sostituito', 'riferimenti mancanti sostituiti')} da un segnaposto`);
+
+  const el = document.createElement('div');
+  el.className = 'sheet-backdrop';
+  el.innerHTML = `
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="importTitle">
+      <div class="sheet-handle"></div>
+      <h3 id="importTitle">Importa backup</h3>
+      <div class="sheet-sub">${esc(fileName)} · ${parts.join(' · ')}</div>
+      ${notes.length ? `<div class="sheet-warn">${notes.map(esc).join('<br>')}</div>` : ''}
+      <label class="choice selected"><input type="radio" name="importMode" value="replace" checked>
+        <span class="dot"></span><span><b>Sostituisci tutto <span class="rec">CONSIGLIATO</span></b>
+        <small>I dati attuali vengono sostituiti da quelli del file. Se qualcosa va storto non cambia niente.</small></span></label>
+      <label class="choice"><input type="radio" name="importMode" value="append">
+        <span class="dot"></span><span><b>Aggiungi ai dati attuali</b>
+        <small>Come prima. Attenzione: importare due volte lo stesso file duplica le spese.</small></span></label>
+      <div class="sheet-note">💾 Prima di procedere salvo <b>${esc(safety.filename)}</b> sul dispositivo.</div>
+      <button class="btn-primary" data-act="go">Importa</button>
+      <button class="sheet-cancel" data-act="cancel">Annulla</button>
+    </div>`;
+  const close = () => { el.remove(); document.removeEventListener('keydown', onKey); };
+  const onKey = e => { if (e.key === 'Escape') close(); };
+  document.addEventListener('keydown', onKey);
+  el.addEventListener('click', e => { if (e.target === el) close(); });
+  el.querySelectorAll('input[name=importMode]').forEach(r => r.addEventListener('change', () => {
+    el.querySelectorAll('.choice').forEach(c => c.classList.toggle('selected', c.querySelector('input').checked));
+  }));
+  el.querySelector('[data-act=cancel]').onclick = close;
+  el.querySelector('[data-act=go]').onclick = async ev => {
+    const mode = el.querySelector('input[name=importMode]:checked').value;
+    Snapshots.download(safety.filename, safety.json); // sincrono: siamo nel gesto
+    ev.target.disabled = true;
+    try {
+      await Snapshots.save({ kind: 'pre-import', filename: safety.filename, json: safety.json });
+      if (mode === 'replace') await DB.replaceAll(clean);
+      else await DB.appendAll(clean);
+      close();
+      toast(mode === 'replace' ? `Dati sostituiti: ${n} movimenti` : `Importati ${n} movimenti`);
+      renderRecurring();
+    } catch (err) {
+      ev.target.disabled = false;
+      toast('Import fallito, dati invariati: ' + err.message);
+    }
+  };
+  document.body.appendChild(el);
+  el.querySelector('[data-act=go]').focus();
+}
 
 $('#wipeBtn').addEventListener('click', async () => {
   if (confirm('Cancellare TUTTI i dati? Operazione irreversibile.') && confirm('Sei davvero sicuro?')) {
@@ -1433,6 +1537,62 @@ async function maybeBackupReminder() {
   toast('⚠️ Nessun backup da oltre 30 giorni — vai in Altro per salvarlo');
 }
 
+/* ---------- Aggiornamento del database (RD-10) ---------- */
+// Un'altra scheda con la versione vecchia tiene aperto il DB: l'aggiornamento aspetta.
+window.addEventListener('db-blocked', () => toast("Chiudi le altre schede dell'app per completare l'aggiornamento"));
+// Un'altra scheda ha aggiornato il DB: questa ha già chiuso la connessione, va ricaricata.
+window.addEventListener('db-versionchange', () => {
+  if (confirm("L'app è stata aggiornata in un'altra scheda. Ricaricare ora?")) location.reload();
+  else toast('Ricarica la pagina per continuare');
+});
+
+/* ---------- Popup "App aggiornata" (RD-12, RD-13, decisione D1) ---------- */
+// Una sola volta dopo l'aggiornamento del DB. La copia dei dati com'erano è già nel
+// DB di backup del dispositivo (snapshots.js); il tocco su "Scarica copia e continua"
+// la salva anche come file nei Download (senza tocco il browser può bloccarlo).
+async function maybeShowUpgradeNotice() {
+  const n = await DB.getMeta('upgradeNotice');
+  if (!n || n.shown) return;
+  const snap = n.filename ? await Snapshots.latest('pre-upgrade') : null;
+  const ok = snap && snap.filename === n.filename;
+  const granted = await Drive.isGranted();
+  const el = document.createElement('div');
+  el.className = 'sheet-backdrop dialog-backdrop';
+  el.innerHTML = `<div class="dialog update-dialog" role="alertdialog" aria-modal="true" aria-label="App aggiornata">
+    <h3>App aggiornata 🎉</h3>
+    <div class="dialog-body">Ecco le novità di questa versione:</div>
+    <ul class="news">
+      <li><span>👥</span><span><b>Spese divise</b>: nel wizard trovi "Diviso con" e "Pagato da". Nelle statistiche conta solo la tua quota.</span></li>
+      <li><span>💸</span><span><b>Condivise › Persone</b>: chi ti deve cosa, rimborsi e compensazioni.</span></li>
+      <li><span>✈️</span><span><b>Eventi</b>: raggruppa le spese di vacanze, picnic e uscite.</span></li>
+      <li><span>⋯</span><span><b>Altro</b> è diventato un menu, e dentro trovi Budget.</span></li>
+    </ul>
+    ${ok ? `<div class="sheet-note">✅ I tuoi dati sono intatti. Copia di prima dell'aggiornamento salvata sul dispositivo${granted ? ' (e caricata anche su Google Drive)' : ''}: <b>${esc(snap.filename)}</b> · ${n.count} movimenti.</div>`
+      : `<div class="sheet-warn">Non è stato possibile fare la copia automatica${n.error ? ` (${esc(n.error)})` : ''}. I dati non sono stati modificati: esporta comunque un backup adesso.</div>`}
+    <button class="btn-primary" data-act="go">${ok ? 'Scarica copia e continua' : 'Esporta backup e continua'}</button>
+  </div>`;
+  el.querySelector('[data-act=go]').onclick = async () => {
+    if (ok) Snapshots.download(snap.filename, snap.json); // nel gesto: il download parte
+    else exportData('json');
+    el.remove();
+    await DB.setMeta('upgradeNotice', { ...(await DB.getMeta('upgradeNotice')), shown: true, shownAt: new Date().toISOString() });
+  };
+  document.body.appendChild(el);
+}
+
+/* ---------- Copie di sicurezza sul dispositivo (Altro › Dati) ---------- */
+async function renderSnapshots() {
+  const list = (await Snapshots.all()).sort((a, b) => b.id - a.id);
+  const what = { 'pre-upgrade': "Prima dell'aggiornamento", 'pre-import': "Prima di un import" };
+  $('#snapList').innerHTML = list.length ? list.map(s => `<div class="rec-item"><span class="ico">💾</span>
+      <span class="info">${esc(what[s.kind] || s.kind)}<small>${esc(new Date(s.at).toLocaleString('it-IT', { dateStyle: 'medium', timeStyle: 'short' }))} · ${(s.json.length / 1024).toFixed(0)} KB</small></span>
+      <button class="btn-secondary" data-snap="${s.id}">Scarica</button></div>`).join('')
+    : '<div class="empty">Nessuna copia: ne viene fatta una prima di ogni aggiornamento del database e di ogni import.</div>';
+  $('#snapList').querySelectorAll('[data-snap]').forEach(b => {
+    b.onclick = () => { const s = list.find(x => x.id === +b.dataset.snap); Snapshots.download(s.filename, s.json); };
+  });
+}
+
 /* ---------- Avvio ---------- */
 (async function init() {
   $('#dateInput').value = todayStr();
@@ -1446,7 +1606,9 @@ async function maybeBackupReminder() {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   }
   Drive.maybeAutoBackup(); // backup mensile "all'apertura" (silenzioso se già collegato)
+  setTimeout(() => Drive.maybeUploadUpgradeSnapshot(), 3000); // RD-12: copia pre-aggiornamento anche su Drive
   setTimeout(maybeBackupReminder, 4000); // dopo l'eventuale toast delle ricorrenti
+  maybeShowUpgradeNotice(); // RD-13: una volta sola dopo l'aggiornamento del DB
   // Apertura diretta da scorciatoia PWA (long-press sull'icona → Statistiche/Movimenti)
   const qv = new URLSearchParams(location.search).get('view');
   if (qv && document.querySelector(`#view-${qv}`)) showView(qv);

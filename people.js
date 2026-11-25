@@ -46,5 +46,5 @@ const People = (() => {
     }
   }
 
-  return { all, map, recent, search, create, touch };
+  return { all, map, recent, search, create, touch, uuid, key };
 })();

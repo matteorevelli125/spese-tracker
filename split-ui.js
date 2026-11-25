@@ -31,6 +31,9 @@ const Split = (() => {
     return e.payer ? e.amount : (e.paid != null ? e.paid : e.amount);
   }
 
+  // Preimposta chi ha pagato (scorciatoia "Ha pagato per me" dalla scheda persona, RF-P5).
+  function setPayer(id) { st = fresh(); st.payer = id; render(); }
+
   // Campi da salvare: { fields } oppure { error }. Per le entrate solo l'importo.
   function plan() {
     if (!isExpense()) return { fields: { amount: totalCents() / 100 } };
@@ -278,5 +281,5 @@ const Split = (() => {
   $('#amountInput').addEventListener('input', () => { if (inUse()) render(); });
   render();
 
-  return { reset, load, plan, isValid, usedPeople, note, render, confirmBalanceChange };
+  return { reset, load, setPayer, plan, isValid, usedPeople, note, render, confirmBalanceChange };
 })();

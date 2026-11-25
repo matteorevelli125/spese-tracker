@@ -93,6 +93,7 @@ test('mergePeople: somma le quote, sposta pagatore, rimborsi e partecipanti (RF-
   const r = Ledger.mergePeople(data, 'giuli', 'giulia');
   assert.deepEqual(r.expenses.map(e => e.id), [1, 2]);
   assert.deepEqual(r.expenses[0].splits, [{ personId: 'giulia', amount: 60 }]);
+  assert.equal(r.expenses[0].splitMode, 'exact');
   assert.equal(r.expenses[1].payer, 'giulia');
   assert.deepEqual(r.events, [{ id: 'e1', participants: ['giulia', 'ma'] }]);
   assert.equal(r.settlements[0].personId, 'giulia');
@@ -158,4 +159,29 @@ test('planSplit: pagato da un altro (RC-7)', () => {
 test('planSplit: totale non valido', () => {
   assert.deepEqual(Ledger.planSplit(0, {}), { error: 'total' });
   assert.deepEqual(Ledger.planSplit(12.5, {}), { error: 'total' });
+});
+
+// ---- storico per persona (mockup 4b) ----
+test('timeline: saldo progressivo di Marco, dal più recente (RF-P3)', () => {
+  const t = Ledger.timeline('ma', marco, rimborsi);
+  assert.deepEqual(t.map(i => [i.date, i.kind, i.cents, i.balance]), [
+    ['2026-08-14', 'advance', 13100, 15500],
+    ['2026-08-12', 'paid-for-me', -3500, 2400],
+    ['2026-08-11', 'advance', 2400, 5900],
+    ['2026-05-20', 'refund', -9000, 3500],
+    ['2026-05-02', 'advance', 12500, 12500],
+  ]);
+  assert.equal(t[0].balance, Ledger.balances(marco, rimborsi).get('ma'));
+});
+
+test('timeline: rimborso dato (out) e persona senza movimenti', () => {
+  const t = Ledger.timeline('fe', [exp({ amount: 18, paid: 0, payer: 'fe', ts: 1 })], [{ personId: 'fe', direction: 'out', amount: 18, date: '2026-08-20', ts: 2 }]);
+  assert.deepEqual(t.map(i => [i.kind, i.balance]), [['repaid', 0], ['paid-for-me', -1800]]);
+  assert.deepEqual(Ledger.timeline('nessuno', marco, rimborsi), []);
+});
+
+test('isReferenced', () => {
+  assert.equal(Ledger.isReferenced('gi', { expenses: marco }), true);
+  assert.equal(Ledger.isReferenced('zz', { expenses: marco, settlements: rimborsi }), false);
+  assert.equal(Ledger.isReferenced('zz', { events: [{ participants: ['zz'] }] }), true);
 });

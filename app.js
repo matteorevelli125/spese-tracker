@@ -81,6 +81,7 @@ function showView(name) {
   if (name === 'recurring') renderRecurring();
   if (name === 'drive') renderDrive();
   if (name === 'settings') renderMoreMenu();
+  if (name === 'share' && typeof PeopleUI !== 'undefined') PeopleUI.renderList();
 }
 
 /* ---------- Altro: menu di voci (RF-N3) ---------- */

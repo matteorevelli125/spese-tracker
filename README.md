@@ -30,7 +30,11 @@ Serve solo un web server statico (IndexedDB e service worker richiedono http/htt
 npx serve .        # oppure: python3 -m http.server 8080
 ```
 
+In sviluppo il service worker serve la versione salvata: dopo una modifica attiva *DevTools → Application → Service workers → Update on reload* (o tocca «Aggiorna» quando compare).
+
 Su Android: apri l'URL in Chrome → menu → "Aggiungi a schermata Home".
+
+Aggiornamenti: l'app si apre subito dalla versione salvata sul telefono (anche offline). Dopo un rilascio la nuova versione si scarica in background e compare **«Nuova versione pronta · Aggiorna»**; senza toccarlo, la si usa dall'apertura successiva.
 
 ## Deploy gratuito
 

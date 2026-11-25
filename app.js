@@ -1616,18 +1616,39 @@ async function renderSnapshots() {
   });
 }
 
+/* ---------- Service worker e nuove versioni ---------- */
+// Con il service worker "prima la cache" l'app si apre dalla versione salvata.
+// Quando un rilascio installa la nuova versione e ne prende il controllo, propongo di
+// ricaricare (con un tocco: niente ricarica a sorpresa mentre si sta scrivendo una spesa).
+function registerServiceWorker() {
+  if (!('serviceWorker' in navigator) || location.protocol === 'file:') return;
+  const hadController = !!navigator.serviceWorker.controller; // al primo avvio non è un aggiornamento
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (hadController) showUpdateBanner();
+  });
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+function showUpdateBanner() {
+  if ($('#updateBanner')) return;
+  const el = document.createElement('div');
+  el.id = 'updateBanner';
+  el.className = 'update-banner';
+  el.setAttribute('role', 'status');
+  el.innerHTML = '<span>Nuova versione pronta</span><button type="button">Aggiorna</button>';
+  el.querySelector('button').onclick = () => location.reload();
+  document.body.appendChild(el);
+}
+
 /* ---------- Avvio ---------- */
 (async function init() {
   $('#dateInput').value = todayStr();
   $('#recStart').value = todayStr();
   renderCatGrid();
   fillRecSelectors();
+  registerServiceWorker(); // prima di aspettare il DB: il controllo aggiornamenti parte subito
   await migrateData();
   await applyRecurring();
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist();
-  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
-  }
   Drive.maybeAutoBackup(); // backup mensile "all'apertura" (silenzioso se già collegato)
   setTimeout(() => Drive.maybeUploadUpgradeSnapshot(), 3000); // RD-12: copia pre-aggiornamento anche su Drive
   setTimeout(maybeBackupReminder, 4000); // dopo l'eventuale toast delle ricorrenti
